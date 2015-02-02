@@ -77,12 +77,12 @@ public final class StringModify {
 		// Keep adding new strings until on cannot be found
 		// (reaching the maximum number of strings is handled inside the loop)
 		do {
-			indexPlusPatternSize = index+patternSize; // small optimization (me being picky)
+			indexPlusPatternSize = index + patternSize; // small optimization (me being picky)
 			// Find the next matching string index after the current matching string index
 			nextIndex = input.indexOf(pattern, indexPlusPatternSize);
 			// If the maximum number of strings have been match, set the next index to -1
 			// so that the next statement acts as if the end of the string has been reached
-			if(matchingCount == limit-1) { nextIndex = -1; }
+			if(matchingCount == limit - 1) { nextIndex = -1; }
 			// If no more matching strings can be found, include the remainder of
 			// the string after the last matching string
 			nextIndex = (nextIndex == -1) ? inputSize : nextIndex;
@@ -133,12 +133,125 @@ public final class StringModify {
 		// Keep adding new strings until on cannot be found
 		// (reaching the maximum number of strings is handled inside the loop)
 		do {
-			indexPlusPatternSize = index+patternSize; // small optimization (me being picky)
+			indexPlusPatternSize = index + patternSize; // small optimization (me being picky)
 			// Find the next matching string index after the current matching string index
 			nextIndex = input.indexOf(pattern, indexPlusPatternSize);
 			// If the maximum number of strings have been match, set the next index to -1
 			// so that the next statement acts as if the end of the string has been reached
-			if(matchingCount == limit-1) { nextIndex = -1; }
+			if(matchingCount == limit - 1) { nextIndex = -1; }
+			// If no more matching strings can be found, include the remainder of
+			// the string after the last matching string
+			nextIndex = (nextIndex == -1) ? inputSize : nextIndex;
+			// If the matching string index is greater than or equal to the end
+			// of the string, then break, there is no more string left to parse
+			if(indexPlusPatternSize > inputSize) { break; }
+			// Add the new sub string between the end of the previous matching
+			// pattern and the next matching pattern to the list of splits
+			dst[matchingCount] = input.substring(indexPlusPatternSize, nextIndex);
+			// If the next found index is the end of the string, set the index
+			// to -1 so that the outer while loop ends, else keep the current index
+			index = (nextIndex == inputSize) ? -1 : nextIndex;
+			// Increment the number of split sub strings
+			matchingCount++;
+		} while(index != -1); // While at end because (index = -patternSize) could equal -1 if the pattern size is -1,
+		// so initialize everything first and run the first loop before evaluating the while statement
+		// Return the array of split sub strings
+		return dst;
+	}
+
+
+	/** A slightly faster version of {@link String#split(String)} that does not
+	 * used {@link Pattern}, instead the string is split based on a specific char.<br>
+	 * @param input the input char sequence to split
+	 * @param pattern the exact pattern to find and split around
+	 * @param limit the maximum number of splits to make, zero indicates that
+	 * an infinite number of splits can occur
+	 * @param dst the destination list to add the split strings to
+	 * @return the {@code dst} list with the split strings added to it
+	 */
+	public static final List<String> split(String input, char splitAt, int limit, List<String> dst) {
+		if(input == null) {
+			return dst;
+		}
+		// If the limit is zero (meaning an infinite number of splits) make the
+		// limit negative so that it never matches the comparison in the loop
+		limit = (limit == 0) ? -1 : limit;
+		int inputSize = input.length();
+		int patternSize = 1;
+		int index = 0;
+		int indexPlusPatternSize = 0;
+		int nextIndex = 0;
+		int matchingCount = 0;
+		if(dst == null) {
+			dst = new ArrayList<String>((limit > 0 && limit < MAX_SPLIT_SIZE) ?
+					limit : DEFAULT_SPLIT_SIZE);
+		}
+		// Since the first .indexOf() call uses index+patternSize, we want the first index to be at 0
+		index = -patternSize;
+		// Keep adding new strings until on cannot be found
+		// (reaching the maximum number of strings is handled inside the loop)
+		do {
+			indexPlusPatternSize = index + patternSize; // small optimization (me being picky)
+			// Find the next matching string index after the current matching string index
+			nextIndex = input.indexOf(splitAt, indexPlusPatternSize);
+			// If the maximum number of strings have been match, set the next index to -1
+			// so that the next statement acts as if the end of the string has been reached
+			if(matchingCount == limit - 1) { nextIndex = -1; }
+			// If no more matching strings can be found, include the remainder of
+			// the string after the last matching string
+			nextIndex = (nextIndex == -1) ? inputSize : nextIndex;
+			// If the matching string index is greater than or equal to the end
+			// of the string, then break, there is no more string left to parse
+			if(indexPlusPatternSize > inputSize) { break; }
+			// Add the new sub string between the end of the previous matching
+			// pattern and the next matching pattern to the list of splits
+			dst.add(input.substring(indexPlusPatternSize, nextIndex));
+			// If the next found index is the end of the string, set the index
+			// to -1 so that the outer while loop ends, else keep the current index
+			index = (nextIndex == inputSize) ? -1 : nextIndex;
+			// Increment the number of split sub strings
+			matchingCount++;
+		} while(index != -1); // While at end because (index = -patternSize) could equal -1 if the pattern size is -1
+		// so initialize everything first and run the first loop before evaluating the while statement
+		// Return the string list
+		return dst;
+	}
+
+
+	/** A slightly faster version of {@link String#split(String)} that does not
+	 * used {@link Pattern}, instead the string is split based on a specific char.<br/>
+	 * This method is more space efficient than the {@link StringModify#split(String, String, int)} version
+	 * since no internal structure is created to store the split strings, instead the array provided
+	 * is filled with the split strings.
+	 * @param input the input char sequence to split
+	 * @param pattern the exact pattern to find and split around
+	 * @param dst an array of strings equal in length to the number of strings to split the {@code input} string into
+	 * @return the {@code results} array of strings passed into the method
+	 */
+	public static final String[] split(String input, char splitAt, String[] dst) {
+		if(input == null) {
+			return new String[] {input};
+		}
+		// If the limit is zero (meaning an infinite number of splits) make the
+		// limit negative so that it never matches the comparison in the loop
+		int limit = dst.length;
+		int inputSize = input.length();
+		int patternSize = 1;
+		int index = 0;
+		int indexPlusPatternSize = 0;
+		int nextIndex = 0;
+		int matchingCount = 0;
+		// Since the first .indexOf() call uses index+patternSize, we want the first index to be at 0
+		index = -patternSize;
+		// Keep adding new strings until on cannot be found
+		// (reaching the maximum number of strings is handled inside the loop)
+		do {
+			indexPlusPatternSize = index + patternSize; // small optimization (me being picky)
+			// Find the next matching string index after the current matching string index
+			nextIndex = input.indexOf(splitAt, indexPlusPatternSize);
+			// If the maximum number of strings have been match, set the next index to -1
+			// so that the next statement acts as if the end of the string has been reached
+			if(matchingCount == limit - 1) { nextIndex = -1; }
 			// If no more matching strings can be found, include the remainder of
 			// the string after the last matching string
 			nextIndex = (nextIndex == -1) ? inputSize : nextIndex;

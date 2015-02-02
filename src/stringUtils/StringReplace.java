@@ -26,8 +26,8 @@ public final class StringReplace {
 	 * Escape literals are characters from the {@link #escapeIdentifiers} list,
 	 * like "\n", "\t", etc.
 	 * @param str the string to replace escape literals in
-	 * @return the result of replacing escape literals in {@code str} with the escape literals values,
-	 * for example "\n" is replaced with a single newline character
+	 * @return the result of replacing escape literals in {@code str} with the
+	 * escape literals values, for example "\n" is replaced with a single newline character
 	 */
 	public static final String replaceEscapeLiterals(String str) {
 		StringBuilder converted = new StringBuilder(str);
@@ -53,7 +53,8 @@ public final class StringReplace {
 	 * @param contentOffset the offset into {@code content} at which to start replacing
 	 * @param search the search string to search for in {@code content}
 	 * @param replace the replacement string to replace {@code search} for in {@code content}
-	 * @return the {@code content} string with matching {@code search} string replaced with {@code replace}
+	 * @return the {@code content} string with matching {@code search} string
+	 * replaced with {@code replace}
 	 */
 	public static String replace(String content, String search, String replace) {
 		return replace(content, 0, search, replace);
@@ -67,7 +68,8 @@ public final class StringReplace {
 	 * @param contentOffset the offset into {@code content} at which to start replacing
 	 * @param search the search string to search for in {@code content}
 	 * @param replace the replacement string to replace {@code search} for in {@code content}
-	 * @return the entire {@code content} string with matching {@code search} string replaced with {@code replace}
+	 * @return the entire {@code content} string with matching {@code search}
+	 * string replaced with {@code replace}
 	 */
 	public static String replace(String content, int contentOffset, String search, String replace) {
 		int index = content.indexOf(search, contentOffset);
@@ -90,7 +92,8 @@ public final class StringReplace {
 	 * @param contentOffset the offset into {@code content} at which to start replacing
 	 * @param search the search string to search for in {@code content}
 	 * @param replace the replacement string to replace {@code search} for in {@code content}
-	 * @return the entire {@code content} string with matching {@code search} string replaced with {@code replace}
+	 * @return the entire {@code content} string with matching {@code search}
+	 * string replaced with {@code replace}
 	 */
 	public static StringBuilder replace(StringBuilder content, int contentOffset, String search, String replace) {
 		int index = content.indexOf(search, contentOffset);
@@ -115,7 +118,8 @@ public final class StringReplace {
 	 * matching strings are replaced in the order they appear in the list
 	 * @param replaceStrs the list of replacement strings, each index in this list
 	 * corresponds to an index in {@code searchStrs}
-	 * @return the {@code content} string with matching {@code searchStrs} replaced with corresponding {@code replaceStrs}
+	 * @return the {@code content} string with matching {@code searchStrs} replaced
+	 * with corresponding {@code replaceStrs}
 	 */
 	public static String replaceStrings(String content, int contentOffset, List<String> searchStrs, List<String> replaceStrs) {
 		if(searchStrs.size() != replaceStrs.size()) {
@@ -157,8 +161,9 @@ public final class StringReplace {
 	 * @param contentOffset the offset into {@code content} at which to start replacing
 	 * @param search the search string to search for in {@code content}
 	 * @param replace the replacement string to replace {@code search} for in {@code content}
-	 * @param dst an empty string builder to store the subset of the {@code content} string specified
-	 * by {@code contentOffset} with matching {@code searchStrs} replaced with corresponding {@code replaceStrs}
+	 * @param dst an empty string builder to store the subset of the {@code content}
+	 * string specified by {@code contentOffset} with matching {@code searchStrs}
+	 * replaced with corresponding {@code replaceStrs}
 	 * @return the length change of {@code dst} after replacing the matching strings in {@code content}
 	 */
 	public static int replace(char[] content, int contentOffset, String search, String replace, StringBuilder dst) {
@@ -188,8 +193,9 @@ public final class StringReplace {
 	 * matching strings are replaced in the order they appear in the list
 	 * @param replaceStrs the list of replacement strings, each index in this list
 	 * corresponds to an index in {@code searchStrs}
-	 * @param dst an empty string builder to store the subset of the {@code content} string specified
-	 * by {@code contentOffset} with matching {@code searchStrs} replaced with corresponding {@code replaceStrs}
+	 * @param dst an empty string builder to store the subset of the {@code content}
+	 * string specified by {@code contentOffset} with matching {@code searchStrs}
+	 * replaced with corresponding {@code replaceStrs}
 	 * @return the length change of {@code dst} after replacing the matching strings in {@code content}
 	 */
 	public static int replaceStrings(char[] content, int contentOffset, List<String> searchStrs, List<String> replaceStrs,
@@ -235,11 +241,11 @@ public final class StringReplace {
 	 * For example {@code str = "a $string with $custom tokens and replace values"}<br/>
 	 * and {@code tokens = ["$str"="token", "$string"="String", "$custom"="infinite", "replace values"="others"]}<br/>
 	 * the {@code result = "a tokening with infinite tokens and others"}.<br>
-	 * Differs from {@link #replaceStrings} by doing a binary search of the tokens, and replacing the closest match
-	 * rather than simply replacing {@code tokens} sequentially.
+	 * Differs from {@link #replaceStrings} by doing a binary search of the tokens,
+	 * and replacing the closest match rather than simply replacing {@code tokens} sequentially.
 	 * @param str the string to search and replace tokens in
-	 * @param tokens a list of {@link java.util.Map.Entry Map.Entries}, the keys are the strings to
-	 * search for and the values are the strings to replace found keys with
+	 * @param tokens a list of {@link java.util.Map.Entry Map.Entries}, the keys are the
+	 * strings to search for and the values are the strings to replace found keys with
 	 * @param isSorted true if the {@code tokens} entry array is sorted, false if it is not
 	 * @return the resulting string with matching tokens replaced
 	 */
@@ -253,14 +259,15 @@ public final class StringReplace {
 	 * For example {@code str = "a $string with $custom tokens and replace values"}<br/>
 	 * and {@code tokens = ["$str"="token", "$string"="String", "$custom"="infinite", "replace values"="others"]}<br/>
 	 * the {@code result = "a tokening with infinite tokens and others"}.<br>
-	 * Differs from {@link #replaceStrings} by doing a binary search of the tokens, and replacing the closest match
-	 * rather than simply replacing {@code tokens} sequentially.
+	 * Differs from {@link #replaceStrings} by doing a binary search of the tokens,
+	 * and replacing the closest match rather than simply replacing {@code tokens} sequentially.
 	 * @param str the string to search and replace tokens in
-	 * @param tokens a list of {@link java.util.Map.Entry Map.Entries}, the keys are the strings to
-	 * search for and the values are the strings to replace found keys with
+	 * @param tokens a list of {@link java.util.Map.Entry Map.Entries}, the keys are the
+	 * strings to search for and the values are the strings to replace found keys with
 	 * @param isSorted true if the {@code tokens} entry array is sorted, false if it is not
-	 * @param preserveOrder true if the {@code tokens} entry array's order should be preserved, false will
-	 * cause this method to sort the {@code tokens} array by natural string order
+	 * @param preserveOrder true if the {@code tokens} entry array's order should be
+	 * preserved, false will cause this method to sort the {@code tokens} array
+	 * by natural string order
 	 * @return the resulting string with matching tokens replaced
 	 */
 	public static final String replaceTokens(String str, Map.Entry<String, String>[] tokens,
@@ -273,15 +280,17 @@ public final class StringReplace {
 	 * For example {@code str = "a $string with $custom tokens and replace values"}<br/>
 	 * and {@code tokens = ["$str"="token", "$string"="String", "$custom"="infinite", "replace values"="others"]}<br/>
 	 * the {@code result = "a String with infinite tokens and others"}.<br>
-	 * Differs from {@link #replaceStrings} by doing a binary search of the tokens, and replacing the closest match
-	 * rather than simply replacing {@code tokens} sequentially.
+	 * Differs from {@link #replaceStrings} by doing a binary search of the tokens,
+	 * and replacing the closest match rather than simply replacing {@code tokens} sequentially.
 	 * @param str the string to search and replace tokens in
-	 * @param comparator the {@link Comparator} to use to sort the {@code tokens} map entry array
-	 * @param tokens a list of {@link java.util.Map.Entry Map.Entries}, the keys are the strings to
-	 * search for and the values are the strings to replace found keys with
+	 * @param comparator the {@link Comparator} to use to sort the {@code tokens}
+	 * map entry array
+	 * @param tokens a list of {@link java.util.Map.Entry Map.Entries}, the keys
+	 * are the strings to search for and the values are the strings to replace found keys with
 	 * @param isSorted true if the {@code tokens} entry array is sorted, false if it is not
-	 * @param preserveOrder true if the {@code tokens} entry array's order should be preserved, false will
-	 * cause this method to sort the {@code tokens} array by natural string order
+	 * @param preserveOrder true if the {@code tokens} entry array's order should be
+	 * preserved, false will cause this method to sort the {@code tokens} array
+	 * by natural string order
 	 * @return the resulting string with matching tokens replaced
 	 */
 	public static final String replaceTokens(String str, Comparator<Map.Entry<String, String>> comparator,

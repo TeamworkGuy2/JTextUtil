@@ -24,12 +24,12 @@ public class StringTests {
 	public void testEscapeUnescape() {
 		String src = "a \\\"block\\\" char '\\\"'";
 		StringBuilder strDst = new StringBuilder();
-		StringConvert.unwrapChar(src, 0, '\\', '"', strDst);
+		StringConvert.unescapeChar(src, 0, '\\', '"', strDst);
 		String unwrapped = strDst.toString();
 		Assert.assertTrue("a \"block\" char '\"'".equals(unwrapped));
 
 		strDst.setLength(0);
-		StringConvert.wrapChar(unwrapped, '\\', '"', (char)0, strDst);
+		StringConvert.escapeChar(unwrapped, '\\', '"', (char)0, strDst);
 		String wrapped = strDst.toString();
 		Assert.assertTrue(src.equals(wrapped));
 	}

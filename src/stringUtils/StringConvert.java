@@ -312,7 +312,7 @@ public final class StringConvert {
 
 
 	// TODO what does this and unwrapChar() do, provide examples
-	public static final void wrapChar(String str, char chReplaceBefore, char ch1, char ch2, Appendable dst) {
+	public static final void escapeChar(String str, char chReplaceBefore, char ch1, char ch2, Appendable dst) {
 		try {
 			for(int i = 0, size = str.length(); i < size; i++) {
 				char chI = str.charAt(i);
@@ -342,7 +342,7 @@ public final class StringConvert {
 	 * @param dst the destination to store the read characters in
 	 * @return the index of the {@code chEnd} that parsing stopped at
 	 */
-	public static final int unwrapChar(CharSequence strSrc, int offset, char chReplace, char chEnd, Appendable dst) {
+	public static final int unescapeChar(CharSequence strSrc, int offset, char chReplace, char chEnd, Appendable dst) {
 		int i = offset;
 		try {
 			for(int size = strSrc.length(); i < size; i++) {
