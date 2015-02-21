@@ -45,6 +45,14 @@ public final class StringModify {
 	}
 
 
+	/**
+	 * @see #split(String, String, int, List)
+	 */
+	public static final List<String> split(String input, String pattern, List<String> dst) {
+		return split(input, pattern, 0, dst);
+	}
+
+
 	/** A slightly faster version of {@link String#split(String)} that does not
 	 * used {@link Pattern}, instead the pattern is interpreted literally
 	 * and the input string is split based on the literal split string.
@@ -157,6 +165,14 @@ public final class StringModify {
 		// so initialize everything first and run the first loop before evaluating the while statement
 		// Return the array of split sub strings
 		return dst;
+	}
+
+
+	/**
+	 * @see #split(String, char, int, List)
+	 */
+	public static final List<String> split(String input, char splitAt, List<String> dst) {
+		return split(input, splitAt, 0, dst);
 	}
 
 

@@ -402,6 +402,108 @@ public final class StringIndex {
 	}
 
 
+	/** Find the {@code n-th} occurrence of a character in a string 
+	 * @see #indexOfOccurrenceN(String, int, int, int, int)
+	 */
+	public static final int indexOfOccurrenceN(String str, int occurenceN, int matchChar) {
+		return indexOfOccurrenceN(str, 0, str.length(), occurenceN, matchChar);
+	}
+
+
+	/** Find the {@code n-th} occurrence of a character in a substring
+	 * @param str the string to search
+	 * @param off the {@code str} offset
+	 * @param len the number of characters to search
+	 * @param occurrenceN the occurrence to find, 1 finds the first matching occurrence,
+	 * {@code N} finds the n-th occurrence, 0 finds the last occurrence
+	 * @param matchChar the character to search for repeatedly
+	 * @return the index of the {@code n-th} occurrence of {@code matchChar} in {@code str},
+	 * or -1 if the string does not contain {@code n} occurrences
+	 */
+	public static final int indexOfOccurrenceN(String str, int off, int len, int occurrenceN, int matchChar) {
+		int occurI = 0;
+		int loop = 0;
+		int i = off; // incremented past one more occurrence each loop
+
+		for(int size = off + len; i < size; loop++) {
+			int tmp = indexOf(str, i, len - (i - off), matchChar);
+			// if return last occurrence
+			if(occurrenceN == 0 && tmp == -1 && loop > 0) {
+				return i - 1;
+			}
+			i = tmp;
+			if(i == -1) {
+				return -1;
+			}
+			else {
+				occurI++;
+				if(occurI == occurrenceN) {
+					return i;
+				}
+				i += 1; // increment past the matching char
+			}
+		}
+
+		// check and return last occurrence again, handles when (i + n) is greater than size and the loop ends
+		if(occurrenceN == 0 && loop > 0) {
+			return i - 1;
+		}
+		return -1;
+	}
+
+
+	/** Find the {@code n-th} occurrence of a substring in a string 
+	 * @see #indexOfOccurrenceN(String, int, int, int, int)
+	 */
+	public static final int indexOfOccurrenceN(String str, int occurenceN, String matchStr) {
+		return indexOfOccurrenceN(str, 0, str.length(), occurenceN, matchStr, 0, matchStr.length());
+	}
+
+
+	/** Find the {@code n-th} occurrence of a substring in a substring
+	 * @param str the string to search
+	 * @param off the {@code str} offset
+	 * @param len the number of characters to search
+	 * @param occurrenceN the occurrence to find, 1 finds the first matching occurrence,
+	 * {@code N} finds the n-th occurrence, 0 finds the last occurrence
+	 * @param matchStr the string to search for repeatedly
+	 * @param matchStrOff the {@code matchStr} offset
+	 * @param matchStrLen the number of characters to match
+	 * @return the index of the {@code n-th} occurrence of {@code matchChar} in {@code str},
+	 * or -1 if the string does not contain {@code n} occurrences
+	 */
+	public static final int indexOfOccurrenceN(String str, int off, int len, int occurrenceN, String matchStr, int matchStrOff, int matchStrLen) {
+		int occurI = 0;
+		int loop = 0;
+		int i = off; // incremented past one more occurrence each loop
+
+		for(int size = off + len; i < size; loop++) {
+			int tmp = indexOf(str, i, len - (i - off), matchStr, matchStrOff, matchStrLen);
+			// if return last occurrence
+			if(occurrenceN == 0 && tmp == -1 && loop > 0) {
+				return i - matchStrLen;
+			}
+			i = tmp;
+			if(i == -1) {
+				return -1;
+			}
+			else {
+				occurI++;
+				if(occurI == occurrenceN) {
+					return i;
+				}
+				i += matchStrLen; // increment past the matching string
+			}
+		}
+
+		// check and return last occurrence again, handles when (i + n) is greater than size and the loop ends
+		if(occurrenceN == 0 && loop > 0) {
+			return i - matchStrLen;
+		}
+		return -1;
+	}
+
+
 	/** Find the index of a matching sub-string that is not proceeded by a specified prefix<br>
 	 * For example, if<br>
 	 * {@code str="//C style string containing a C style comment"}<br>

@@ -1,7 +1,9 @@
 package stringUtils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.RandomAccess;
 
 /** Utility methods for comparing portions of strings.<br>
  * Includes {@link #startsWith(String, String...)} and {@link #endsWith(String, String...)}
@@ -190,6 +192,80 @@ public final class StringCompare {
 			}
 		}
 		return true;
+	}
+
+
+	public static final boolean containsEqualIgnoreCase(String[] strs, String str) {
+		for(int i = 0, size = strs.length; i < size; i++) {
+			if(strs[i].equalsIgnoreCase(str)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	public static final boolean containsIgnoreCase(String[] strs, String str) {
+		String strUpper = str.toUpperCase();
+		for(int i = 0, size = strs.length; i < size; i++) {
+			if(strs[i].toUpperCase().contains(strUpper)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/** Check if a collection of strings contains one or more strings equal to {@code str}
+	 * @param strs
+	 * @param str
+	 * @return
+	 */
+	public static final boolean containsEqualIgnoreCase(Collection<String> strs, String str) {
+		if(strs instanceof RandomAccess && strs instanceof List) {
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			List<String> strList = (List)strs;
+			for(int i = 0, size = strList.size(); i < size; i++) {
+				if(strList.get(i).equalsIgnoreCase(str)) {
+					return true;
+				}
+			}
+		}
+		else {
+			for(String s : strs) {
+				if(s.equalsIgnoreCase(str)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+
+	/** Check if a collection of strings contains one or more strings which contain {@code str}
+	 * @param strs
+	 * @param str
+	 * @return
+	 */
+	public static final boolean containsIgnoreCase(Collection<String> strs, String str) {
+		String strUpper = str.toUpperCase();
+		if(strs instanceof RandomAccess && strs instanceof List) {
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			List<String> strList = (List)strs;
+			for(int i = 0, size = strList.size(); i < size; i++) {
+				if(strList.get(i).toUpperCase().contains(strUpper)) {
+					return true;
+				}
+			}
+		}
+		else {
+			for(String s : strs) {
+				if(s.toUpperCase().contains(strUpper)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 

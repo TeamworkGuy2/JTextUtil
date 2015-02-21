@@ -5,7 +5,7 @@ package stringUtils;
  * @since 2015-1-24
  */
 // package-private
-public class ArrayUtilCopy {
+class ArrayUtilCopy {
 
 	/** Search for a matching char in an array of chars
 	 * @param ary the array of values to search
