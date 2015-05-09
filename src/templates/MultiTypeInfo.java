@@ -6,7 +6,7 @@ import java.util.List;
 import codeTemplate.ClassTemplate;
 
 /**
- * @param <T> the {@link ClassTemplateInfo} type of the data stored in this multi type info list
+ * @param <T> the {@link ClassTemplate} type of the data stored in this multi type info list
  * 
  * @author TeamworkGuy2
  * @since 2015-2-1
@@ -21,7 +21,7 @@ public class MultiTypeInfo<T extends ClassTemplate> extends ClassTemplate {
 
 
 	/**
-	 * @param <T> the {@link ClassTemplateInfo} type of the data stored in this multi-type instance
+	 * @param <T> the {@link ClassTemplate} type of the data stored in this multi-type instance
 	 * 
 	 * @author TeamworkGuy2
 	 * @since 2015-2-1

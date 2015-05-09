@@ -37,6 +37,31 @@ public class StringConvertTest {
 
 
 	@Test
+	public void unescapeDoubleSameCharTest() {
+		int offset = 2;
+		String[] inputs = new String[] {
+				" -a \"\"block\"\" char '\"\"'",
+				"1. \"\"abc",
+				"2. \"abc",
+				"= \"\"",
+		};
+		String[] expect = new String[] {
+				"a \"block\" char '\"'",
+				" \"abc",
+				" abc",
+				"\"",
+		};
+		StringBuilder dst = new StringBuilder();
+
+		for(int i = 0, size = inputs.length; i < size; i++) {
+			StringConvert.unescape(inputs[i], offset, '"', '"', dst);
+			Assert.assertEquals(expect[i], dst.toString());
+			dst.setLength(0);
+		}
+	}
+
+
+	@Test
 	public void unescapePartialQuotedTest() {
 		{
 			int offset = 3;

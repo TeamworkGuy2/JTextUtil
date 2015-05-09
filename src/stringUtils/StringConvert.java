@@ -78,7 +78,6 @@ public final class StringConvert {
 	/** Convert an XML string containing XML character codes (&amp; &apos; etc.) by replacing
 	 * them with the corresponding character
 	 * @param content the String to convert XML to non-XML characters (&amp; &quot; etc.)
-	 * @return String with XML characters replaced with normal characters
 	 * @return a string containing {@code content} with XML characters replaced
 	 * with normal characters
 	 * @see #unescapeXml(String, StringBuilder)
@@ -95,7 +94,6 @@ public final class StringConvert {
 	 * them with the corresponding character
 	 * @param content the String to convert XML to non-XML characters (&amp; &quot; etc.)
 	 * @param dst the destination string builder to store the replaced characters in
-	 * @return String with XML characters replaced with normal characters
 	 * @return the {@code dst} string builder with {@code content} appended with
 	 * XML characters replaced with normal characters
 	 */
@@ -150,7 +148,7 @@ public final class StringConvert {
 	 * @param escape1 the first character to escape, this is normally a special character, like {@code quote "}
 	 * @param escape2 the second character to escape, this is normally the escape character itself
 	 * @param dst the destination to write the escape characters to
-	 * @see StringModify#unescape(CharSequence, int, char, char, Appendable)
+	 * @see StringConvert#unescape(CharSequence, int, char, char, Appendable)
 	 */
 	public static final void escape(CharSequence str, char escapeChar, char escape1, char escape2, Appendable dst) {
 		try {
@@ -196,22 +194,22 @@ public final class StringConvert {
 	 * @param dst the destination to write unwrapped characters to
 	 * @return the index of the {@code chEnd} that parsing stopped at,
 	 * or the length of the {@code src} string if no {@code chEnd} character was encountered
-	 * @see StringModify#escape(CharSequence, char, char, char, Appendable) 
+	 * @see StringConvert#escape(CharSequence, char, char, char, Appendable) 
 	 */
 	public static final int unescape(CharSequence src, int offset, int length, char escapeChar, char chEnd, Appendable dst) {
 		int i = offset;
 		try {
 			for(int size = offset + length; i < size; i++) {
 				char chI = src.charAt(i);
-				if(chI == chEnd) {
-					return i;
-				}
 				if(chI == escapeChar) {
 					i++;
 					if(i >= size) {
 						return i;
 					}
 					chI = src.charAt(i);
+				}
+				else if(chI == chEnd) {
+					return i;
 				}
 				dst.append(chI);
 			}
@@ -263,7 +261,7 @@ public final class StringConvert {
 		final int offLen = offset + length;
 		boolean added = false;
 		int endIndex = StringIndex.indexOf(src, offset, length, endCh1);
-		if(endIndex == -1) {
+		if(endIndex == -1 && endCh2 != endCh1) {
 			endIndex = StringIndex.indexOf(src, offset, length, endCh2);
 		}
 		if(!throwIfNoEndChar && endIndex == -1) {

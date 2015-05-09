@@ -219,7 +219,7 @@ public final class StringCompare {
 	/** Check if a collection of strings contains one or more strings equal to {@code str}
 	 * @param strs
 	 * @param str
-	 * @return
+	 * @return true if the {@code strs} collection contains {@code str}, ignoring case, false if not
 	 */
 	public static final boolean containsEqualIgnoreCase(Collection<String> strs, String str) {
 		if(strs instanceof RandomAccess && strs instanceof List) {
@@ -245,7 +245,7 @@ public final class StringCompare {
 	/** Check if a collection of strings contains one or more strings which contain {@code str}
 	 * @param strs
 	 * @param str
-	 * @return
+	 * @return true if {@code strs} collection contains {@code str} ignoring case, false if not
 	 */
 	public static final boolean containsIgnoreCase(Collection<String> strs, String str) {
 		String strUpper = str.toUpperCase();

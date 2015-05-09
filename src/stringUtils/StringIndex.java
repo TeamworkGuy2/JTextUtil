@@ -703,8 +703,7 @@ public final class StringIndex {
 	 * where the sub string begins, or -1 if the sub string does not exist in the main array
 	 * @param str the char sequence to search
 	 * @param strOff the offset into the character array at which to start searching
-	 * @param subStr the sub string to search for in {@code str}
-	 * @param subStrOff the offset into the sub string array at which to start searching
+	 * @param searchChar the character to search for in {@code str}
 	 * @return the index of the found sub string, from index 0, or -1 if the sub string could not be found
 	 */
 	public static final int indexOf(CharSequence str, int strOff, int searchChar) {
