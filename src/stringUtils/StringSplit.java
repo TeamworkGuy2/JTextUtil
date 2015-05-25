@@ -288,4 +288,77 @@ public class StringSplit {
 		return dst;
 	}
 
+
+
+	/** A slightly faster version of {@link String#split(String)} that does not
+	 * used {@link Pattern}, instead the pattern is interpreted literally
+	 * and the input string is split based on the literal split string.
+	 * @param input the input char sequence to split
+	 * @param pattern the exact pattern to find and split around
+	 * @param childI the index of the matching substring to retrieve
+	 * @param expectedCount the expected number of string when the string is split using the pattern, 0 if the expected count is not know
+	 * @return the n-th matching split string
+	 */
+	public static final String findNthMatch(String input, String pattern, int childI, int expectedCount) {
+		if(input == null || pattern == null) {
+			return null;
+		}
+		if(expectedCount < 0) {
+			throw new IllegalArgumentException("expectedCount (" + expectedCount + ") must be greater than 0");
+		}
+		if(childI >= expectedCount) {
+			throw new IllegalStateException("childI (" + childI + ") must be less than expected count (" + expectedCount + ")");
+		}
+
+		// If the limit is zero (meaning an infinite number of splits) make the
+		// limit negative so that it never matches the comparison in the loop
+		expectedCount = (expectedCount == 0) ? -1 : expectedCount;
+		int inputSize = input.length();
+		int patternSize = pattern.length();
+		int index = 0;
+		int indexPlusPatternSize = 0;
+		int nextIndex = 0;
+		int matchingCount = 0;
+		String matchStr = null;
+
+		// Since the first .indexOf() call uses index+patternSize, we want the first index to be at 0
+		index = -patternSize;
+		// Keep adding new strings until on cannot be found
+		// (reaching the maximum number of strings is handled inside the loop)
+		do {
+			indexPlusPatternSize = index + patternSize; // small optimization (me being picky)
+			// Find the next matching string index after the current matching string index
+			nextIndex = input.indexOf(pattern, indexPlusPatternSize);
+			// If the maximum number of strings have been match, set the next index to -1
+			// so that the next statement acts as if the end of the string has been reached
+			if(matchingCount == expectedCount - 1 && nextIndex > -1) { throw new IllegalStateException("found more than " + expectedCount + " split strings"); }
+			// If no more matching strings can be found, include the remainder of
+			// the string after the last matching string
+			nextIndex = (nextIndex == -1) ? inputSize : nextIndex;
+			// If the matching string index is greater than or equal to the end
+			// of the string, then break, there is no more string left to parse
+			if(indexPlusPatternSize > inputSize) { break; }
+			// Add the new sub string between the end of the previous matching
+			// pattern and the next matching pattern to the list of splits
+			//dst.add(input.substring(indexPlusPatternSize, nextIndex));
+			if(matchingCount == childI) {
+				matchStr = input.substring(indexPlusPatternSize, nextIndex);
+				// only return the split string if the number of expected split strings is not specified
+				if(expectedCount == 0) {
+					return matchStr;
+				}
+			}
+			// If the next found index is the end of the string, set the index
+			// to -1 so that the outer while loop ends, else keep the current index
+			index = (nextIndex == inputSize) ? -1 : nextIndex;
+			// Increment the number of split sub strings
+			matchingCount++;
+		} while(index != -1); // While at end because (index = -patternSize) could equal -1 if the pattern size is -1
+
+		if(expectedCount != 0 && matchingCount != expectedCount) { throw new IllegalStateException("found " + matchingCount + ", expected " + expectedCount + " split strings"); }
+		// so initialize everything first and run the first loop before evaluating the while statement
+		// Return the string list
+		return matchStr;
+	}
+
 }

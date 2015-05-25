@@ -253,8 +253,8 @@ public final class StringConvert {
 	 * @param throwIfNoEndChar true to throw an error if the string ends without an end char,
 	 * false read until the end of the string
 	 * @param dst
-	 * @return the index of the {@code endCh#} that parsing stopped at, or the length
-	 * of the {@code src} string if no {@code endCh#} character was encountered 
+	 * @return the index of the {@code endCh1/endCh2} that parsing stopped at, or the length
+	 * of the {@code src} string if no {@code endCh1/endCh2} character was encountered 
 	 */
 	public static final int unescapePartialQuoted(String src, int offset, int length, char escapeChar, char quote,
 			char endCh1, char endCh2, boolean throwIfNoEndChar, Appendable dst) {
@@ -277,8 +277,10 @@ public final class StringConvert {
 					throw new RuntimeException(e);
 				}
 			}
+			// unescape the quoted portion of the string
 			endIndex = StringConvert.unescape(src, quoteIndex + 1, offLen - (quoteIndex + 1), escapeChar, quote, dst) + 1;
 			if(endIndex > offLen) { endIndex = -1; }
+			// if the string ended without a closing quote for the quoted portion, add a closing quote
 			if(offset < quoteIndex) {
 				try {
 					dst.append('"');

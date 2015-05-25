@@ -3,10 +3,7 @@ package stringUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Collection;
 import java.util.List;
-import java.util.RandomAccess;
-import java.util.StringJoiner;
 
 /** A utility for simple string manipulation.
  * For example splitting a string, joining strings, find common string prefixes
@@ -19,104 +16,6 @@ public final class StringModify {
 
 
 	private StringModify() { throw new AssertionError("cannot instantiate static class StringUtility"); }
-
-
-	// string join methods
-
-	/** Join an array of strings using a delimiter
-	 * @param strs the array of strings
-	 * @param delimiter the delimiter to place between strings
-	 * @return a string consisting of each of {@code strs} separated by {@code delimiter}
-	 * @see StringJoiner
-	 */
-	public static final String join(String[] strs, String delimiter) {
-		StringBuilder strB = new StringBuilder();
-		join(strs, 0, strs.length, delimiter, strB);
-		return strB.toString();
-	}
-
-
-	/** Join an array of strings using a delimiter
-	 * @param strs the array of strings
-	 * @param off the offset into {@code strs} at which start combining strings
-	 * @param len the number of strings from {@code strs} to combine
-	 * @param delimiter the delimiter to place between strings
-	 * @return a string consisting of each of {@code strs} separated by {@code delimiter}
-	 * @see StringJoiner
-	 */
-	public static final String join(String[] strs, int off, int len, String delimiter) {
-		StringBuilder strB = new StringBuilder();
-		join(strs, off, len, delimiter, strB);
-		return strB.toString();
-	}
-
-
-	/** Join a list of strings using a delimiter
-	 * @param strs the list of strings
-	 * @param delimiter the delimiter to place between strings
-	 * @return a string consisting of each of {@code strs} separated by {@code delimiter}
-	 * @see StringJoiner
-	 */
-	public static final String join(List<String> strs, String delimiter) {
-		StringBuilder strB = new StringBuilder();
-		join(strs, delimiter, strB);
-		return strB.toString();
-	}
-
-
-	/** Join a collection of strings using a delimiter
-	 * @param strs the collection of strings
-	 * @param delimiter the delimiter to place between strings
-	 * @return a string consisting of each of {@code strs} separated by {@code delimiter}
-	 * @see StringJoiner
-	 */
-	public static final String join(Collection<String> strs, String delimiter) {
-		StringBuilder strB = new StringBuilder();
-		join(strs, delimiter, strB);
-		return strB.toString();
-	}
-
-
-	public static final void join(String[] strs, int off, int len, String delimiter, StringBuilder dst) {
-		boolean firstLoop = true;
-		for(int i = off, size = off + len; i < size; i++) {
-			if(!firstLoop) {
-				dst.append(delimiter);
-			}
-			dst.append(strs[i]);
-			firstLoop = false;
-		}
-	}
-
-
-	public static final void join(List<String> strs, String delimiter, StringBuilder dst) {
-		boolean firstLoop = true;
-		if(strs instanceof RandomAccess) {
-			for(int i = 0, size = strs.size(); i < size; i++) {
-				if(!firstLoop) {
-					dst.append(delimiter);
-				}
-				dst.append(strs.get(i));
-				firstLoop = false;
-			}
-		}
-		else {
-			join((Collection<String>)strs, delimiter, dst);
-		}
-	}
-
-
-	public static final void join(Collection<String> strs, String delimiter, StringBuilder dst) {
-		boolean firstLoop = true;
-		for(String str : strs) {
-			if(!firstLoop) {
-				dst.append(delimiter);
-			}
-			dst.append(str);
-			firstLoop = false;
-		}
-	}
-
 
 
 	/** Trim quotes from the start and end of a list of strings if there
@@ -213,33 +112,43 @@ public final class StringModify {
 	}
 
 
+	/**
+	 * @see #decodeHexString(String, int, int)
+	 */
+	public static final byte[] decodeHexString(final String input) {
+		return decodeHexString(input, 0, input.length());
+	}
+
+
 	/** Convert a hexadecimal string to an array of bytes.
-	 * If the string's length is not divisble by 2, the last hexadecimal character
+	 * If the {@code len} is not divisible by 2, the last hexadecimal character
 	 * is stored in the high nibble of the last byte of the returned byte array.
 	 * For example, if the string contains the characters "{@code 3A9}", the byte array
 	 * returned is {@code [0x3A, 0x90]}.
 	 * @param input string to convert to an array of bytes.
+	 * @param off the character offset into the {@code input} string at which to start decoding
+	 * @param len the number of characters to decode
 	 * @return an array of bytes containing the interpreted byte values of the hexadecimal string
 	 */
-	public static final byte[] decodeHexString(final String input) {
+	public static final byte[] decodeHexString(final String input, final int off, final int len) {
 		// Note whether the string length is odd
-		boolean oddCount = (input.length() & 0x1) == 1;
-		int len = input.length() / 2;
-		byte[] bytes = new byte[len + (input.length() & 0x1)];
+		boolean oddCount = (len & 0x1) == 1;
+		int hexLen = len / 2;
+		byte[] bytes = new byte[hexLen + (len & 0x1)];
 		// Convert pairs of hex characters from the string into bytes
-		for(int i = 0; i < len; i++) {
-			char c = input.charAt(i << 1);
+		for(int i = 0; i < hexLen; i++) {
+			char c = input.charAt(off + (i << 1));
 			byte v1 = (byte)((c-48+(((64-c) >> 31) & -7)) << 4);
-			c = input.charAt((i << 1) + 1);
+			c = input.charAt(off + (i << 1) + 1);
 			byte v2 = (byte)((c-48+(((64-c) >> 31) & -7)) & 0xF);
 			bytes[i] = (byte)(v1 | v2);
 		}
 		// If the string length was odd, save it until this point
 		// and write it as one character
 		if(oddCount) {
-			char c = input.charAt(len << 1);
+			char c = input.charAt(off + (hexLen << 1));
 			byte v1 = (byte)((c-48+(((64-c) >> 31) & -7)) << 4);
-			bytes[len] = (byte)(v1);
+			bytes[hexLen] = (byte)(v1);
 		}
 
 		return bytes;

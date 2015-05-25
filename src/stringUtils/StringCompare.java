@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.RandomAccess;
 
 /** Utility methods for comparing portions of strings.<br>
- * Includes {@link #startsWith(String, String...)} and {@link #endsWith(String, String...)}
+ * Includes {@link #startsWithAny(String, String...)} and {@link #endsWithAny(String, String...)}
  * to find common prefixes and suffixes amongst a group of strings.<br>
- * And the complementary {@link #searchStartsWith(List, StringBuilder)} that searching for
+ * And the complementary {@link #anyStartWith(List, StringBuilder)} that searching for
  * any string in a list that starts with a specified sub-string.<br>
  * {@link #compareEqualCount(CharSequence, CharSequence)} to compare how many consecutive
  * characters are equal between two strings.
@@ -26,7 +26,7 @@ public final class StringCompare {
 	 * @param prefixes the set of prefixes to compare to the beginning of {@code str}
 	 * @return true if {@code str} starts with any one of the {@code prefixes}
 	 */
-	public static final boolean startsWith(String str, String... prefixes) {
+	public static final boolean startsWithAny(String str, String... prefixes) {
 		if(prefixes != null) {
 			for(String prefix : prefixes) {
 				if(str.startsWith(prefix)) {
@@ -43,7 +43,7 @@ public final class StringCompare {
 	 * @param suffixes the set of suffixes to compare to the end of {@code str}
 	 * @return true if {@code str} ends with any one of the {@code suffixes}
 	 */
-	public static final boolean endsWith(String str, String... suffixes) {
+	public static final boolean endsWithAny(String str, String... suffixes) {
 		if(suffixes != null) {
 			for(String suffix : suffixes) {
 				if(str.endsWith(suffix)) {
@@ -86,7 +86,7 @@ public final class StringCompare {
 	 * @return true if any of the strings in {@code strs} starts with the contents of {@code strBldr},
 	 * false if none of the strings start with {@code strBldr}
 	 */
-	public static final boolean searchStartsWith(List<String> strs, StringBuilder strBuilder) {
+	public static final boolean anyStartWith(List<String> strs, StringBuilder strBuilder) {
 		for(int strI = 0, len = strs.size(); strI < len; strI++) {
 			if(compareStartsWith(strs.get(strI), strBuilder, 0) == 0) {
 				return true;
@@ -105,7 +105,7 @@ public final class StringCompare {
 	 * @return true if any of the strings in {@code strs} starts with the contents of {@code strBldr},
 	 * false if none of the strings start with {@code strBldr}
 	 */
-	public static final boolean searchStartsWith(List<String> strs, StringBuilder strBldr, int strBldrOffset) {
+	public static final boolean anyStartWith(List<String> strs, StringBuilder strBldr, int strBldrOffset) {
 		for(int strI = 0, len = strs.size(); strI < len; strI++) {
 			if(compareStartsWith(strs.get(strI), strBldr, strBldrOffset) == 0) {
 				return true;
@@ -132,7 +132,8 @@ public final class StringCompare {
 	 * is greater than {@code strBldr}, less than 0 if {@code str} is less than {@code strBldr}
 	 */
 	public static final int compareStartsWith(String str, StringBuilder strBldr, int strBldrOffset) {
-		int len = str.length() > (strBldr.length()-strBldrOffset) ? (strBldr.length()-strBldrOffset) : str.length();
+		int strBldrRemainingLen = strBldr.length() - strBldrOffset;
+		int len = str.length() > (strBldrRemainingLen) ? (strBldrRemainingLen) : str.length();
 		int k = 0;
 		for( ; k < len; k++) {
 			int c1 = str.charAt(k);
@@ -141,8 +142,10 @@ public final class StringCompare {
 				return c1 - c2;
 			}
 		}
-		if((strBldr.length()-strBldrOffset == 0 || k == 0) && str.length() != 0) { return 1; }
-		return k == strBldr.length()-strBldrOffset ? 0 : str.length() - (strBldr.length()-strBldrOffset);
+		if((strBldrRemainingLen == 0 || k == 0) && str.length() != 0) {
+			return 1;
+		}
+		return k == strBldrRemainingLen ? 0 : str.length() - (strBldrRemainingLen);
 	}
 
 
@@ -223,8 +226,7 @@ public final class StringCompare {
 	 */
 	public static final boolean containsEqualIgnoreCase(Collection<String> strs, String str) {
 		if(strs instanceof RandomAccess && strs instanceof List) {
-			@SuppressWarnings({ "rawtypes", "unchecked" })
-			List<String> strList = (List)strs;
+			List<String> strList = (List<String>)strs;
 			for(int i = 0, size = strList.size(); i < size; i++) {
 				if(strList.get(i).equalsIgnoreCase(str)) {
 					return true;
@@ -250,8 +252,7 @@ public final class StringCompare {
 	public static final boolean containsIgnoreCase(Collection<String> strs, String str) {
 		String strUpper = str.toUpperCase();
 		if(strs instanceof RandomAccess && strs instanceof List) {
-			@SuppressWarnings({ "rawtypes", "unchecked" })
-			List<String> strList = (List)strs;
+			List<String> strList = (List<String>)strs;
 			for(int i = 0, size = strList.size(); i < size; i++) {
 				if(strList.get(i).toUpperCase().contains(strUpper)) {
 					return true;
