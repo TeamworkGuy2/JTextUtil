@@ -184,23 +184,9 @@ public final class StringCompare {
 	}
 
 
-	/** Check if a character sequence is entirely composed of whitespace
-	 * @param str the string to check
-	 * @return true if the string is entirely composed of whitespace, false if not
-	 */
-	public static final boolean isWhitespace(CharSequence str) {
-		for(int i = 0, size = str.length(); i < size; i++) {
-			if(!Character.isWhitespace(str.charAt(i))) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-
 	public static final boolean containsEqualIgnoreCase(String[] strs, String str) {
 		for(int i = 0, size = strs.length; i < size; i++) {
-			if(strs[i].equalsIgnoreCase(str)) {
+			if(strs[i] != null && strs[i].equalsIgnoreCase(str)) {
 				return true;
 			}
 		}
@@ -211,7 +197,7 @@ public final class StringCompare {
 	public static final boolean containsIgnoreCase(String[] strs, String str) {
 		String strUpper = str.toUpperCase();
 		for(int i = 0, size = strs.length; i < size; i++) {
-			if(strs[i].toUpperCase().contains(strUpper)) {
+			if(strs[i] != null && strs[i].toUpperCase().contains(strUpper)) {
 				return true;
 			}
 		}
@@ -228,14 +214,15 @@ public final class StringCompare {
 		if(strs instanceof RandomAccess && strs instanceof List) {
 			List<String> strList = (List<String>)strs;
 			for(int i = 0, size = strList.size(); i < size; i++) {
-				if(strList.get(i).equalsIgnoreCase(str)) {
+				String s = strList.get(i);
+				if(s != null && s.equalsIgnoreCase(str)) {
 					return true;
 				}
 			}
 		}
 		else {
 			for(String s : strs) {
-				if(s.equalsIgnoreCase(str)) {
+				if(s != null && s.equalsIgnoreCase(str)) {
 					return true;
 				}
 			}
@@ -254,14 +241,15 @@ public final class StringCompare {
 		if(strs instanceof RandomAccess && strs instanceof List) {
 			List<String> strList = (List<String>)strs;
 			for(int i = 0, size = strList.size(); i < size; i++) {
-				if(strList.get(i).toUpperCase().contains(strUpper)) {
+				String s = strList.get(i);
+				if(s != null && s.toUpperCase().contains(strUpper)) {
 					return true;
 				}
 			}
 		}
 		else {
 			for(String s : strs) {
-				if(s.toUpperCase().contains(strUpper)) {
+				if(s != null && s.toUpperCase().contains(strUpper)) {
 					return true;
 				}
 			}

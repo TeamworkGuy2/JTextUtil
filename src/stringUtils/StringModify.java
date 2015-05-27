@@ -97,9 +97,8 @@ public final class StringModify {
 	 * @return a string containing the hexadecimal value of the input byte array
 	 */
 	public static final String toHexString(final byte[] hexBytes, final int offset, final int length) {
-		final int size = offset+length;
-		char[] c = new char[size << 1];
-		for(int i = offset, a = 0; i < size; i++, a+=2) {
+		char[] c = new char[(length << 1)];
+		for(int i = offset, a = 0, size = offset + length; i < size; i++, a+=2) {
 			byte b = hexBytes[i];
 			byte v = (byte)((b >>> 4) & 0x0F);
 			//output.append((char)(v < 10 ? (v+48) : (v+55)));
@@ -108,7 +107,7 @@ public final class StringModify {
 			//output.append((char)(v < 10 ? (v+48) : (v+55)));
 			c[a+1] = (char)(55 + v + (((v-10) >> 31) & -7));
 		}
-		return new String(c, 0, size << 1);
+		return new String(c, 0, (length << 1));
 	}
 
 

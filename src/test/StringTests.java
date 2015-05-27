@@ -6,7 +6,7 @@ import org.junit.Test;
 import stringUtils.StringConvert;
 import stringUtils.StringJoin;
 import stringUtils.StringReplace;
-import checks.Check;
+import checks.CheckTask;
 
 /**
  * @author TeamworkGuy2
@@ -42,7 +42,7 @@ public class StringTests {
 		String[] delimiters = new String[] { "-", "||", "=", "=" };
 		String[] expect = new String[] { "Aa-Bb", "123||_||..", "=", "" };
 
-		Check.assertTests(strs, expect, "", "", (s, i) -> StringJoin.join(s, delimiters[i]));
+		CheckTask.assertTests(strs, expect, "", "", (s, i) -> StringJoin.join(s, delimiters[i]));
 	}
 
 

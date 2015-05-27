@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 import org.junit.Assert;
 import org.junit.Test;
 
-import checks.Check;
 import stringUtils.StringCommonality;
+import checks.CheckTask;
 
 /**
  * @author TeamworkGuy2
@@ -71,14 +71,14 @@ public class StringCommonalityTest {
 			String[][] strs = new String[][] { { "" }, { "a_b", "a_b_c" }, { "this.that", "this_that" }, { "abc", "c" } };
 			String[] expect = new String[] { "", "a_b", "this", "" };
 
-			Check.assertTests(strs, expect, "", "", (strSet) -> StringCommonality.findPrefix(0, Arrays.asList(strSet)));
+			CheckTask.assertTests(strs, expect, "", "", (strSet) -> StringCommonality.findPrefix(0, Arrays.asList(strSet)));
 		}
 		// suffix
 		{
 			String[][] strs = new String[][] { { "" }, { "a_b", "a_b_c" }, { "this.that", "this_that" }, { "abc", "c" } };
 			String[] expect = new String[] { "", "", "that", "c" };
 
-			Check.assertTests(strs, expect, "", "", (strSet) -> StringCommonality.findSuffix(0, Arrays.asList(strSet)));
+			CheckTask.assertTests(strs, expect, "", "", (strSet) -> StringCommonality.findSuffix(0, Arrays.asList(strSet)));
 		}
 	}
 

@@ -106,7 +106,7 @@ public class StringSplit {
 	/** A slightly faster version of {@link String#split(String)} that does not
 	 * used {@link Pattern}, instead the pattern is interpreted literally
 	 * and the input string is split based on the literal split string.<br/>
-	 * This method is more space efficient than the {@link StringModify#split(String, String, int)} version
+	 * This method is more space efficient than the {@link StringSplit#split(String, String, int)} version
 	 * since no internal structure is created to store the split strings, instead the array provided
 	 * is filled with the split strings.
 	 * @param input the input char sequence to split
@@ -236,7 +236,7 @@ public class StringSplit {
 
 	/** A slightly faster version of {@link String#split(String)} that does not
 	 * used {@link Pattern}, instead the string is split based on a specific char.<br/>
-	 * This method is more space efficient than the {@link StringModify#split(String, String, int)} version
+	 * This method is more space efficient than the {@link StringSplit#split(String, String, int)} version
 	 * since no internal structure is created to store the split strings, instead the array provided
 	 * is filled with the split strings.
 	 * @param input the input char sequence to split

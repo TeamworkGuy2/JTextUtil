@@ -3,7 +3,7 @@ package test;
 import org.junit.Test;
 
 import stringUtils.StringCompare;
-import checks.Check;
+import checks.CheckTask;
 
 /**
  * @author TeamworkGuy2
@@ -18,13 +18,9 @@ public class StringCompareTest {
 		Boolean[] expectEqualIgnoreCase = { true, false, true, false };
 		Boolean[] expectContainsIgnoreCase = { true, true, true, true };
 
-		Check.assertTests(contains, expectEqualIgnoreCase, "", "", (s) -> {
-			return StringCompare.containsEqualIgnoreCase(strs, s);
-		});
+		CheckTask.assertTests(contains, expectEqualIgnoreCase, "", "", (s) -> StringCompare.containsEqualIgnoreCase(strs, s));
 
-		Check.assertTests(contains, expectContainsIgnoreCase, "", "", (s) -> {
-			return StringCompare.containsIgnoreCase(strs, s);
-		});
+		CheckTask.assertTests(contains, expectContainsIgnoreCase, "", "", (s) -> StringCompare.containsIgnoreCase(strs, s));
 	}
 
 }

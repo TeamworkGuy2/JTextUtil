@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.Test;
 
 import stringUtils.StringIndex;
-import checks.Check;
+import checks.CheckTask;
 
 /**
  * @author TeamworkGuy2
@@ -38,7 +38,7 @@ public class StringIndexTest {
 				1, -1
 		};
 
-		Check.assertTests(inputs, expectIndices, null, null, (str, i) -> {
+		CheckTask.assertTests(inputs, expectIndices, null, null, (str, i) -> {
 			return StringIndex.indexOfOccurrenceN(str, occurenceN[i], matchChars[i]);
 		});
 
@@ -69,7 +69,7 @@ public class StringIndexTest {
 				2, -1
 		};
 
-		Check.assertTests(inputs, expectIndices, null, null, (str, i) -> {
+		CheckTask.assertTests(inputs, expectIndices, null, null, (str, i) -> {
 			return StringIndex.indexOfOccurrenceN(str, occurenceN[i], matchStrs[i]);
 		});
 
@@ -89,7 +89,7 @@ public class StringIndexTest {
 			char[] strC = str.toCharArray();
 			char[] prefixC = prefix.toCharArray();
 
-			Check.assertTests(strs, expect, "index of " + str + " without " + prefix + " prefix ", "",
+			CheckTask.assertTests(strs, expect, "index of " + str + " without " + prefix + " prefix ", "",
 					(s) -> StringIndex.indexOfNotPrefixedBy(s.toCharArray(), 0, strC, strOff, prefixC, prefixOff));
 		}
 
@@ -104,7 +104,7 @@ public class StringIndexTest {
 			char[] strC2 = str2.toCharArray();
 			char[] prefixC2 = prefix2.toCharArray();
 
-			Check.assertTests(strs2, expect2, "index of " + str2 + " without " + prefix2 + " prefix ", "",
+			CheckTask.assertTests(strs2, expect2, "index of " + str2 + " without " + prefix2 + " prefix ", "",
 					(s) -> StringIndex.indexOfNotPrefixedBy(s.toCharArray(), 0, strC2, strOff2, prefixC2, prefixOff2));
 		}
 
@@ -118,7 +118,7 @@ public class StringIndexTest {
 			int prefixOff = 0;
 			char[] prefixC = prefix.toCharArray();
 
-			Check.assertTests(strs2, expect2, "index of " + str2 + " without " + prefix + " prefix ", "",
+			CheckTask.assertTests(strs2, expect2, "index of " + str2 + " without " + prefix + " prefix ", "",
 					(s) -> {
 						int index = StringIndex.indexOfMatchNotPrefixedBy(s.toCharArray(), 0, matchStrs, prefixC, prefixOff);
 						if(index > -1) {

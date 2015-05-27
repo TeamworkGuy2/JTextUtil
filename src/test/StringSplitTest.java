@@ -3,8 +3,8 @@ package test;
 import org.junit.Assert;
 import org.junit.Test;
 
-import checks.Check;
 import stringUtils.StringSplit;
+import checks.CheckTask;
 
 /**
  * @author TeamworkGuy2
@@ -37,8 +37,8 @@ public class StringSplitTest {
 	public void stringSplitNthChildTest() {
 		Assert.assertEquals(StringSplit.findNthMatch("abc, def, ghi", ",", 1, 3), " def");
 
-		Check.assertException(() -> StringSplit.findNthMatch("abc, def, ghi", ",", 1, 2));
-		Check.assertException(() -> StringSplit.findNthMatch("abc, def, ghi", ",", 1, 4));
+		CheckTask.assertException(() -> StringSplit.findNthMatch("abc, def, ghi", ",", 1, 2));
+		CheckTask.assertException(() -> StringSplit.findNthMatch("abc, def, ghi", ",", 1, 4));
 	}
 
 }

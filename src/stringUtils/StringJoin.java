@@ -51,19 +51,6 @@ public class StringJoin {
 	}
 
 
-	/** Join a list of strings using a delimiter
-	 * @param strs the list of strings
-	 * @param delimiter the delimiter to place between strings
-	 * @return a string consisting of each of {@code strs} separated by {@code delimiter}
-	 * @see StringJoiner
-	 */
-	public static final String join(List<String> strs, String delimiter) {
-		StringBuilder strB = new StringBuilder();
-		join(strs, delimiter, strB);
-		return strB.toString();
-	}
-
-
 	/** Join a collection of strings using a delimiter
 	 * @param strs the collection of strings
 	 * @param delimiter the delimiter to place between strings
@@ -101,31 +88,26 @@ public class StringJoin {
 	}
 
 
-	public static final void join(List<String> strs, String delimiter, StringBuilder dst) {
+	public static final void join(Collection<String> strs, String delimiter, StringBuilder dst) {
 		boolean firstLoop = true;
-		if(strs instanceof RandomAccess) {
-			for(int i = 0, size = strs.size(); i < size; i++) {
+		if(strs instanceof RandomAccess && strs instanceof List) {
+			List<String> strsList = (List<String>)strs;
+			for(int i = 0, size = strsList.size(); i < size; i++) {
 				if(!firstLoop) {
 					dst.append(delimiter);
 				}
-				dst.append(strs.get(i));
+				dst.append(strsList.get(i));
 				firstLoop = false;
 			}
 		}
 		else {
-			join((Collection<String>)strs, delimiter, dst);
-		}
-	}
-
-
-	public static final void join(Collection<String> strs, String delimiter, StringBuilder dst) {
-		boolean firstLoop = true;
-		for(String str : strs) {
-			if(!firstLoop) {
-				dst.append(delimiter);
+			for(String str : strs) {
+				if(!firstLoop) {
+					dst.append(delimiter);
+				}
+				dst.append(str);
+				firstLoop = false;
 			}
-			dst.append(str);
-			firstLoop = false;
 		}
 	}
 
