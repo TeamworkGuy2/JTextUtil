@@ -278,7 +278,7 @@ public final class StringConvert {
 				}
 			}
 			// unescape the quoted portion of the string
-			endIndex = StringConvert.unescape(src, quoteIndex + 1, offLen - (quoteIndex + 1), escapeChar, quote, dst) + 1;
+			endIndex = StringConvert.unescape(src, quoteIndex + 1, offLen - (quoteIndex + 1), escapeChar, quote, dst);
 			if(endIndex > offLen) { endIndex = -1; }
 			// if the string ended without a closing quote for the quoted portion, add a closing quote
 			if(offset < quoteIndex) {

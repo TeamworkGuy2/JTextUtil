@@ -66,7 +66,7 @@ public class StringConvertTest {
 		{
 			int offset = 3;
 			String[] inputs = new String[] {
-					"0. with \"quoted block\"",
+					"0. with \"quoted block\" end",
 					"1.  \\abc, xyz",
 					"2.  abc, xyz",
 					"3. \\\"\"",
@@ -78,17 +78,17 @@ public class StringConvertTest {
 					"\\\"\"",
 			};
 			int[] expectIndex = {
-					inputs[0].length(),
+					inputs[0].lastIndexOf("\""),
 					inputs[1].lastIndexOf(','),
 					inputs[2].lastIndexOf(','),
-					inputs[3].length()
+					inputs[3].lastIndexOf("\"")
 			};
 			StringBuilder dst = new StringBuilder();
-	
+
 			for(int i = 0, size = inputs.length; i < size; i++) {
 				int index = StringConvert.unescapePartialQuoted(inputs[i], offset, inputs[i].length() - offset, '\\', '"', ',', ']', false, dst);
 				Assert.assertEquals(expect[i], dst.toString());
-				Assert.assertEquals("expect (" + expectIndex[i] + "): " + expect[i] + ", result (" + index + "): " + dst.toString(), expectIndex[i], index);
+				Assert.assertEquals(i + ". expect (" + expectIndex[i] + "): " + expect[i] + ", result (" + index + "): " + dst.toString(), expectIndex[i], index);
 				dst.setLength(0);
 			}
 		}

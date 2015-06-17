@@ -164,6 +164,22 @@ public final class StringCompare {
 
 
 	/** Check if portions of two strings are equal
+	 * @see #equal(char[], int, char[], int, int)
+	 */
+	public static final boolean equal(String str1, int str1Off, String str2, int str2Off, int len) {
+		if(str1Off + len > str1.length()) {
+			return false;
+		}
+		for(int i = len - 1; i > -1; i--) {
+			if(str1.charAt(str1Off + i) != str2.charAt(str2Off + i)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+	/** Check if portions of two strings are equal
 	 * @param str1 the first char array to compare characters from 
 	 * @param str1Off the offset into {@code str1} at which to start comparing characters
 	 * @param str2 the second char array to compare characters from
@@ -172,11 +188,11 @@ public final class StringCompare {
 	 * @return  true if the sub-portions of {@code str1} and {@code str2} match
 	 */
 	public static final boolean equal(char[] str1, int str1Off, char[] str2, int str2Off, int len) {
-		if(str1Off+len > str1.length) {
+		if(str1Off + len > str1.length) {
 			return false;
 		}
-		for(int i = len-1; i > -1; i--) {
-			if(str1[str1Off+i] != str2[str2Off+i]) {
+		for(int i = len - 1; i > -1; i--) {
+			if(str1[str1Off + i] != str2[str2Off + i]) {
 				return false;
 			}
 		}
