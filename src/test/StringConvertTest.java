@@ -70,18 +70,21 @@ public class StringConvertTest {
 					"1.  \\abc, xyz",
 					"2.  abc, xyz",
 					"3. \\\"\"",
+					"4. , "
 			};
 			String[] expect = new String[] {
 					"with \"quoted block\"",
 					" \\abc",
 					" abc",
 					"\\\"\"",
+					""
 			};
 			int[] expectIndex = {
-					inputs[0].lastIndexOf("\""),
+					inputs[0].lastIndexOf("\"") + 1,
 					inputs[1].lastIndexOf(','),
 					inputs[2].lastIndexOf(','),
-					inputs[3].lastIndexOf("\"")
+					inputs[3].lastIndexOf("\"") + 1,
+					inputs[4].lastIndexOf(',')
 			};
 			StringBuilder dst = new StringBuilder();
 

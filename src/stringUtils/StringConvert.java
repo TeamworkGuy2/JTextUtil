@@ -1,6 +1,7 @@
 package stringUtils;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 
 /** Convert strings to and from various formats.<br>
  * This class includes methods for XML character escaping and user definable char escaping.
@@ -167,7 +168,7 @@ public final class StringConvert {
 				}
 			}
 		} catch(IOException ioe) {
-			throw new RuntimeException(ioe);
+			throw new UncheckedIOException(ioe);
 		}
 	}
 
@@ -214,7 +215,7 @@ public final class StringConvert {
 				dst.append(chI);
 			}
 		} catch(IOException ioe) {
-			throw new RuntimeException(ioe);
+			throw new UncheckedIOException(ioe);
 		}
 		return i;
 	}
@@ -274,18 +275,24 @@ public final class StringConvert {
 				try {
 					dst.append(src, offset, quoteIndex + 1);
 				} catch (IOException e) {
-					throw new RuntimeException(e);
+					throw new UncheckedIOException(e);
 				}
 			}
 			// unescape the quoted portion of the string
 			endIndex = StringConvert.unescape(src, quoteIndex + 1, offLen - (quoteIndex + 1), escapeChar, quote, dst);
-			if(endIndex > offLen) { endIndex = -1; }
+			if(endIndex > offLen) {
+				endIndex = -1;
+			}
+			// if the quoted portion ends with a closing quote, increment the end index past it since the closing quote is part of the substring we're parsing
+			else if(endIndex > offset && src.charAt(endIndex) == quote && src.charAt(endIndex - 1) != escapeChar) {
+				endIndex++;
+			}
 			// if the string ended without a closing quote for the quoted portion, add a closing quote
 			if(offset < quoteIndex) {
 				try {
 					dst.append('"');
 				} catch (IOException e) {
-					throw new RuntimeException(e);
+					throw new UncheckedIOException(e);
 				}
 			}
 			added = true;
@@ -303,7 +310,7 @@ public final class StringConvert {
 			try {
 				dst.append(src, offset, endIndex);
 			} catch (IOException e) {
-				throw new RuntimeException(e);
+				throw new UncheckedIOException(e);
 			}
 		}
 
@@ -328,8 +335,8 @@ public final class StringConvert {
 					dst.append(chI);
 				}
 			}
-		} catch(Exception e) {
-			throw new RuntimeException(e);
+		} catch(IOException e) {
+			throw new UncheckedIOException(e);
 		}
 	}
 
@@ -359,8 +366,8 @@ public final class StringConvert {
 				}
 				dst.append(chI);
 			}
-		} catch(Exception e) {
-			throw new RuntimeException(e);
+		} catch(IOException e) {
+			throw new UncheckedIOException(e);
 		}
 		return i;
 	}
