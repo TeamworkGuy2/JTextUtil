@@ -137,6 +137,11 @@ public final class StringConvert {
 	}
 
 
+	public static final void escape(CharSequence str, char escapeChar, char escape1, char escape2, Appendable dst) {
+		escape(str, 0, escapeChar, escape1, escape2, dst);
+	}
+
+
 	/** Add escapes to special characters in a sequence of characters<br>
 	 * For example, given:<br>
 	 * {@code str = "a \"block\" char '\"'"}<br>
@@ -151,21 +156,27 @@ public final class StringConvert {
 	 * @param dst the destination to write the escape characters to
 	 * @see StringConvert#unescape(CharSequence, int, char, char, Appendable)
 	 */
-	public static final void escape(CharSequence str, char escapeChar, char escape1, char escape2, Appendable dst) {
+	public static final void escape(CharSequence str, int offset, char escapeChar, char escape1, char escape2, Appendable dst) {
+		// TODO repeating escapeChar when escapeChar equals escape1 or escape2 produces ambigious results
 		try {
-			for(int i = 0, size = str.length(); i < size; i++) {
+			char prevChar = 0;
+			char nextChar = 0;
+			for(int i = offset, size = str.length(); i < size; i++) {
 				char chI = str.charAt(i);
-				if(chI == escape1) {
+				nextChar = i < size - 1 ? str.charAt(i + 1) : 0;
+
+				if(chI == escape1 && (i == offset || prevChar != escapeChar) && (i == size - 1 || (nextChar != escapeChar && nextChar != escape1 && nextChar != escape2))) {
 					dst.append(escapeChar);
 					dst.append(escape1);
 				}
-				else if(chI == escape2) {
+				else if(chI == escape2 && (i == offset || prevChar != escapeChar) && (i == size - 1 || (nextChar != escapeChar && nextChar != escape1 && nextChar != escape2))) {
 					dst.append(escapeChar);
 					dst.append(escape2);
 				}
 				else {
 					dst.append(chI);
 				}
+				prevChar = chI;
 			}
 		} catch(IOException ioe) {
 			throw new UncheckedIOException(ioe);
