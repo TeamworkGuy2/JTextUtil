@@ -115,9 +115,9 @@ public final class StringToProperties {
 	 * key-value string pairs
 	 * @see java.util.Properties#load0()
 	 */
-	public static final void loadKeyValueStrings(List<String> strs, Collection<Map.Entry<String, String>> dst) {
+	public static final void loadKeyValueStrings(List<String> strs, Collection<Map.Entry<String, String>> dst, Collection<String> dstComments) {
 		StringBuilder strB = new StringBuilder();
-		int totalLength;
+		int strLen;
 		int keyLength;
 		int valueStart;
 		boolean hasSeparator = false;
@@ -125,28 +125,38 @@ public final class StringToProperties {
 
 		for(int i = 0, size = strs.size(); i < size; i++) {
 			String str = strs.get(i);
-			totalLength = str.length();
+			strLen = str.length();
 			keyLength = 0;
-			valueStart = totalLength;
-			for(int ii = 0; ii < totalLength; ii++) {
-				char c = str.charAt(ii);
-				if((c == '=' || c == ':') && !precedingBackslash) {
-					valueStart = ii+1;
-					hasSeparator = true;
-					break;
+			valueStart = strLen;
+
+			if(str.length() == 0 || str.charAt(0) == '#' || str.charAt(0) == '!') {
+				dstComments.add(str.substring(1));
+				continue;
+			}
+
+			for(keyLength = 0; keyLength < strLen; keyLength++) {
+				char c = str.charAt(keyLength);
+				if(!precedingBackslash) {
+					if(c == '=' || c == ':') {
+						valueStart = keyLength + 1;
+						hasSeparator = true;
+						break;
+					}
+					else if((c == ' ' || c == '\t' || c == '\f')) {
+						valueStart = keyLength + 1;
+						break;
+					}
 				}
-				else if((c == ' ' || c == '\t' || c == '\f') && !precedingBackslash) {
-					valueStart = ii+1;
-					break;
-				}
+
 				if(c == '\\') {
-					precedingBackslash = true;
+					precedingBackslash = !precedingBackslash;
 				}
 				else {
 					precedingBackslash = false;
 				}
 			}
-			for( ; valueStart < totalLength; valueStart++) {
+
+			for( ; valueStart < strLen; valueStart++) {
 				char c = str.charAt(valueStart);
 				if(c != ' ' && c != '\t' && c != '\f') {
 					if(!hasSeparator && (c == '=' || c == ':')) {
@@ -157,11 +167,12 @@ public final class StringToProperties {
 					}
 				}
 			}
+
 			try {
 				loadKeyValueString(str, 0, keyLength, strB);
 				String key = strB.toString();
 				strB.setLength(0);
-				loadKeyValueString(str, valueStart, totalLength - valueStart, strB);
+				loadKeyValueString(str, valueStart, strLen - valueStart, strB);
 				String value = strB.toString();
 				strB.setLength(0);
 				dst.add(new AbstractMap.SimpleImmutableEntry<String, String>(key, value));

@@ -18,9 +18,9 @@ public class StringCompareTest {
 		Boolean[] expectEqualIgnoreCase = { true, false, true, false };
 		Boolean[] expectContainsIgnoreCase = { true, true, true, true };
 
-		CheckTask.assertTests(contains, expectEqualIgnoreCase, "", "", (s) -> StringCompare.containsEqualIgnoreCase(strs, s));
+		CheckTask.assertTests(contains, expectEqualIgnoreCase, (s) -> StringCompare.containsEqualIgnoreCase(strs, s));
 
-		CheckTask.assertTests(contains, expectContainsIgnoreCase, "", "", (s) -> StringCompare.containsIgnoreCase(strs, s));
+		CheckTask.assertTests(contains, expectContainsIgnoreCase, (s) -> StringCompare.containsIgnoreCase(strs, s));
 	}
 
 }

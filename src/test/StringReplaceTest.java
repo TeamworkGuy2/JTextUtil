@@ -23,8 +23,7 @@ public class StringReplaceTest {
 			List<String> searchStrs = Arrays.asList("***", "&amp;", "&lt;", "&gt;");
 			List<String> replaceStrs = Arrays.asList("*", "&", "<", ">");
 
-			CheckTask.assertTests(strs, expect, "", "",
-					(s) -> StringReplace.replaceStrings(s, 0, searchStrs, replaceStrs));
+			CheckTask.assertTests(strs, expect, (s) -> StringReplace.replaceStrings(s, 0, searchStrs, replaceStrs));
 		}
 
 		{
@@ -35,8 +34,7 @@ public class StringReplaceTest {
 			List<String> replaceStrs = Arrays.asList("*", "&", "<", ">");
 
 			int strOffset = 6;
-			CheckTask.assertTests(strs, expect, "", "",
-					(s) -> StringReplace.replaceStrings(s, strOffset, searchStrs, replaceStrs));
+			CheckTask.assertTests(strs, expect, (s) -> StringReplace.replaceStrings(s, strOffset, searchStrs, replaceStrs));
 		}
 
 		{
@@ -47,7 +45,7 @@ public class StringReplaceTest {
 			List<String> replaceStrs = Arrays.asList("", "&&", "->", "");
 
 			int strOffset = 3;
-			CheckTask.assertTests(strs, expect, "", "", (s) -> {
+			CheckTask.assertTests(strs, expect, (s) -> {
 				StringBuilder dst = new StringBuilder(s);
 				StringReplace.replaceStrings(searchStrs, replaceStrs, dst, strOffset);
 				return dst.toString();
@@ -62,7 +60,7 @@ public class StringReplaceTest {
 			List<String> replaceStrs = Arrays.asList("", "&&", "->", "");
 
 			int strOffset = 3;
-			CheckTask.assertTests(strs, expect, "", "", (s) -> {
+			CheckTask.assertTests(strs, expect, (s) -> {
 				StringBuilder dst = new StringBuilder(s);
 				StringReplace.replaceStrings(searchStrs, replaceStrs, dst, strOffset);
 				return dst.toString();
@@ -78,12 +76,12 @@ public class StringReplaceTest {
 			List<String> replaceStrs = Arrays.asList("->", ".", "::");
 
 			int strOffset = 2;
-			CheckTask.assertTests(strs, expect, "", "", (s) -> {
+			CheckTask.assertTests(strs, expect, (s) -> {
 				String str = StringReplace.replaceStrings(s, strOffset, searchStr, replaceStrs, true/*repeatReplacements*/);
 				return str;
 			});
 
-			CheckTask.assertTests(strs, expectNoRepeat, "", "", (s) -> {
+			CheckTask.assertTests(strs, expectNoRepeat, (s) -> {
 				String str = StringReplace.replaceStrings(s, strOffset, searchStr, replaceStrs, false/*repeatReplacements*/);
 				return str;
 			});
@@ -97,7 +95,7 @@ public class StringReplaceTest {
 			String replaceStr = "%%";
 
 			int strOffset = 2;
-			CheckTask.assertTests(strs, expect, "", "", (s) -> {
+			CheckTask.assertTests(strs, expect, (s) -> {
 				String str = StringReplace.replaceStrings(s, strOffset, searchStrs, replaceStr);
 				return str;
 			});

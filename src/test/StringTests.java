@@ -42,7 +42,7 @@ public class StringTests {
 		String[] delimiters = new String[] { "-", "||", "=", "=" };
 		String[] expect = new String[] { "Aa-Bb", "123||_||..", "=", "" };
 
-		CheckTask.assertTests(strs, expect, "", "", (s, i) -> StringJoin.join(s, delimiters[i]));
+		CheckTask.assertTests(strs, expect, (s, i) -> StringJoin.join(s, delimiters[i]));
 	}
 
 

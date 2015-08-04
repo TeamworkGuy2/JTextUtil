@@ -71,14 +71,14 @@ public class StringCommonalityTest {
 			String[][] strs = new String[][] { { "" }, { "a_b", "a_b_c" }, { "this.that", "this_that" }, { "abc", "c" } };
 			String[] expect = new String[] { "", "a_b", "this", "" };
 
-			CheckTask.assertTests(strs, expect, "", "", (strSet) -> StringCommonality.findPrefix(0, Arrays.asList(strSet)));
+			CheckTask.assertTests(strs, expect, (strSet) -> StringCommonality.findPrefix(0, Arrays.asList(strSet)));
 		}
 		// suffix
 		{
 			String[][] strs = new String[][] { { "" }, { "a_b", "a_b_c" }, { "this.that", "this_that" }, { "abc", "c" } };
 			String[] expect = new String[] { "", "", "that", "c" };
 
-			CheckTask.assertTests(strs, expect, "", "", (strSet) -> StringCommonality.findSuffix(0, Arrays.asList(strSet)));
+			CheckTask.assertTests(strs, expect, (strSet) -> StringCommonality.findSuffix(0, Arrays.asList(strSet)));
 		}
 	}
 
