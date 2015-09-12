@@ -41,7 +41,7 @@ public class GenerateStringIndex {
 		info.types.add(new MultiTypeInfo.MultiType<>(charArrayType, charArrayType));
 
 		Writer out = new FileWriter(TemplateFilesIo.getDefaultInst().getSrcRelativePath(info).toFile());
-		TemplateRenders.renderParameterMapTemplate("src/templates/TStringIndex.stg", "TStringIndex", out,
+		TemplateRenders.writeWithParameters("src/templates/TStringIndex.stg", "TStringIndex", out,
 				new AbstractMap.SimpleImmutableEntry<>("var", info),
 				new AbstractMap.SimpleImmutableEntry<>("singleTypes", Arrays.asList(stringType, charArrayType)));
 		out.close();

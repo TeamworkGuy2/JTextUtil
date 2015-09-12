@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import typeInfo.JavaPrimitives;
+import twg2.primitiveIoTypes.JavaPrimitive;
 
 public class StringTemplateBuilder implements StringTemplate, SingleIntTemplate, SingleVarTemplate<Object> {
 	private List<Object> templateParts = new ArrayList<>();
@@ -102,9 +102,10 @@ public class StringTemplateBuilder implements StringTemplate, SingleIntTemplate,
 					}
 					else {
 						Class<?> argType = arg.getClass();
-						JavaPrimitives primitiveType = null;
+						JavaPrimitive primitiveType = null;
 
-						if(!partType.get(i).isAssignableFrom(argType) && ((primitiveType = JavaPrimitives.tryGetByType(argType)) == null) || (primitiveType != null && !partType.get(i).isAssignableFrom(primitiveType.getType()))) {
+						if(!partType.get(i).isAssignableFrom(argType) &&
+								((primitiveType = JavaPrimitive.tryGetByType(argType)) == null) || (primitiveType != null && !partType.get(i).isAssignableFrom(primitiveType.getType()))) {
 							throw new IllegalArgumentException("arg " + varIdx + " expected type '" + partType.get(i) + "' but arg type was '" + arg + "'");
 						}
 						Function<Object, String> toString = partToString.get(i);
