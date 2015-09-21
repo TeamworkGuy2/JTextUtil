@@ -35,10 +35,30 @@ public class StringSplitTest {
 
 	@Test
 	public void stringSplitNthChildTest() {
-		Assert.assertEquals(StringSplit.findNthMatch("abc, def, ghi", ",", 1, 3), " def");
+		Assert.assertEquals(" def", StringSplit.findNthMatch("abc, def, ghi", ",", 1, 3));
 
 		CheckTask.assertException(() -> StringSplit.findNthMatch("abc, def, ghi", ",", 1, 2));
 		CheckTask.assertException(() -> StringSplit.findNthMatch("abc, def, ghi", ",", 1, 4));
+	}
+
+
+	@Test
+	public void countMatchesTest() {
+		Assert.assertEquals(2, StringSplit.countMatches("abc, def, ghi", ","));
+		Assert.assertEquals(3, StringSplit.countMatches("aaa", "a"));
+		Assert.assertEquals(3, StringSplit.countMatches("aaaaaa", "aa"));
+		Assert.assertEquals(0, StringSplit.countMatches("", "-"));
+		Assert.assertEquals(0, StringSplit.countMatches("123", "-"));
+		Assert.assertEquals(1, StringSplit.countMatches("-", "-"));
+	}
+
+
+	@Test
+	public void lastMatchTest() {
+		Assert.assertEquals("ghi", StringSplit.lastMatch("abc-def-ghi", "-"));
+		Assert.assertEquals("ghi", StringSplit.lastMatch("abc--def--ghi", "--"));
+		Assert.assertEquals("", StringSplit.lastMatch("", "-"));
+		Assert.assertEquals("", StringSplit.lastMatch("a-", "-"));
 	}
 
 }

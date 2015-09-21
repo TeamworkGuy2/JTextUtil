@@ -200,6 +200,16 @@ public final class StringCompare {
 	}
 
 
+	public static final boolean containsAny(String src, String[] subStrs) {
+		for(String subStr : subStrs) {
+			if(src.indexOf(subStr, 0) > -1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 	public static final boolean containsEqualIgnoreCase(String[] strs, String str) {
 		for(int i = 0, size = strs.length; i < size; i++) {
 			if(strs[i] != null && strs[i].equalsIgnoreCase(str)) {
