@@ -1,8 +1,8 @@
 package stringUtils;
 
-import java.util.Collection;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.List;
-import java.util.RandomAccess;
 import java.util.StringJoiner;
 
 /**
@@ -52,12 +52,23 @@ public class StringJoin {
 
 
 	/** Join a collection of strings using a delimiter
+	 * @see #join(Iterable, String)
+	 * @see StringJoiner
+	 */
+	public static final String join(List<String> strs, String delimiter) {
+		StringBuilder strB = new StringBuilder();
+		join(strs, delimiter, strB);
+		return strB.toString();
+	}
+
+
+	/** Join a collection of strings using a delimiter
 	 * @param strs the collection of strings
 	 * @param delimiter the delimiter to place between strings
 	 * @return a string consisting of each of {@code strs} separated by {@code delimiter}
 	 * @see StringJoiner
 	 */
-	public static final String join(Collection<String> strs, String delimiter) {
+	public static final String join(Iterable<String> strs, String delimiter) {
 		StringBuilder strB = new StringBuilder();
 		join(strs, delimiter, strB);
 		return strB.toString();
@@ -65,49 +76,86 @@ public class StringJoin {
 
 
 	public static final void join(String[] strs, int off, int len, String delimiter, StringBuilder dst) {
-		boolean firstLoop = true;
-		for(int i = off, size = off + len; i < size; i++) {
-			if(!firstLoop) {
+		try {
+			join(strs, off, len, delimiter, (Appendable)dst);
+		} catch(IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+	}
+
+
+	public static final void join(String[] strs, int off, int len, String delimiter, Appendable dst) throws IOException {
+		int countTo = off + len - 1;
+		if(countTo > -1) {
+			for(int i = off; i < countTo; i++) {
+				dst.append(strs[i]);
 				dst.append(delimiter);
 			}
-			dst.append(strs[i]);
-			firstLoop = false;
+			dst.append(strs[countTo]);
 		}
 	}
 
 
 	public static final void join(Object[] objs, int off, int len, String delimiter, StringBuilder dst) {
-		boolean firstLoop = true;
-		for(int i = off, size = off + len; i < size; i++) {
-			if(!firstLoop) {
-				dst.append(delimiter);
-			}
-			dst.append(objs[i]);
-			firstLoop = false;
+		try {
+			join(objs, off, len, delimiter, (Appendable)dst);
+		} catch(IOException ioe) {
+			throw new UncheckedIOException(ioe);
 		}
 	}
 
 
-	public static final void join(Collection<String> strs, String delimiter, StringBuilder dst) {
-		boolean firstLoop = true;
-		if(strs instanceof RandomAccess && strs instanceof List) {
-			List<String> strsList = (List<String>)strs;
-			for(int i = 0, size = strsList.size(); i < size; i++) {
-				if(!firstLoop) {
-					dst.append(delimiter);
-				}
-				dst.append(strsList.get(i));
-				firstLoop = false;
+	public static final void join(Object[] objs, int off, int len, String delimiter, Appendable dst) throws IOException {
+		int countTo = off + len - 1;
+		if(countTo > -1) {
+			for(int i = off; i < countTo; i++) {
+				dst.append(objs[i] != null ? objs[i].toString() : "null");
+				dst.append(delimiter);
 			}
+			dst.append(objs[countTo] != null ? objs[countTo].toString() : "null");
 		}
-		else {
-			for(String str : strs) {
-				if(!firstLoop) {
-					dst.append(delimiter);
-				}
-				dst.append(str);
-				firstLoop = false;
+	}
+
+
+	public static final void join(List<String> strs, String delimiter, StringBuilder dst) {
+		try {
+			join(strs, delimiter, (Appendable)dst);
+		} catch(IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+	}
+
+
+	public static final void join(List<String> strs, String delimiter, Appendable dst) throws IOException {
+		List<String> strsList = (List<String>)strs;
+		int countTo = strsList.size() - 1;
+		if(countTo > -1) {
+			for(int i = 0; i < countTo; i++) {
+				dst.append(strsList.get(i));
+				dst.append(delimiter);
 			}
+			dst.append(strsList.get(countTo));
+		}
+	}
+
+
+	public static final void join(Iterable<String> strs, String delimiter, StringBuilder dst) {
+		try {
+			join(strs, delimiter, (Appendable)dst);
+		} catch(IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+	}
+
+
+	public static final void join(Iterable<String> strs, String delimiter, Appendable dst) throws IOException {
+		boolean firstLoop = true;
+		for(String str : strs) {
+			if(!firstLoop) {
+				dst.append(delimiter);
+			}
+			dst.append(str);
+			firstLoop = false;
 		}
 	}
 
