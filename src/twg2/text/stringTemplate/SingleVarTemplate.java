@@ -20,7 +20,7 @@ public interface SingleVarTemplate<T> extends StringTemplate {
 
 
 	public static <R> SingleVarTemplate<R> of(StringTemplateBuilder strTmpl, Class<R> type) {
-		if(StringTemplateBuilder.isSingleType(strTmpl, type)) {
+		if(StringTemplateBuilder.isSingleTypeTemplate(strTmpl, type)) {
 			@SuppressWarnings("unchecked")
 			SingleVarTemplate<R> resTmpl = (SingleVarTemplate<R>) strTmpl;
 			return resTmpl;

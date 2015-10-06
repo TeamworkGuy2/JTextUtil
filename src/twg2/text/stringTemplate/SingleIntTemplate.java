@@ -20,7 +20,7 @@ public interface SingleIntTemplate extends StringTemplate {
 
 
 	public static SingleIntTemplate of(StringTemplateBuilder strTmpl) {
-		if(StringTemplateBuilder.isSingleInt(strTmpl)) {
+		if(StringTemplateBuilder.isSingleIntTemplate(strTmpl)) {
 			return strTmpl;
 		}
 		else {

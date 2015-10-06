@@ -1,6 +1,7 @@
 package twg2.text.stringTemplate;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,26 +116,21 @@ public class StringTemplateBuilder implements StringTemplate, SingleIntTemplate,
 				}
 			}
 		} catch(IOException ioe) {
-			throwUnchecked(ioe);
+			throw new UncheckedIOException(ioe);
 		}
 	}
 
 
-	public static boolean isSingleInt(StringTemplateBuilder strTmpl) {
+	public static boolean isSingleIntTemplate(StringTemplateBuilder strTmpl) {
 		List<Map.Entry<Integer, Class<?>>> types = strTmpl.nonLiteralTypesByIndex;
 		Class<?> type0 = null;
 		return types.size() == 1 && ((type0 = types.get(0).getValue()) == Integer.class || type0 == Integer.TYPE);
 	}
 
 
-	public static <T> boolean isSingleType(StringTemplateBuilder strTmpl, Class<T> type) {
+	public static <T> boolean isSingleTypeTemplate(StringTemplateBuilder strTmpl, Class<T> type) {
 		List<Map.Entry<Integer, Class<?>>> types = strTmpl.nonLiteralTypesByIndex;
 		return types.size() == 1 && (types.get(0).getValue() == type);
-	}
-
-
-	private static <T> RuntimeException throwUnchecked(T err) {
-		return (RuntimeException)err;
 	}
 
 }
