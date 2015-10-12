@@ -304,7 +304,7 @@ public final class StringEscape {
 			// if the string ended without a closing quote for the quoted portion, add a closing quote
 			if(offset < quoteIndex) {
 				try {
-					dst.append('"');
+					dst.append(quote);
 				} catch (IOException e) {
 					throw new UncheckedIOException(e);
 				}

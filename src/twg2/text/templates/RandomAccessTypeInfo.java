@@ -3,7 +3,7 @@ package twg2.text.templates;
 import java.util.List;
 import java.util.Set;
 
-import codeTemplate.primitiveTemplate.PrimitiveTypeClassTemplate;
+import twg2.template.codeTemplate.primitiveTemplate.PrimitiveTypeClassTemplate;
 
 /** A template for a random access type class like an array, {@link List}, {@link Set}, etc.
  * @author TeamworkGuy2

@@ -59,7 +59,9 @@ public final class StringCase {
 		}
 
 		for(int i = 1, size = str.length(); i < size; i++) {
-			if(Character.isUpperCase(str.charAt(i)) && str.charAt(i - 1) != underscore) {
+			char ch = str.charAt(i);
+			boolean isPrevUnderscore = str.charAt(i - 1) == underscore;
+			if((Character.isUpperCase(ch) && !isPrevUnderscore) || (isPrevUnderscore && Character.isLowerCase(ch))) {
 				return false;
 			}
 		}

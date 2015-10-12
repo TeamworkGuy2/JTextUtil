@@ -3,7 +3,7 @@ package twg2.text.templates;
 import java.util.ArrayList;
 import java.util.List;
 
-import codeTemplate.ClassTemplate;
+import twg2.template.codeTemplate.ClassTemplate;
 
 /**
  * @param <T> the {@link ClassTemplate} type of the data stored in this multi type info list
