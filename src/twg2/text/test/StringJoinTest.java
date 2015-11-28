@@ -66,14 +66,14 @@ public class StringJoinTest {
 			strB.setLength(0);
 		}
 
-		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.join(objAry, delimiter));
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.Objects.join(objAry, delimiter));
 		Assert.assertEquals(stringJoiner(delimiter, strAry, 0, strAry.length), StringJoin.join(strAry, delimiter));
 
 		StringJoin.join(strAry, off, len, delimiter, strB);
 		Assert.assertEquals(stringJoiner(delimiter, strAry, off, len), strB.toString());
 		strB.setLength(0);
 
-		StringJoin.join(objAry, off, len, delimiter, strB);
+		StringJoin.Objects.join(objAry, off, len, delimiter, strB);
 		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, off, len), strB.toString());
 		strB.setLength(0);
 	}

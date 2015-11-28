@@ -25,17 +25,6 @@ public class StringJoin {
 	}
 
 
-	/**
-	 * @see #join(String[], String)
-	 */
-	public static final String join(Object[] objs, String delimiter) {
-		StringBuilder strB = new StringBuilder();
-		join(objs, 0, objs.length, delimiter, strB);
-		return strB.toString();
-	}
-
-
-
 	/** Join an array of strings using a delimiter
 	 * @param strs the array of strings
 	 * @param off the offset into {@code strs} at which start combining strings
@@ -96,27 +85,6 @@ public class StringJoin {
 	}
 
 
-	public static final void join(Object[] objs, int off, int len, String delimiter, StringBuilder dst) {
-		try {
-			join(objs, off, len, delimiter, (Appendable)dst);
-		} catch(IOException ioe) {
-			throw new UncheckedIOException(ioe);
-		}
-	}
-
-
-	public static final void join(Object[] objs, int off, int len, String delimiter, Appendable dst) throws IOException {
-		int countTo = off + len - 1;
-		if(countTo > -1) {
-			for(int i = off; i < countTo; i++) {
-				dst.append(objs[i] != null ? objs[i].toString() : "null");
-				dst.append(delimiter);
-			}
-			dst.append(objs[countTo] != null ? objs[countTo].toString() : "null");
-		}
-	}
-
-
 	public static final void join(List<String> strs, String delimiter, StringBuilder dst) {
 		try {
 			join(strs, delimiter, (Appendable)dst);
@@ -157,6 +125,107 @@ public class StringJoin {
 			dst.append(str);
 			firstLoop = false;
 		}
+	}
+
+
+
+
+	/** Static methods for joining groups of objects
+	 * @author TeamworkGuy2
+	 * @since 2015-11-26
+	 */
+	public static class Objects {
+
+		/**
+		 * @see #join(String[], String)
+		 */
+		public static final String join(Object[] objs, String delimiter) {
+			StringBuilder strB = new StringBuilder();
+			join(objs, 0, objs.length, delimiter, strB);
+			return strB.toString();
+		}
+
+
+		public static final void join(Object[] objs, int off, int len, String delimiter, StringBuilder dst) {
+			try {
+				join(objs, off, len, delimiter, (Appendable)dst);
+			} catch(IOException ioe) {
+				throw new UncheckedIOException(ioe);
+			}
+		}
+
+
+		public static final void join(Object[] objs, int off, int len, String delimiter, Appendable dst) throws IOException {
+			int countTo = off + len - 1;
+			if(countTo > -1) {
+				for(int i = off; i < countTo; i++) {
+					dst.append(objs[i] != null ? objs[i].toString() : "null");
+					dst.append(delimiter);
+				}
+				dst.append(objs[countTo] != null ? objs[countTo].toString() : "null");
+			}
+		}
+
+
+		public static final String join(List<? extends Object> objs, String delimiter) {
+			StringBuilder strB = new StringBuilder();
+			join(objs, delimiter, strB);
+			
+			return strB.toString();
+		}
+
+
+		public static final String join(Iterable<? extends Object> objs, String delimiter) {
+			StringBuilder strB = new StringBuilder();
+			join(objs, delimiter, strB);
+			return strB.toString();
+		}
+
+
+		public static final void join(List<? extends Object> objs, String delimiter, StringBuilder dst) {
+			try {
+				join(objs, delimiter, (Appendable)dst);
+			} catch(IOException ioe) {
+				throw new UncheckedIOException(ioe);
+			}
+		}
+
+
+		static final void join(List<? extends Object> objs, String delimiter, Appendable dst) throws IOException {
+			List<? extends Object> strsList = (List<? extends Object>)objs;
+			int countTo = strsList.size() - 1;
+			if(countTo > -1) {
+				for(int i = 0; i < countTo; i++) {
+					Object obj = strsList.get(i);
+					dst.append(obj != null ? obj.toString() : "null");
+					dst.append(delimiter);
+				}
+				Object lastObj = strsList.get(countTo);
+				dst.append(lastObj != null ? lastObj.toString() : "null");
+			}
+		}
+
+
+		public static final void join(Iterable<? extends Object> objs, String delimiter, StringBuilder dst) {
+			try {
+				join(objs, delimiter, (Appendable)dst);
+			} catch(IOException ioe) {
+				throw new UncheckedIOException(ioe);
+			}
+		}
+
+
+		public static final void join(Iterable<? extends Object> objs, String delimiter, Appendable dst) throws IOException {
+			boolean firstLoop = true;
+			for(Object obj : objs) {
+				if(!firstLoop) {
+					dst.append(delimiter);
+				}
+				dst.append(obj != null ? obj.toString() : "null");
+				firstLoop = false;
+			}
+		}
+
 	}
 
 }
