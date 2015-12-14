@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.function.Function;
 
 /**
  * @author TeamworkGuy2
@@ -11,7 +12,7 @@ import java.util.StringJoiner;
  */
 public class StringJoin {
 
-
+	// ==== String[] ====
 	/** Join an array of strings using a delimiter
 	 * @param strs the array of strings
 	 * @param delimiter the delimiter to place between strings
@@ -40,30 +41,6 @@ public class StringJoin {
 	}
 
 
-	/** Join a collection of strings using a delimiter
-	 * @see #join(Iterable, String)
-	 * @see StringJoiner
-	 */
-	public static final String join(List<String> strs, String delimiter) {
-		StringBuilder strB = new StringBuilder();
-		join(strs, delimiter, strB);
-		return strB.toString();
-	}
-
-
-	/** Join a collection of strings using a delimiter
-	 * @param strs the collection of strings
-	 * @param delimiter the delimiter to place between strings
-	 * @return a string consisting of each of {@code strs} separated by {@code delimiter}
-	 * @see StringJoiner
-	 */
-	public static final String join(Iterable<String> strs, String delimiter) {
-		StringBuilder strB = new StringBuilder();
-		join(strs, delimiter, strB);
-		return strB.toString();
-	}
-
-
 	public static final void join(String[] strs, int off, int len, String delimiter, StringBuilder dst) {
 		try {
 			join(strs, off, len, delimiter, (Appendable)dst);
@@ -82,6 +59,18 @@ public class StringJoin {
 			}
 			dst.append(strs[countTo]);
 		}
+	}
+
+
+	// ==== List<String> ====
+	/** Join a collection of strings using a delimiter
+	 * @see #join(Iterable, String)
+	 * @see StringJoiner
+	 */
+	public static final String join(List<String> strs, String delimiter) {
+		StringBuilder strB = new StringBuilder();
+		join(strs, delimiter, strB);
+		return strB.toString();
 	}
 
 
@@ -104,6 +93,20 @@ public class StringJoin {
 			}
 			dst.append(strsList.get(countTo));
 		}
+	}
+
+
+	// ==== Iterable<String> ====
+	/** Join a collection of strings using a delimiter
+	 * @param strs the collection of strings
+	 * @param delimiter the delimiter to place between strings
+	 * @return a string consisting of each of {@code strs} separated by {@code delimiter}
+	 * @see StringJoiner
+	 */
+	public static final String join(Iterable<String> strs, String delimiter) {
+		StringBuilder strB = new StringBuilder();
+		join(strs, delimiter, strB);
+		return strB.toString();
 	}
 
 
@@ -136,8 +139,10 @@ public class StringJoin {
 	 */
 	public static class Objects {
 
-		/**
-		 * @see #join(String[], String)
+		// ==== Object[] ====
+		/** Joins an array of objects with a delimiter using {@link Object#toString() toString()}.
+		 * Null values are converted to {@code "null"}
+		 * @see StringJoin#join(String[], String)
 		 */
 		public static final String join(Object[] objs, String delimiter) {
 			StringBuilder strB = new StringBuilder();
@@ -167,17 +172,15 @@ public class StringJoin {
 		}
 
 
+		// ==== List<Object> ====
+		/** Joins a list of objects with a delimiter using the default {@link Object#toString() toString()}.
+		 * Null values are converted to {@code "null"}
+		 * @see StringJoin#join(List, String)
+		 */
 		public static final String join(List<? extends Object> objs, String delimiter) {
 			StringBuilder strB = new StringBuilder();
 			join(objs, delimiter, strB);
 			
-			return strB.toString();
-		}
-
-
-		public static final String join(Iterable<? extends Object> objs, String delimiter) {
-			StringBuilder strB = new StringBuilder();
-			join(objs, delimiter, strB);
 			return strB.toString();
 		}
 
@@ -191,7 +194,7 @@ public class StringJoin {
 		}
 
 
-		static final void join(List<? extends Object> objs, String delimiter, Appendable dst) throws IOException {
+		public static final void join(List<? extends Object> objs, String delimiter, Appendable dst) throws IOException {
 			List<? extends Object> strsList = (List<? extends Object>)objs;
 			int countTo = strsList.size() - 1;
 			if(countTo > -1) {
@@ -203,6 +206,18 @@ public class StringJoin {
 				Object lastObj = strsList.get(countTo);
 				dst.append(lastObj != null ? lastObj.toString() : "null");
 			}
+		}
+
+
+		// ==== Iterable<Object> ====
+		/** Joins a group of objects with a delimiter using the default {@link Object#toString() toString()}.
+		 * Null values are converted to {@code "null"}
+		 * @see StringJoin#join(Iterable, String)
+		 */
+		public static final String join(Iterable<? extends Object> objs, String delimiter) {
+			StringBuilder strB = new StringBuilder();
+			join(objs, delimiter, strB);
+			return strB.toString();
 		}
 
 
@@ -222,6 +237,77 @@ public class StringJoin {
 					dst.append(delimiter);
 				}
 				dst.append(obj != null ? obj.toString() : "null");
+				firstLoop = false;
+			}
+		}
+
+	}
+
+
+
+
+	/** Join collections of objects using a string delimiter and custom toString functions
+	 * @author TeamworkGuy2
+	 * @since 2015-12-13
+	 */
+	public static class Func {
+
+		// ==== custom Function func ====
+		/** Joins a group of objects with a delimiter using a custom toString function, which takes an object and returns its string representation.
+		 * Null values are converted to {@code "null"}
+		 * @see StringJoin#join(List, String)
+		 */
+		public static final <T extends Object> String join(Iterable<T> objs, String delimiter, Function<T, String> toString) {
+			StringBuilder strB = new StringBuilder();
+			join(objs, delimiter, strB, toString);
+			return strB.toString();
+		}
+
+
+		public static final <T extends Object> void join(Iterable<T> objs, String delimiter, StringBuilder dst, Function<T, String> toString) {
+			try {
+				join(objs, delimiter, (Appendable)dst, toString);
+			} catch(IOException ioe) {
+				throw new UncheckedIOException(ioe);
+			}
+		}
+
+
+		public static final <T extends Object> void join(Iterable<T> objs, String delimiter, Appendable dst, Function<T, String> toString) throws IOException {
+			boolean firstLoop = true;
+			for(T obj : objs) {
+				if(!firstLoop) {
+					dst.append(delimiter);
+				}
+				dst.append(obj != null ? toString.apply(obj) : "null");
+				firstLoop = false;
+			}
+		}
+
+
+		public static final <T extends Object> String joinManualNulls(Iterable<T> objs, String delimiter, Function<T, String> toString) {
+			StringBuilder strB = new StringBuilder();
+			joinManualNulls(objs, delimiter, strB, toString);
+			return strB.toString();
+		}
+
+
+		public static final <T extends Object> void joinManualNulls(Iterable<T> objs, String delimiter, StringBuilder dst, Function<T, String> toString) {
+			try {
+				joinManualNulls(objs, delimiter, (Appendable)dst, toString);
+			} catch(IOException ioe) {
+				throw new UncheckedIOException(ioe);
+			}
+		}
+
+
+		public static final <T extends Object> void joinManualNulls(Iterable<T> objs, String delimiter, Appendable dst, Function<T, String> toString) throws IOException {
+			boolean firstLoop = true;
+			for(T obj : objs) {
+				if(!firstLoop) {
+					dst.append(delimiter);
+				}
+				dst.append(toString.apply(obj));
 				firstLoop = false;
 			}
 		}
