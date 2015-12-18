@@ -3,6 +3,7 @@ package twg2.text.stringUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 
 /** A utility for simple string manipulation.
  * For example splitting a string, joining strings, find common string prefixes
@@ -13,8 +14,45 @@ import java.io.Reader;
 public class StringHex {
 	public static final char escapeStart = '\\';
 
+	private static final char[] hex = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+	private static final char zero = '0';
+	private static final char nine = '9';
+	private static final char a = 'A';
+	private static final char f = 'F';
+
 
 	private StringHex() { throw new AssertionError("cannot instantiate static class StringHex"); }
+
+
+	/*
+	public static final String toHexString(byte[] bytes, int offset, int length) {
+		char[] ch = new char[length << 1];
+
+		for(int i = 0, dstI = 0; i < length; i++, dstI += 2) {
+			ch[dstI] = (char)hex[(bytes[offset + i] & 0xF0) >>> 4];
+			ch[dstI + 1] = (char)hex[(bytes[offset + i] & 0x0F)];
+		}
+
+		return new String(ch);
+	}
+	*/
+
+
+	/** Write the hexadecimal value of the specified byte array to the specified
+	 * string builder.
+	 * @param hexBytes the array of bytes to read values from
+	 * @param offset the offset into the byte array to start converting bytes to hexadecimal digits
+	 * @param length the number of bytes to convert, starting at the offset index in the array
+	 * @param output the {@link Appendable} output to write the hexadecimal digits to
+	 */
+	public static final void writeHexString(final byte[] hexBytes, final int offset, final int length,
+			final StringBuilder output) {
+		try {
+			writeHexString(hexBytes, offset, length, (Appendable)output);
+		} catch(IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+	}
 
 
 	/** Write the hexadecimal value of the specified byte array to the specified
@@ -27,7 +65,7 @@ public class StringHex {
 	 */
 	public static final void writeHexString(final byte[] hexBytes, final int offset, final int length,
 			final Appendable output) throws IOException {
-		final int size = offset+length;
+		final int size = offset + length;
 		for(int i = offset; i < size; i++) {
 			byte b = hexBytes[i];
 			byte v = (byte)((b >>> 4) & 0x0F);
@@ -49,13 +87,13 @@ public class StringHex {
 	}
 
 
-	/** Write the hexadecimal value of the specified byte array to a string
+	/** Write the hexadecimal value of the specified byte array to a new char array
 	 * @param hexBytes the array of bytes to convert to a hexadecimal string
 	 * @param offset the offset into the byte array to start converting bytes to hexadecimal digits
 	 * @param length the number of bytes to convert, starting at the offset index in the array
-	 * @return a string containing the hexadecimal value of the input byte array
+	 * @return a char array containing the hexadecimal value of the input byte array
 	 */
-	public static final String toHexString(final byte[] hexBytes, final int offset, final int length) {
+	public static final char[] toHexChars(final byte[] hexBytes, final int offset, final int length) {
 		char[] c = new char[(length << 1)];
 		for(int i = offset, a = 0, size = offset + length; i < size; i++, a+=2) {
 			byte b = hexBytes[i];
@@ -66,7 +104,12 @@ public class StringHex {
 			//output.append((char)(v < 10 ? (v+48) : (v+55)));
 			c[a+1] = (char)(55 + v + (((v-10) >> 31) & -7));
 		}
-		return new String(c, 0, (length << 1));
+		return c;
+	}
+
+
+	public static final String toHexString(final byte[] hexBytes, final int offset, final int length) {
+		return new String(toHexChars(hexBytes, offset, length));
 	}
 
 
