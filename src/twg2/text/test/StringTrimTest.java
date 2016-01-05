@@ -142,4 +142,20 @@ public class StringTrimTest {
 		}
 	}
 
+
+	@Test
+	public void trimLeadingTest() {
+		Assert.assertEquals("abc", StringTrim.trimLeading("?abc", '?'));
+		Assert.assertEquals("?abc", StringTrim.trimLeading("??abc", '?'));
+		Assert.assertEquals("abc", StringTrim.trimLeading("??abc", '?', true));
+	}
+
+
+	@Test
+	public void trimTrailingTest() {
+		Assert.assertEquals("abc", StringTrim.trimTrailing("abc?", '?'));
+		Assert.assertEquals("abc?", StringTrim.trimTrailing("abc??", '?'));
+		Assert.assertEquals("abc", StringTrim.trimTrailing("abc??", '?', true));
+	}
+
 }

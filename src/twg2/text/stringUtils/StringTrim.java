@@ -162,4 +162,38 @@ public class StringTrim {
 		return str;
 	}
 
+
+	public static final String trimLeading(String str, char ch) {
+		return trimLeading(str, ch, false);
+	}
+
+
+	public static final String trimLeading(String str, char ch, boolean trimRepeats) {
+		int strLen = str.length();
+		if(trimRepeats) {
+			while(strLen > 0 && str.charAt(0) == ch) {
+				str = (strLen > 0 && str.charAt(0) == ch) ? str.substring(1, strLen) : str;
+				strLen--;
+			}
+		}
+		return (strLen > 0 && str.charAt(0) == ch) ? str.substring(1, strLen) : str;
+	}
+
+
+	public static final String trimTrailing(String str, char ch) {
+		return trimTrailing(str, ch, false);
+	}
+
+
+	public static final String trimTrailing(String str, char ch, boolean trimRepeats) {
+		int strLen = str.length();
+		if(trimRepeats) {
+			while(strLen > 0 && str.charAt(str.length() - 1) == ch) {
+				str = (strLen > 0 && str.charAt(strLen - 1) == ch) ? str.substring(0, strLen - 1) : str;
+				strLen--;
+			}
+		}
+		return (strLen > 0 && str.charAt(strLen - 1) == ch) ? str.substring(0, strLen - 1) : str;
+	}
+
 }
