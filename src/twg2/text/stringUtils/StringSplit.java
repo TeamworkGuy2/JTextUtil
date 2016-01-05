@@ -1,7 +1,9 @@
 package twg2.text.stringUtils;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /** A utility for simple string splitting.
@@ -400,14 +402,62 @@ public class StringSplit {
 
 
 	public static final String firstMatch(String src, String pattern) {
-		int idx = src.indexOf(pattern); // + pattern.length() to get the remaining substring excluding the pattern
+		int idx = src.indexOf(pattern);
 		return src.substring(0, idx >= src.length() ? src.length() : (idx < 0 ? 0 : idx));
 	}
 
 
+	public static final String postFirstMatch(String src, String pattern) {
+		int idx = src.indexOf(pattern);
+		return src.substring(idx > -1 && idx + pattern.length() >= src.length() ? src.length() : (idx < 0 ? 0 : idx + pattern.length()));
+	}
+
+
+	/** Returns the portions of a string before and after the first index of a sub-string.
+	 * For example {@code firstMatchParts("abc-mid-123", "-")}, returns {@code Entry("abc", "mid-123")}
+	 * @param src the string to search
+	 * @param pattern the sub-string to search for
+	 * @return an entry where the key is the portion of {@code src} before the first matching sub-string
+	 * and the value is the portion of {@code src} after the first matching sub-string
+	 */
+	public static final Map.Entry<String, String> firstMatchParts(String src, String pattern) {
+		int idxPre = src.indexOf(pattern);
+		String pre = src.substring(0, (idxPre < 0 ? src.length() : idxPre));
+
+		int idxPost = idxPre;
+		String post = src.substring(idxPost > -1 && idxPost + pattern.length() >= src.length() ? src.length() : (idxPost < 0 ? src.length() : idxPost + pattern.length()));
+
+		return new AbstractMap.SimpleImmutableEntry<>(pre, post);
+	}
+
+
 	public static final String lastMatch(String src, String pattern) {
-		int idx = src.lastIndexOf(pattern) + pattern.length(); // + pattern.length() to get the remaining substring excluding the pattern
-		return src.substring(idx >= src.length() ? src.length() : idx);
+		int idx = src.lastIndexOf(pattern);
+		return src.substring(idx > -1 && idx + pattern.length() >= src.length() ? src.length() : (idx < 0 ? 0 : idx + pattern.length()));
+	}
+
+
+	public static final String preLastMatch(String src, String pattern) {
+		int idx = src.lastIndexOf(pattern);
+		return src.substring(0, idx >= src.length() ? src.length() : (idx < 0 ? 0 : idx));
+	}
+
+
+	/** Returns the portions of a string before and after the last index of a sub-string.
+	 * For example {@code firstMatchParts("abc-mid-123", "-")}, returns {@code Entry("abc-mid", "123")}
+	 * @param src the string to search
+	 * @param pattern the sub-string to search for
+	 * @return an entry where the key is the portion of {@code src} before the last matching sub-string
+	 * and the value is the portion of {@code src} after the last matching sub-string
+	 */
+	public static final Map.Entry<String, String> lastMatchParts(String src, String pattern) {
+		int idxPre = src.lastIndexOf(pattern);
+		String pre = src.substring(0, (idxPre < 0 ? src.length() : idxPre));
+
+		int idxPost = idxPre;
+		String post = src.substring(idxPost > -1 && idxPost + pattern.length() >= src.length() ? src.length() : (idxPost < 0 ? src.length() : idxPost + pattern.length()));
+
+		return new AbstractMap.SimpleImmutableEntry<>(pre, post);
 	}
 
 }

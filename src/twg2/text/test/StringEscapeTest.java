@@ -261,4 +261,22 @@ public class StringEscapeTest {
 		}
 	}
 
+
+	@Test
+	public void jsonStr() {
+		String[] raw = new String[] {
+			"a \\\\ -\" str \b\n",
+		};
+		String[] json = new String[] {
+			"a \\\\\\\\ -\\\" str \\b\\n",
+		};
+
+		for(int i = 0, size = raw.length; i < size; i++) {
+			String jsonFromRaw = StringEscape.toJsonString(raw[i]);
+			Assert.assertEquals(json[i], jsonFromRaw);
+			String rawFromJson = StringEscape.fromJsonString(jsonFromRaw);
+			Assert.assertEquals(raw[i], rawFromJson);
+		}
+	}
+
 }

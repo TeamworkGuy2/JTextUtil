@@ -1,5 +1,8 @@
 package twg2.text.test;
 
+import java.util.AbstractMap;
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -63,6 +66,25 @@ public class StringSplitTest {
 
 
 	@Test
+	public void postFirstMatchTest() {
+		Assert.assertEquals("def-ghi", StringSplit.postFirstMatch("abc-def-ghi", "-"));
+		Assert.assertEquals("def--ghi", StringSplit.postFirstMatch("abc--def--ghi", "--"));
+		Assert.assertEquals("", StringSplit.postFirstMatch("", "-"));
+		Assert.assertEquals("a-", StringSplit.postFirstMatch("-a-", "-"));
+	}
+
+
+	@Test
+	public void firstMatchPartsTest() {
+		Assert.assertEquals(entry("abc", "def-ghi"), StringSplit.firstMatchParts("abc-def-ghi", "-"));
+		Assert.assertEquals(entry("abc", "def--ghi"), StringSplit.firstMatchParts("abc--def--ghi", "--"));
+		Assert.assertEquals(entry("", ""), StringSplit.firstMatchParts("", "-"));
+		Assert.assertEquals(entry("", "a-"), StringSplit.firstMatchParts("-a-", "-"));
+		Assert.assertEquals(entry("abc", ""), StringSplit.firstMatchParts("abc", "-"));
+	}
+
+
+	@Test
 	public void lastMatchTest() {
 		Assert.assertEquals("ghi", StringSplit.lastMatch("abc-def-ghi", "-"));
 		Assert.assertEquals("ghi", StringSplit.lastMatch("abc--def--ghi", "--"));
@@ -70,4 +92,27 @@ public class StringSplitTest {
 		Assert.assertEquals("", StringSplit.lastMatch("a-", "-"));
 	}
 
+
+	@Test
+	public void preLastMatchTest() {
+		Assert.assertEquals("abc-def", StringSplit.preLastMatch("abc-def-ghi", "-"));
+		Assert.assertEquals("abc--def", StringSplit.preLastMatch("abc--def--ghi", "--"));
+		Assert.assertEquals("", StringSplit.preLastMatch("", "-"));
+		Assert.assertEquals("a", StringSplit.preLastMatch("a-", "-"));
+	}
+
+
+	@Test
+	public void lastMatchPartsTest() {
+		Assert.assertEquals(entry("abc-def", "ghi"), StringSplit.lastMatchParts("abc-def-ghi", "-"));
+		Assert.assertEquals(entry("abc--def", "ghi"), StringSplit.lastMatchParts("abc--def--ghi", "--"));
+		Assert.assertEquals(entry("", ""), StringSplit.lastMatchParts("", "-"));
+		Assert.assertEquals(entry("a", ""), StringSplit.lastMatchParts("a-", "-"));
+		Assert.assertEquals(entry("abc", ""), StringSplit.lastMatchParts("abc", "-"));
+	}
+
+
+	private static <K, V> Map.Entry<K, V> entry(K key, V value) {
+		return new AbstractMap.SimpleImmutableEntry<>(key, value);
+	}
 }

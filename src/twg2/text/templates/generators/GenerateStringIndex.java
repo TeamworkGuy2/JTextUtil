@@ -19,7 +19,7 @@ import twg2.text.templates.RandomAccessTypeInfo;
  * @since 2015-2-1
  */
 public class GenerateStringIndex {
-	private static String tmplDir = "src/twg2.text.templates/";
+	private static String tmplDir = "src/twg2/text/templates/";
 	private static String pkgName = "twg2.text.stringUtils";
 
 

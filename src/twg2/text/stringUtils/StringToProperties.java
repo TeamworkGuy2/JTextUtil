@@ -1,10 +1,11 @@
 package twg2.text.stringUtils;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 /** Save and load string to and from the Java {@link Properties} format.
@@ -29,29 +30,21 @@ public final class StringToProperties {
 	 * This parameter may be the same object as {@code keyValueStrings}
 	 * @see java.util.Properties#saveConvert()
 	 */
-	public static final void saveKeyValueStrings(List<Map.Entry<String, String>> keyValueStrings,
-			List<Map.Entry<String, String>> dst) {
+	public static final void _saveKeyValueStrings(Collection<? extends Entry<String, String>> keyValueStrings, List<? super Entry<String, String>> dst) {
 		StringBuilder buf = new StringBuilder();
-		for(int i = 0, size = keyValueStrings.size(); i < size; i++) {
-			Map.Entry<String, String> keyValuePair = keyValueStrings.get(i);
+		for(Entry<String, String> keyValuePair : keyValueStrings) {
 			String key = saveKeyValueString(keyValuePair.getKey(), true, false, buf).toString();
 			buf.setLength(0);
 			String value = saveKeyValueString(keyValuePair.getValue(), false, false, buf).toString();
 			buf.setLength(0);
 
-			Map.Entry<String, String> resultEntry = new AbstractMap.SimpleImmutableEntry<String, String>(key, value);
-			if(dst.size() <= i) {
-				dst.set(i, resultEntry);
-			}
-			else {
-				dst.add(resultEntry);
-			}
+			Entry<String, String> resultEntry = new AbstractMap.SimpleImmutableEntry<>(key, value);
+			dst.add(resultEntry);
 		}
 	}
 
 
-	private static final <T extends Appendable> T saveKeyValueString(String str, boolean escSpaces,
-			boolean escUnicode, T dst) {
+	private static final <T extends Appendable> T saveKeyValueString(String str, boolean escapeSpaces, boolean escapeUnicode, T dst) {
 		int len = str.length();
 		try {
 			for(int x = 0; x < len; x++) {
@@ -66,7 +59,7 @@ public final class StringToProperties {
 				}
 				switch(a) {
 				case ' ':
-					if(x == 0 || escSpaces) {
+					if(x == 0 || escapeSpaces) {
 						dst.append('\\');
 					}
 					dst.append(' ');
@@ -86,7 +79,7 @@ public final class StringToProperties {
 					dst.append('\\').append(a);
 					break;
 				default:
-					if(((a < 0x0020) || (a > 0x007E)) && escUnicode) {
+					if(((a < 0x0020) || (a > 0x007E)) && escapeUnicode) {
 						dst.append("\\u");
 						dst.append(StringHex.toHex((a >> 12) & 0xF));
 						dst.append(StringHex.toHex((a >> 8) & 0xF));
@@ -99,7 +92,7 @@ public final class StringToProperties {
 				}
 			}
 		} catch(IOException ioe) {
-			throw new RuntimeException(ioe);
+			throw new UncheckedIOException(ioe);
 		}
 		return dst;
 	}
@@ -115,19 +108,16 @@ public final class StringToProperties {
 	 * key-value string pairs
 	 * @see java.util.Properties#load0()
 	 */
-	public static final void loadKeyValueStrings(List<String> strs, Collection<Map.Entry<String, String>> dst, Collection<String> dstComments) {
-		StringBuilder strB = new StringBuilder();
-		int strLen;
-		int keyLength;
-		int valueStart;
+	public static final void loadKeyValueStrings(List<String> strs, Collection<? super Entry<String, String>> dst, Collection<String> dstComments) {
+		StringBuilder sb = new StringBuilder();
 		boolean hasSeparator = false;
 		boolean precedingBackslash = false;
 
 		for(int i = 0, size = strs.size(); i < size; i++) {
 			String str = strs.get(i);
-			strLen = str.length();
-			keyLength = 0;
-			valueStart = strLen;
+			int strLen = str.length();
+			int keyLength = 0;
+			int valueStart = strLen;
 
 			if(str.length() == 0 || str.charAt(0) == '#' || str.charAt(0) == '!') {
 				dstComments.add(str.substring(1));
@@ -169,26 +159,24 @@ public final class StringToProperties {
 			}
 
 			try {
-				loadKeyValueString(str, 0, keyLength, strB);
-				String key = strB.toString();
-				strB.setLength(0);
-				loadKeyValueString(str, valueStart, strLen - valueStart, strB);
-				String value = strB.toString();
-				strB.setLength(0);
-				dst.add(new AbstractMap.SimpleImmutableEntry<String, String>(key, value));
+				loadKeyValueString(str, 0, keyLength, sb);
+				String key = sb.toString();
+				sb.setLength(0);
+				loadKeyValueString(str, valueStart, strLen - valueStart, sb);
+				String value = sb.toString();
+				sb.setLength(0);
+				dst.add(new AbstractMap.SimpleImmutableEntry<>(key, value));
 			} catch (IOException e) {
-				throw new Error("StringBuilder threw IOException", e);
+				throw new UncheckedIOException("StringBuilder threw IOException", e);
 			}
 		}
 	}
 
 
-	private static final <T extends Appendable> void loadKeyValueString(String str, int off, int len, T dst)
-			throws IOException {
-		char a;
+	private static final <T extends Appendable> void loadKeyValueString(String str, int off, int len, T dst) throws IOException {
 		int end = off + len;
 		while(off < end) {
-			a = str.charAt(off++);
+			char a = str.charAt(off++);
 			if(a == '\\') {
 				a = str.charAt(off++);
 				if(a == 'u') {
