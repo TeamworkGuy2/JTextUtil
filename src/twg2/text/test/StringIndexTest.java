@@ -3,6 +3,7 @@ package twg2.text.test;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import twg2.text.stringUtils.StringIndex;
@@ -126,6 +127,27 @@ public class StringIndexTest {
 				return index;
 			});
 		}
+	}
+
+
+	@Test
+	public void indexOfMatch() {
+		String[] matchStrs = new String[] {
+				"Abc",
+				"Str",
+				"Thing",
+				"int",
+				"end",
+				""
+		};
+
+		Assert.assertEquals(5, StringIndex.indexOfMatch("".toCharArray(), 0, matchStrs));
+		Assert.assertEquals(4, StringIndex.indexOfMatch("end".toCharArray(), 0, matchStrs));
+		Assert.assertEquals(1, StringIndex.indexOfMatch("=Str".toCharArray(), 1, matchStrs));
+
+		Assert.assertEquals(5, StringIndex.indexOfMatch("".toCharArray(), 0, Arrays.asList(matchStrs)));
+		Assert.assertEquals(4, StringIndex.indexOfMatch("end".toCharArray(), 0, Arrays.asList(matchStrs)));
+		Assert.assertEquals(1, StringIndex.indexOfMatch("=Str".toCharArray(), 1, Arrays.asList(matchStrs)));
 	}
 
 }

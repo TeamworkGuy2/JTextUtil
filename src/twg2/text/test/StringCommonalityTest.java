@@ -83,6 +83,23 @@ public class StringCommonalityTest {
 	}
 
 
+	@Test
+	public void findPrefixEntriesTest() {
+		@SuppressWarnings("unchecked")
+		Entry<String, Integer>[] entries = new Entry[] {
+				of("String-Aa", 1),
+				of("String=Ab", 2),
+				of("String Ac", 3),
+				of("String Ad", 4),
+				of("String+Ae", 5),
+		};
+
+		Assert.assertEquals("String", StringCommonality.findPrefix(0, entries));
+		Assert.assertEquals("tring", StringCommonality.findPrefix(1, entries));
+		Assert.assertEquals("A", StringCommonality.findPrefix(7, entries));
+	}
+
+
 	private static <K, V> Entry<K, V> of(K key, V val) {
 		return new AbstractMap.SimpleImmutableEntry<>(key, val);
 	}

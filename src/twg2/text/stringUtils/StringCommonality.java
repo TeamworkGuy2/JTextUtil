@@ -151,7 +151,7 @@ public class StringCommonality {
 	 * @param strs an array of map entries to compare the keys of
 	 * @return the common string prefix of all of the map entry keys
 	 */
-	public static String findPrefix(int offset, Map.Entry<String, String>[] strs) {
+	public static <T> String findPrefix(int offset, Map.Entry<String, T>[] strs) {
 		StringBuilder strB = new StringBuilder();
 		String firstString = strs[0].getKey();
 		int size = strs.length;

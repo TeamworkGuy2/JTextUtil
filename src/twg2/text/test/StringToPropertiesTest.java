@@ -2,6 +2,7 @@ package twg2.text.test;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -27,22 +28,16 @@ import twg2.text.stringUtils.StringToProperties;
 public class StringToPropertiesTest {
 
 
-	public void writePropertiesTestFile(Properties props, String fileName) {
-		FileWriter fileWriter = null;
-		try {
-			fileWriter = new FileWriter(new File(fileName));
+	public void writePropertiesTestFile(Properties props, String fileName) throws IOException {
+		try(FileWriter fileWriter = new FileWriter(new File(fileName))) {
 			writePropertiesTo(props, fileWriter, true);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
 		}
 	}
 
 
-	public void writePropertiesTo(Properties props, Writer writer, boolean closeWhenDone) {
+	public void writePropertiesTo(Properties props, Writer writer, boolean closeWhenDone) throws IOException {
 		try {
 			props.store(writer, null);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
 		} finally {
 			if(closeWhenDone && writer != null) {
 				try {
@@ -55,25 +50,19 @@ public class StringToPropertiesTest {
 	}
 
 
-	public Properties readPropertiesTestFile(String fileName) {
+	public Properties readPropertiesTestFile(String fileName) throws FileNotFoundException, IOException {
 		Properties props = new Properties();
-		FileReader fileReader = null;
 
-		try {
-			fileReader = new FileReader(new File(fileName));
+		try(FileReader fileReader = new FileReader(new File(fileName))) {
 			readPropertiesFromTo(fileReader, props, true);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
 		}
 		return props;
 	}
 
 
-	public void readPropertiesFromTo(Reader reader, Properties props, boolean closeWhenDone) {
+	public void readPropertiesFromTo(Reader reader, Properties props, boolean closeWhenDone) throws IOException {
 		try {
 			props.load(reader);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
 		} finally {
 			if(closeWhenDone && reader != null) {
 				try {
@@ -86,7 +75,7 @@ public class StringToPropertiesTest {
 	}
 
 
-	public void readPropertiesCustomFromTo(Reader reader, Properties props, boolean closeWhenDone) {
+	public void readPropertiesCustomFromTo(Reader reader, Properties props, boolean closeWhenDone) throws IOException {
 		try {
 			List<Map.Entry<String, String>> dst = new ArrayList<>();
 			List<String> dstComments = new ArrayList<>();
@@ -106,8 +95,6 @@ public class StringToPropertiesTest {
 			for(Map.Entry<String, String> entry : dst) {
 				props.setProperty(entry.getKey(), entry.getValue());
 			}
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
 		} finally {
 			if(closeWhenDone && reader != null) {
 				try {
@@ -135,7 +122,7 @@ public class StringToPropertiesTest {
 
 
 	@Test
-	public void testReadWriteProps() {
+	public void testReadWriteProps() throws IOException {
 		Properties initialProps = createTestProperties();
 		String fileName = "testProps.properties";
 

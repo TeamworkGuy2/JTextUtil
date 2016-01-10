@@ -175,7 +175,9 @@ public class StringTrim {
 				str = (strLen > 0 && str.charAt(0) == ch) ? str.substring(1, strLen) : str;
 				strLen--;
 			}
+			return str;
 		}
+		// remove a single leading char if matching
 		return (strLen > 0 && str.charAt(0) == ch) ? str.substring(1, strLen) : str;
 	}
 
@@ -192,7 +194,9 @@ public class StringTrim {
 				str = (strLen > 0 && str.charAt(strLen - 1) == ch) ? str.substring(0, strLen - 1) : str;
 				strLen--;
 			}
+			return str;
 		}
+		// remove a single trailing char if matching
 		return (strLen > 0 && str.charAt(strLen - 1) == ch) ? str.substring(0, strLen - 1) : str;
 	}
 

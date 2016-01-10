@@ -401,15 +401,29 @@ public class StringSplit {
 	}
 
 
+	public static final String firstMatch(String src, char patternChar) {
+		return _firstMatch(src, src.indexOf(patternChar));
+	}
+
 	public static final String firstMatch(String src, String pattern) {
-		int idx = src.indexOf(pattern);
+		return _firstMatch(src, src.indexOf(pattern));
+	}
+
+	private static final String _firstMatch(String src, int idx) {
 		return src.substring(0, idx >= src.length() ? src.length() : (idx < 0 ? 0 : idx));
 	}
 
 
+	public static final String postFirstMatch(String src, char patternChar) {
+		return _postFirstMatch(src, src.indexOf(patternChar), 1);
+	}
+
 	public static final String postFirstMatch(String src, String pattern) {
-		int idx = src.indexOf(pattern);
-		return src.substring(idx > -1 && idx + pattern.length() >= src.length() ? src.length() : (idx < 0 ? 0 : idx + pattern.length()));
+		return _postFirstMatch(src, src.indexOf(pattern), pattern.length());
+	}
+
+	public static final String _postFirstMatch(String src, int idx, int patternLen) {
+		return src.substring(idx > -1 && idx + patternLen >= src.length() ? src.length() : (idx < 0 ? 0 : idx + patternLen));
 	}
 
 
@@ -431,14 +445,28 @@ public class StringSplit {
 	}
 
 
+	public static final String lastMatch(String src, char patternChar) {
+		return _lastMatch(src, src.lastIndexOf(patternChar), 1);
+	}
+
 	public static final String lastMatch(String src, String pattern) {
-		int idx = src.lastIndexOf(pattern);
-		return src.substring(idx > -1 && idx + pattern.length() >= src.length() ? src.length() : (idx < 0 ? 0 : idx + pattern.length()));
+		return _lastMatch(src, src.lastIndexOf(pattern), pattern.length());
+	}
+
+	public static final String _lastMatch(String src, int idx, int patternLen) {
+		return src.substring(idx > -1 && idx + patternLen >= src.length() ? src.length() : (idx < 0 ? 0 : idx + patternLen));
 	}
 
 
+	public static final String preLastMatch(String src, char patternChar) {
+		return _preLastMatch(src, src.lastIndexOf(patternChar));
+	}
+
 	public static final String preLastMatch(String src, String pattern) {
-		int idx = src.lastIndexOf(pattern);
+		return _preLastMatch(src, src.lastIndexOf(pattern));
+	}
+
+	public static final String _preLastMatch(String src, int idx) {
 		return src.substring(0, idx >= src.length() ? src.length() : (idx < 0 ? 0 : idx));
 	}
 

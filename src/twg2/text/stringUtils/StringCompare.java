@@ -18,7 +18,7 @@ import java.util.RandomAccess;
  */
 public final class StringCompare {
 
-	private StringCompare() { throw new AssertionError("cannot instantiate StringCompare"); }
+	private StringCompare() { throw new AssertionError("cannot instantiate static class StringCompare"); }
 
 
 	/** Check if the specified string starts with any of a set of prefixes
@@ -156,7 +156,8 @@ public final class StringCompare {
 	 */
 	public static final boolean equal(String str, StringBuilder strB) {
 		if(str.length() != strB.length()) { return false; }
-		for(int i = str.length()-1; i > -1; i--) {
+
+		for(int i = str.length() - 1; i > -1; i--) {
 			if(str.charAt(i) != strB.charAt(i)) { return false; }
 		}
 		return true;
@@ -288,48 +289,42 @@ public final class StringCompare {
 	 * @param chseq the char sequence to find a string that matches
 	 * @param chseqOffset the offset into {@code chseq} at which to beginning searching
 	 * for a matching string
-	 * @param searchStrs an array of {@link java.util.Map.Entry Map.Entries}, search the keys for
+	 * @param searchEntries an array of {@link java.util.Map.Entry Map.Entries}, search the keys for
 	 * a match to {@code chseq}
 	 * @param isSorted true if {@code searchStrs} is sorted (use binary search to find match),
 	 * false if {@code searchStrs} is not sorted and each entry's key should be compared to {@code chseq}
 	 * @return the entry from {@code searchStrs} where the entry's key matches the longest substring
 	 * portion of {@code chseq} starting at character index {@code chseqOffset} of {@code chseq}
 	 */
-	public static Map.Entry<String, String> closestMatch(CharSequence chseq, int chseqOffset,
-			Map.Entry<String, String>[] searchStrs, boolean isSorted) {
-		assert chseq != null && chseqOffset > -1 && searchStrs != null;
+	public static <T> Map.Entry<String, T> closestMatch(CharSequence chseq, int chseqOffset, Map.Entry<String, T>[] searchEntries, boolean isSorted) {
+		assert chseq != null && chseqOffset > -1 && searchEntries != null;
 
 		if(isSorted) {
 			int searchSeqLen = 1;
 			// Possible matching range in search strings
 			int index = -1;
 			int lastIndex = -1;
+			int searchEntriesLen = searchEntries.length;
+			int chseqRemLen = chseq.length() - chseqOffset;
 			// Search for the index in the sorted array of search strings where strings beginning
 			// with N matching letters of the search string begin
 			// e.g. search for "carmichael" by searching for the portion of the sorted search strings
 			// array where strings starting with "car" or "c" exist
 			do {
 				lastIndex = index;
-				// TODO remove print
-				System.out.println("sorted compare to: " + chseq.subSequence(chseqOffset, chseqOffset+searchSeqLen));
-
-				index = EntriesCopy.binarySearch(searchStrs, chseq.subSequence(chseqOffset, chseqOffset+searchSeqLen).toString());
+				index = EntriesCopy.binarySearch(searchEntries, chseq.subSequence(chseqOffset, Math.min(chseq.length(), chseqOffset+searchSeqLen)).toString());
 				if(index < 0) { index = (-index) - 1; }
-				if(index >= searchStrs.length) {
+				if(index >= searchEntriesLen) {
 					index = lastIndex;
 					break;
 				}
-				int countEqual = compareEqualCount(chseq, chseqOffset, searchStrs[index].getKey(), 0);
-				// TODO remove print
-				System.out.println("sorted matching count: " + countEqual + " at " + index + " (search len: " + searchSeqLen + ")");
-				if(countEqual == searchStrs[index].getKey().length()) {
-					// TODO remove print
-					System.out.println("sorted returning closest: " + index + ": " + searchStrs[index]);
-					return searchStrs[index];
+				String searchKey = searchEntries[index].getKey();
+				int countEqual = compareEqualCount(chseq, chseqOffset, searchKey, 0);
+
+				if(countEqual == chseqRemLen || countEqual == searchKey.length()) {
+					return searchEntries[index];
 				}
 				if(countEqual >= searchSeqLen) {
-					// TODO remove pring
-					System.out.println("sorted found closer: " + searchStrs[index].getKey());
 					searchSeqLen++;
 				}
 				else {
@@ -338,33 +333,31 @@ public final class StringCompare {
 				}
 			} while(index > -1);
 
+			if(searchSeqLen > 0 && index > -1 && index < searchEntriesLen) {
+				return searchEntries[index];
+			}
 			return null;
 		}
 		// If the search string entry array is not sorted
 		else {
-			// TODO remove print
-			System.out.println("unsorted compare to: " + chseq.subSequence(chseqOffset, chseq.length()));
-
 			// Find the string in the list of search strings that matches the best
 			int closestMatchIndex = -1;
 			int countEqual = -1;
 			int bestCount = 1;
-			for(int index = 0, size = searchStrs.length; index < size; index++) {
-				countEqual = compareEqualCount(chseq, chseqOffset, searchStrs[index].getKey(), 0);
-				// TODO remove print
-				System.out.println("comparing: " + countEqual + ": " + searchStrs[index].getKey());
+			int chseqRemLen = chseq.length() - chseqOffset;
+			for(int index = 0, size = searchEntries.length; index < size; index++) {
+				String searchStr = searchEntries[index].getKey();
+				countEqual = compareEqualCount(chseq, chseqOffset, searchStr, 0);
 				if(countEqual > bestCount) {
 					bestCount = countEqual;
 					closestMatchIndex = index;
-					// TODO remove print
-					System.out.println("new best: " + searchStrs[index].getKey());
 
-					if(bestCount == searchStrs[index].getKey().length()) {
-						return searchStrs[closestMatchIndex];
+					if(bestCount == chseqRemLen || bestCount == searchStr.length()) {
+						return searchEntries[closestMatchIndex];
 					}
 				}
 			}
-			return closestMatchIndex > -1 ? searchStrs[closestMatchIndex] : null;
+			return closestMatchIndex > -1 ? searchEntries[closestMatchIndex] : null;
 		}
 	}
 
@@ -377,7 +370,7 @@ public final class StringCompare {
 	 */
 	public static final int compareEqualCount(CharSequence str1, CharSequence str2) {
 		assert str1 != null && str2 != null;
-		final int size = str1.length() > str2.length() ? str2.length() : str1.length();
+		int size = str1.length() > str2.length() ? str2.length() : str1.length();
 		for(int i = 0; i < size; i++) {
 			if(str1.charAt(i) != str2.charAt(i)) { return i; }
 		}
@@ -397,7 +390,7 @@ public final class StringCompare {
 	 */
 	public static final int compareEqualCount(CharSequence str1, int offset1, CharSequence str2, int offset2) {
 		return compareEqualCount(str1, offset1, str2, offset2,
-				Math.min(str1.length()-offset1, str2.length()-offset2));
+				Math.min(str1.length() - offset1, str2.length() - offset2));
 	}
 
 
@@ -412,19 +405,21 @@ public final class StringCompare {
 	 * @param length the number of characters to compare between the two char sequences
 	 * @return the number of characters equal between the two char sequences
 	 */
-	public static final int compareEqualCount(CharSequence str1, int offset1, CharSequence str2, int offset2,
-			int length) {
+	public static final int compareEqualCount(CharSequence str1, int offset1, CharSequence str2, int offset2, int length) {
 		assert str1 != null && str2 != null && offset1 > -1 && offset2 > -1 && length > -1;
-		int size = length > str1.length()-offset1 ? str1.length()-offset1 :
-			(length > str2.length()-offset2 ? str2.length()-offset2 : length);
-		size = offset1+length;
+
+		int str1OffLen = str1.length() - offset1;
+		int str2OffLen = str2.length() - offset2;
+		int strMinOffLen = str1OffLen > str2OffLen ? str2OffLen : str1OffLen;
+		int size = (length > strMinOffLen ? strMinOffLen : length) + offset1;
+
 		// Compare characters up to the length of the shorter of the two strings
 		for(int i1 = offset1, i2 = offset2; i1 < size; i1++, i2++) {
 			if(str1.charAt(i1) != str2.charAt(i2)) {
-				return i1-offset1;
+				return i1 - offset1;
 			}
 		}
-		return size-offset1;
+		return size - offset1;
 	}
 
 }
