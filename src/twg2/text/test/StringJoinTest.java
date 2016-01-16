@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -43,13 +44,9 @@ public class StringJoinTest {
 		strSet.add("C");
 		Collection<Collection<String>> strColls = Arrays.asList(strList, strSet);
 
-		String delimiter = ", ";
-		int off = 2;
-		int len = 2;
+		final String delimiter = ", ";
 
-		String[] strAry = new String[] { "glarg", "narg", "warg", "varg" };
-
-		StringBuilder strB = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 
 		for(Collection<String> strColl : strColls) {
 			// baseline using java.util.StringJoiner
@@ -60,35 +57,75 @@ public class StringJoinTest {
 			Assert.assertEquals(expectedStr, StringJoin.join(strColl, delimiter));
 
 			// test Iterable<String> -> StringBuilder
-			StringJoin.join(strColl, delimiter, strB);
-			Assert.assertEquals(expectedStr, strB.toString());
-			strB.setLength(0);
+			StringJoin.join(strColl, delimiter, sb);
+			Assert.assertEquals(expectedStr, sb.toString());
+			sb.setLength(0);
 		}
 
+		// test List<String> -> String
+		Assert.assertEquals("A, B, C", StringJoin.join(Arrays.asList("A", "B", "C"), ", "));
+		Assert.assertEquals("", StringJoin.join(Arrays.asList(), ", "));
+
+		// test (List<String>, dst) -> String
+		StringJoin.join(strList, ", ", sb);
+		Assert.assertEquals("A, B, C", sb.toString());
+	}
+
+
+	@Test
+	public void joinStringArray() {
+		final String delimiter = ", ";
+		String[] strAry = new String[] { "glarg", "narg", "warg", "varg" };
+
+		// test String[] -> String
 		Assert.assertEquals(stringJoiner(delimiter, strAry, 0, strAry.length), StringJoin.join(strAry, delimiter));
 
-		StringJoin.join(strAry, off, len, delimiter, strB);
-		Assert.assertEquals(stringJoiner(delimiter, strAry, off, len), strB.toString());
-		strB.setLength(0);
+		// test (String[], off, len) -> String
+		Assert.assertEquals("null, Cc", StringJoin.join(new String[] { "A", null, "Cc", "Dd" }, 1, 2, ", "));
+
+		// test (String[], off, len, dst) -> String
+		StringBuilder sb = null;
+
+		StringJoin.join(strAry, 2, 2, delimiter, sb = new StringBuilder());
+		Assert.assertEquals(stringJoiner(delimiter, strAry, 2, 2), sb.toString());
 	}
 
 
 	@Test
 	public void stringJoinObjects() {
-		String delimiter = ", ";
-		int off = 2;
-		int len = 2;
+		final String delimiter = ", ";
 
 		Object[] objAry = new Object[] { new ToString(0), "subset", new ToString(4), new File("a\\b\\c.d") };
+		List<Object> objList = Arrays.asList(objAry);
+		Set<Object> objSet = new LinkedHashSet<Object>(objList);
 		String[] objAryStrs = new String[] { "arg0", "subset", "arg4", "a\\b\\c.d" };
 
-		StringBuilder strB = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 
+		// test Object[] -> String
 		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.Objects.join(objAry, delimiter));
+		Assert.assertEquals("", StringJoin.Objects.join(new Object[0], ", "));
 
-		StringJoin.Objects.join(objAry, off, len, delimiter, strB);
-		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, off, len), strB.toString());
-		strB.setLength(0);
+		// test List<String> -> String
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.Objects.join(objList, delimiter));
+
+		// test Iterable<String> -> String
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.Objects.join(objSet, delimiter));
+
+		// test (List<String>, dst) -> String
+		StringJoin.Objects.join(objList, delimiter, sb);
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), sb.toString());
+		sb.setLength(0);
+
+		// test (Iterable<String>, dst) -> String
+		StringJoin.Objects.join(objSet, delimiter, sb);
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), sb.toString());
+		sb.setLength(0);
+
+		// test (Object[], off, len, dst) -> String
+		StringJoin.Objects.join(objAry, 2, 2, delimiter, sb);
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 2, 2), sb.toString());
+		sb.setLength(0);
 	}
 
 

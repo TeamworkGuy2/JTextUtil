@@ -29,7 +29,7 @@ public class StringCompareTest {
 
 
 	@Test
-	public void ignoreCaseTest() {
+	public void ignoreCase() {
 		String[] strs = new String[] { "Alpha", "Beta", "Charlie", "Delta" };
 
 		Assert.assertTrue(StringCompare.containsEqualIgnoreCase(strs, "Alpha"));
@@ -71,7 +71,7 @@ public class StringCompareTest {
 
 
 	@Test
-	public void compareEqualCountTest() {
+	public void compareEqualCount() {
 		Assert.assertEquals(3, StringCompare.compareEqualCount("Abcd", "Abc"));
 		Assert.assertEquals(0, StringCompare.compareEqualCount("Abcd", ""));
 
@@ -85,17 +85,18 @@ public class StringCompareTest {
 
 
 	@Test
-	public void closestMatchTest() {
+	public void closestMatch() {
 		@SuppressWarnings("unchecked")
 		Entry<String, Integer>[] entriesSorted = new Entry[] {
 				of("Car", 1),
-				of("Chap", 2),
+				of("Char", 2),
 				of("Character", 3),
 				of("Charm", 4),
 				of("Csharp", 5),
 		};
 
-		Assert.assertEquals(entriesSorted[2], StringCompare.closestMatch("Char", 0, entriesSorted, true));
+		Assert.assertEquals(entriesSorted[1], StringCompare.closestMatch("Char", 0, entriesSorted, true));
+		Assert.assertEquals(entriesSorted[2], StringCompare.closestMatch("Characterized", 0, entriesSorted, true));
 		Assert.assertEquals(entriesSorted[1],  StringCompare.closestMatch("=Cha=", 1, entriesSorted, true));
 
 		@SuppressWarnings("unchecked")
@@ -109,6 +110,55 @@ public class StringCompareTest {
 
 		Assert.assertEquals(entries[3], StringCompare.closestMatch("Char", 0, entries, false));
 		Assert.assertEquals(entries[0],  StringCompare.closestMatch("=Cha=", 1, entries, false));
+	}
+
+
+	@Test
+	public void compareStartsWith() {
+		Assert.assertTrue(0 == StringCompare.compareStartsWith("Java", new StringBuilder("J"), 0));
+		Assert.assertTrue(0 > StringCompare.compareStartsWith("Java", new StringBuilder("-Jazz"), 1));
+		Assert.assertTrue(0 < StringCompare.compareStartsWith("Java", new StringBuilder("==Jab"), 2));
+	}
+
+
+	@Test
+	public void startsWithAny() {
+		Assert.assertFalse(StringCompare.startsWithAny("GT450", "gpu", "GA", null));
+
+		Assert.assertTrue(StringCompare.startsWithAny("GT450", "gpu", "GT", "GT"));
+		Assert.assertTrue(StringCompare.startsWithAny("GT450", "gpu", "GT", "GT450"));
+	}
+
+
+	@Test
+	public void startsWith() {
+		Assert.assertFalse(StringCompare.startsWith("GT450".toCharArray(), 0, "A".toCharArray(), 0));
+		Assert.assertFalse(StringCompare.startsWith("GT450".toCharArray(), 0, "GA".toCharArray(), 1));
+
+		Assert.assertTrue(StringCompare.startsWith("GT450".toCharArray(), 0, "GT".toCharArray(), 0));
+		Assert.assertTrue(StringCompare.startsWith("GT450".toCharArray(), 0, "GT450".toCharArray(), 0));
+		Assert.assertTrue(StringCompare.startsWith("-GT450".toCharArray(), 1, "==GT".toCharArray(), 2));
+	}
+
+
+	@Test
+	public void containsAny() {
+		Assert.assertFalse(StringCompare.containsAny("My Test String", new String[] { }));
+		Assert.assertFalse(StringCompare.containsAny("My Test String", new String[] { "Abc", "B" }));
+
+		Assert.assertTrue(StringCompare.containsAny("My Test String", new String[] { "Thing", " " }));
+		Assert.assertTrue(StringCompare.containsAny("My Test String", new String[] { "X", "My Test String", " " }));
+	}
+
+
+	@Test
+	public void equal() {
+		Assert.assertFalse(StringCompare.equal("My Test String", new StringBuilder("Abc")));
+		Assert.assertFalse(StringCompare.equal("My Test String".toCharArray(), 0, "Abc".toCharArray(), 0, 3));
+
+		Assert.assertTrue(StringCompare.equal("My Test String", new StringBuilder("My Test String")));
+		Assert.assertTrue(StringCompare.equal("My Test String".toCharArray(), 0, "My ".toCharArray(), 0, 3));
+		Assert.assertTrue(StringCompare.equal("My Test String".toCharArray(), 2, "Your Test".toCharArray(), 4, 5));
 	}
 
 

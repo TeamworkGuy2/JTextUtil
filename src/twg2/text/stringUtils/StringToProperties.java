@@ -30,7 +30,7 @@ public final class StringToProperties {
 	 * This parameter may be the same object as {@code keyValueStrings}
 	 * @see java.util.Properties#saveConvert()
 	 */
-	public static final void _saveKeyValueStrings(Collection<? extends Entry<String, String>> keyValueStrings, List<? super Entry<String, String>> dst) {
+	public static final void _saveKeyValueStrings(Collection<? extends Entry<String, String>> keyValueStrings, Collection<? super Entry<String, String>> dst) {
 		StringBuilder buf = new StringBuilder();
 		for(Entry<String, String> keyValuePair : keyValueStrings) {
 			String key = saveKeyValueString(keyValuePair.getKey(), true, false, buf).toString();

@@ -57,11 +57,13 @@ public final class StringIndex {
 	 */
 	private static final int indexOfSupplement(String str, int strOff, int strLen, int matchChar) {
 		if(Character.isValidCodePoint(matchChar)) {
-			final char high = Character.highSurrogate(matchChar);
-			final char low = Character.lowSurrogate(matchChar);
+			final int high = Character.highSurrogate(matchChar);
+			final int low = Character.lowSurrogate(matchChar);
 			final int maxI = strOff + strLen - 1;
 			for(int i = strOff; i < maxI; i++) {
-				if(str.charAt(i) == high && str.charAt(i + 1) == low) {
+				int a = str.charAt(i);
+				int b = str.charAt(i + 1);
+				if(a == high && b == low) {
 					return i;
 				}
 			}

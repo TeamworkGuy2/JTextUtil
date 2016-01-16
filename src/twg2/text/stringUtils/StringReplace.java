@@ -422,7 +422,9 @@ public final class StringReplace {
 	 */
 	public static final String replaceTokens(String str, Map.Entry<String, String>[] tokens,
 			boolean isSorted) {
-		return replaceTokens(str, null, tokens, isSorted, true);
+		StringBuilder sb = new StringBuilder(str);
+		replaceTokens(null, tokens, isSorted, true, sb);
+		return sb.toString();
 	}
 
 
@@ -443,17 +445,24 @@ public final class StringReplace {
 	 */
 	public static final String replaceTokens(String str, Map.Entry<String, String>[] tokens,
 			boolean isSorted, boolean preserveOrder) {
-		return replaceTokens(str, null, tokens, isSorted, preserveOrder);
+		StringBuilder sb = new StringBuilder(str);
+		replaceTokens(null, tokens, isSorted, preserveOrder, sb);
+		return sb.toString();
+	}
+
+
+	public static final StringBuilder replaceTokens(Map.Entry<String, String>[] tokens, boolean isSorted, boolean preserveOrder, StringBuilder srcAndDst) {
+		return replaceTokens((a, b) -> a.getKey().compareTo(b.getKey()), tokens, isSorted, preserveOrder, srcAndDst);
 	}
 
 
 	/** Replace the tokens in the specified string.<br/>
-	 * For example {@code str = "a $string with $custom tokens and replace values"}<br/>
+	 * For example: {@code str = "a $string with $custom tokens and replace values"}<br/>
 	 * and {@code tokens = ["$str"="token", "$string"="String", "$custom"="infinite", "replace values"="others"]}<br/>
-	 * the {@code result = "a String with infinite tokens and others"}.<br>
+	 * returns: {@code "a String with infinite tokens and others"}<br>
+	 *
 	 * Differs from {@link #replaceStrings} by doing a binary search of the tokens,
 	 * and replacing the closest match rather than simply replacing {@code tokens} sequentially.
-	 * @param str the string to search and replace tokens in
 	 * @param comparator the {@link Comparator} to use to sort the {@code tokens}
 	 * map entry array
 	 * @param tokens a list of {@link java.util.Map.Entry Map.Entries}, the keys
@@ -462,10 +471,11 @@ public final class StringReplace {
 	 * @param preserveOrder true if the {@code tokens} entry array's order should be
 	 * preserved, false will cause this method to sort the {@code tokens} array
 	 * by natural string order
-	 * @return the resulting string with matching tokens replaced
+	 * @param srcAndDst the source to search and replace tokens in, sub-strings are directly replaced in this builder
+	 * @return the {@code srcAndDst} builder
 	 */
-	public static final String replaceTokens(String str, Comparator<Map.Entry<String, String>> comparator,
-			Map.Entry<String, String>[] tokens, boolean isSorted, boolean preserveOrder) {
+	public static final StringBuilder replaceTokens(Comparator<Map.Entry<String, String>> comparator,
+			Map.Entry<String, String>[] tokens, boolean isSorted, boolean preserveOrder, StringBuilder srcAndDst) {
 		if(!isSorted && !preserveOrder) {
 			isSorted = true;
 			if(comparator != null) {
@@ -476,31 +486,30 @@ public final class StringReplace {
 			}
 		}
 
-		StringBuilder result = new StringBuilder(str);
 		String prefix = StringCommonality.findPrefix(0, tokens);
 		if(prefix.length() > 0) {
-			int index = result.indexOf(prefix, 0);
+			int index = srcAndDst.indexOf(prefix, 0);
 			while(index > -1) {
-				Map.Entry<String, String> match = StringCompare.closestMatch(result, index, tokens, isSorted);
+				Map.Entry<String, String> match = StringCompare.closestMatch(srcAndDst, index, tokens, isSorted);
 				if(match != null) {
-					result.replace(index, index+match.getKey().length(), match.getValue());
-					index = result.indexOf(prefix, index+match.getValue().length());
+					srcAndDst.replace(index, index + match.getKey().length(), match.getValue());
+					index = srcAndDst.indexOf(prefix, index + match.getValue().length());
 				}
 				else {
-					index = result.indexOf(prefix, index+1);
+					index = srcAndDst.indexOf(prefix, index+1);
 				}
 			}
 		}
 		else {
-			for(int i = 0; i < result.length(); i++) {
-				Map.Entry<String, String> match = StringCompare.closestMatch(result, i, tokens, isSorted);
+			for(int i = 0; i < srcAndDst.length(); i++) {
+				Map.Entry<String, String> match = StringCompare.closestMatch(srcAndDst, i, tokens, isSorted);
 				if(match != null) {
-					result.replace(i, i+match.getKey().length(), match.getValue());
-					i+=match.getValue().length()-1;
+					srcAndDst.replace(i, i + match.getKey().length(), match.getValue());
+					i += match.getValue().length() - 1;
 				}
 			}
 		}
-		return result.toString();
+		return srcAndDst;
 	}
 
 }

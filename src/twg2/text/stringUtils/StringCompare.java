@@ -29,7 +29,7 @@ public final class StringCompare {
 	public static final boolean startsWithAny(String str, String... prefixes) {
 		if(prefixes != null) {
 			for(String prefix : prefixes) {
-				if(str.startsWith(prefix)) {
+				if(prefix != null && str.startsWith(prefix)) {
 					return true;
 				}
 			}
@@ -46,7 +46,7 @@ public final class StringCompare {
 	public static final boolean endsWithAny(String str, String... suffixes) {
 		if(suffixes != null) {
 			for(String suffix : suffixes) {
-				if(str.endsWith(suffix)) {
+				if(suffix != null && str.endsWith(suffix)) {
 					return true;
 				}
 			}
@@ -132,20 +132,20 @@ public final class StringCompare {
 	 * is greater than {@code strBldr}, less than 0 if {@code str} is less than {@code strBldr}
 	 */
 	public static final int compareStartsWith(String str, StringBuilder strBldr, int strBldrOffset) {
-		int strBldrRemainingLen = strBldr.length() - strBldrOffset;
-		int len = str.length() > (strBldrRemainingLen) ? (strBldrRemainingLen) : str.length();
+		int sbRemLen = strBldr.length() - strBldrOffset;
+		int len = str.length() > sbRemLen ? sbRemLen : str.length();
 		int k = 0;
 		for( ; k < len; k++) {
-			int c1 = str.charAt(k);
-			int c2 = strBldr.charAt(strBldrOffset+k);
+			char c1 = str.charAt(k);
+			char c2 = strBldr.charAt(strBldrOffset + k);
 			if(c1 != c2) {
 				return c1 - c2;
 			}
 		}
-		if((strBldrRemainingLen == 0 || k == 0) && str.length() != 0) {
+		if((sbRemLen == 0 || k == 0) && str.length() != 0) {
 			return 1;
 		}
-		return k == strBldrRemainingLen ? 0 : str.length() - (strBldrRemainingLen);
+		return k == len ? 0 : str.length() - sbRemLen;
 	}
 
 
@@ -306,6 +306,8 @@ public final class StringCompare {
 			int lastIndex = -1;
 			int searchEntriesLen = searchEntries.length;
 			int chseqRemLen = chseq.length() - chseqOffset;
+			int greatestEqualCount = 0;
+			int greatestEqualCountIndex = -1;
 			// Search for the index in the sorted array of search strings where strings beginning
 			// with N matching letters of the search string begin
 			// e.g. search for "carmichael" by searching for the portion of the sorted search strings
@@ -319,13 +321,20 @@ public final class StringCompare {
 					break;
 				}
 				String searchKey = searchEntries[index].getKey();
-				int countEqual = compareEqualCount(chseq, chseqOffset, searchKey, 0);
+				int equalCount = compareEqualCount(chseq, chseqOffset, searchKey, 0);
+				if(equalCount > greatestEqualCount) {
+					greatestEqualCount = equalCount;
+					greatestEqualCountIndex = index;
+				}
 
-				if(countEqual == chseqRemLen || countEqual == searchKey.length()) {
+				if(greatestEqualCountIndex > -1 && equalCount < greatestEqualCount) {
+					return searchEntries[greatestEqualCountIndex];
+				}
+				if(equalCount == chseqRemLen) {
 					return searchEntries[index];
 				}
-				if(countEqual >= searchSeqLen) {
-					searchSeqLen++;
+				if(equalCount >= searchSeqLen) {
+					searchSeqLen = equalCount + 1;
 				}
 				else {
 					index = lastIndex;

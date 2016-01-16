@@ -1,6 +1,9 @@
 package twg2.text.test;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -19,8 +22,8 @@ public class StringSplitTest {
 	@Test
 	public void stringSplitTest() {
 		String[] matches = new String[] {
-				"a somewhat very long string without any matching values except at the end //",
-				"something shorter//split into pieces//at least I hope//so",
+				"a string without any matching values except at the end //",
+				"something//split into pieces//3rd part//so",
 				"//beginning split",
 				"////split////",
 				"",
@@ -33,6 +36,60 @@ public class StringSplitTest {
 		for(String match : matches) {
 			Assert.assertArrayEquals(match.split("//", 5), StringSplit.split(match, "//", 5));
 		}
+	}
+
+
+	@Test
+	public void stringStringSplitDst() {
+		String str = "something//split into pieces//3rd part//so";
+		List<String> strSplit3 = Arrays.asList("something", "split into pieces", "3rd part//so");
+
+		// test String pattern, dst List<String>
+		List<String> dstList = new ArrayList<>();
+		StringSplit.split(str, "//", dstList);
+		Assert.assertEquals(Arrays.asList(str.split("//")), dstList);
+
+		// test String pattern, dst List<String>, limit
+		dstList.clear();
+		StringSplit.split(str, "//", 3, dstList);
+		Assert.assertEquals(strSplit3, dstList);
+
+		// test String pattern, dst String[], large enough
+		String[] dstAry = new String[4];
+		StringSplit.split(str, "//", dstAry);
+		Assert.assertArrayEquals(str.split("//"), dstAry);
+
+		// test String pattern, dst String[], not large enough
+		dstAry = new String[3];
+		StringSplit.split(str, "//", dstAry);
+		Assert.assertArrayEquals(strSplit3.toArray(new String[3]), dstAry);
+	}
+
+
+	@Test
+	public void stringCharSplitDst() {
+		String str = "something#split into pieces#3rd part#so";
+		List<String> strSplit3 = Arrays.asList("something", "split into pieces", "3rd part#so");
+
+		// test char pattern, dst List<String>
+		List<String> dstList = new ArrayList<>();
+		StringSplit.split(str, '#', dstList);
+		Assert.assertEquals(Arrays.asList(str.split("#")), dstList);
+
+		// test char pattern, dst List<String>, limit
+		dstList.clear();
+		StringSplit.split(str, '#', 3, dstList);
+		Assert.assertEquals(strSplit3, dstList);
+
+		// test char pattern, dst String[], large enough
+		String[] dstAry = new String[4];
+		StringSplit.split(str, '#', dstAry);
+		Assert.assertArrayEquals(str.split("#"), dstAry);
+
+		// test char pattern, dst String[], not large enough
+		dstAry = new String[3];
+		StringSplit.split(str, '#', dstAry);
+		Assert.assertArrayEquals(strSplit3.toArray(new String[3]), dstAry);
 	}
 
 
@@ -115,4 +172,5 @@ public class StringSplitTest {
 	private static <K, V> Map.Entry<K, V> entry(K key, V value) {
 		return new AbstractMap.SimpleImmutableEntry<>(key, value);
 	}
+
 }

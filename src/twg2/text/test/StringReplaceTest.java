@@ -1,9 +1,12 @@
 package twg2.text.test;
 
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import twg2.text.stringUtils.StringReplace;
@@ -139,6 +142,36 @@ public class StringReplaceTest {
 			String str = StringReplace.replaceStrings(s, strOffset, new LinkedList<>(searchStrs), replaceStr);
 			return str;
 		});
+	}
+
+
+	@Test
+	public void replaceToken() {
+		StringBuilder sb = new StringBuilder("a $string with $custom tokens and replace values");
+		StringReplace.replaceTokens(new Map.Entry[] {
+				entry("$str", "token"),
+				entry("$string", "String"),
+				entry("$custom", "infinite"),
+				entry("replace values", "others")
+		}, false, false, sb);
+		String expect = "a String with infinite tokens and others";
+
+		Assert.assertEquals(expect, sb.toString());
+
+		sb = new StringBuilder("a $string with $strs and $s3");
+		StringReplace.replaceTokens(new Map.Entry[] {
+				entry("$str", "infinite token"),
+				entry("$string", "String"),
+				entry("$s3", "others")
+		}, false, false, sb);
+		expect = "a String with infinite tokens and others";
+
+		Assert.assertEquals(expect, sb.toString());
+	}
+
+
+	private static <K, V> Map.Entry<K, V> entry(K key, V value) {
+		return new AbstractMap.SimpleImmutableEntry<>(key, value);
 	}
 
 }
