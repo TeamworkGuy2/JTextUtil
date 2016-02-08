@@ -1,6 +1,7 @@
 package twg2.text.test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -95,10 +96,10 @@ public class StringJoinTest {
 	public void stringJoinObjects() {
 		final String delimiter = ", ";
 
-		Object[] objAry = new Object[] { new ToString(0), "subset", new ToString(4), new File("a\\b\\c.d") };
+		Object[] objAry = new Object[] { new ToString(0), "subset", new ToString(4), null, new File("a\\b\\c.d") };
 		List<Object> objList = Arrays.asList(objAry);
 		Set<Object> objSet = new LinkedHashSet<Object>(objList);
-		String[] objAryStrs = new String[] { "arg0", "subset", "arg4", "a\\b\\c.d" };
+		String[] objAryStrs = new String[] { "arg0", "subset", "arg4", "null", "a\\b\\c.d" };
 
 		StringBuilder sb = new StringBuilder();
 
@@ -138,6 +139,64 @@ public class StringJoinTest {
 		Assert.assertEquals("t:arg2, t:arg12", StringJoin.Func.join(Arrays.asList(new ToString(2), new ToString(12)), delimiter, (a) -> "t:" + a));
 		Assert.assertEquals("t:arg2, null", StringJoin.Func.join(Arrays.asList(new ToString(2), null), delimiter, (a) -> "t:" + a));
 		Assert.assertEquals("t:arg2, t:NIL", StringJoin.Func.joinManualNulls(Arrays.asList(new ToString(2), null), delimiter, (a) -> "t:" + (a != null ? a : "NIL")));
+	}
+
+
+	@Test
+	public void repeatTest() throws IOException {
+		Assert.assertEquals("---", StringJoin.repeat('-', 3));
+		Assert.assertEquals("t+t+", StringJoin.repeat("t+", 2));
+		Assert.assertEquals("str", StringJoin.repeat("str", 1));
+		Assert.assertEquals("", StringJoin.repeat("str", 0));
+
+		StringBuilder sb = new StringBuilder();
+		StringJoin.repeat('5', 2, sb);
+		Assert.assertEquals("55", sb.toString());
+		sb.setLength(0);
+		StringJoin.repeat("5*", 0, sb);
+		Assert.assertEquals("", sb.toString());
+		sb.setLength(0);
+		StringJoin.repeat("5*", 3, sb);
+		Assert.assertEquals("5*5*5*", sb.toString());
+		sb.setLength(0);
+	}
+
+
+	@Test
+	public void repeatJoinTest() throws IOException {
+		Assert.assertEquals("A-A-A", StringJoin.repeatJoin("A", '-', 3));
+		Assert.assertEquals("A", StringJoin.repeatJoin("A", '-', 1));
+		Assert.assertEquals("str-str-str", StringJoin.repeatJoin("str", '-', 3));
+		Assert.assertEquals("str", StringJoin.repeatJoin("str", '-', 1));
+		Assert.assertEquals("", StringJoin.repeatJoin("str", '-', 0));
+
+		Assert.assertEquals("A||A||A", StringJoin.repeatJoin("A", "||", 3));
+		Assert.assertEquals("A", StringJoin.repeatJoin("A", "||", 1));
+		Assert.assertEquals("str||str||str", StringJoin.repeatJoin("str", "||", 3));
+		Assert.assertEquals("str", StringJoin.repeatJoin("str", "||", 1));
+		Assert.assertEquals("", StringJoin.repeatJoin("str", "||", 0));
+		Assert.assertEquals("A|A", StringJoin.repeatJoin("A", "|", 2));
+
+		StringBuilder sb = new StringBuilder();
+		StringJoin.repeatJoin("5", '-', 2, sb);
+		Assert.assertEquals("5-5", sb.toString());
+		sb.setLength(0);
+		StringJoin.repeatJoin("5*", '-', 0, sb);
+		Assert.assertEquals("", sb.toString());
+		sb.setLength(0);
+		StringJoin.repeatJoin("5*", '-', 3, sb);
+		Assert.assertEquals("5*-5*-5*", sb.toString());
+		sb.setLength(0);
+
+		StringJoin.repeatJoin("5", "|", 2, sb);
+		Assert.assertEquals("5|5", sb.toString());
+		sb.setLength(0);
+		StringJoin.repeatJoin("5*", "||", 0, sb);
+		Assert.assertEquals("", sb.toString());
+		sb.setLength(0);
+		StringJoin.repeatJoin("5*", "||", 3, sb);
+		Assert.assertEquals("5*||5*||5*", sb.toString());
+		sb.setLength(0);
 	}
 
 

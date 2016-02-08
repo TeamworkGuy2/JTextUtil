@@ -131,6 +131,97 @@ public class StringJoin {
 	}
 
 
+	// ==== Miscellaneous ====
+	public static final String repeat(char ch, int repeats) {
+		char[] chs = new char[repeats];
+		for(int i = 0; i < repeats; i++) {
+			chs[i] = ch;
+		}
+		return new String(chs, 0, repeats);
+	}
+
+
+	public static final String repeat(String str, int repeats) {
+		int strLen = str.length();
+		char[] chs = new char[strLen * repeats];
+		for(int i = 0; i < repeats; i++) {
+			str.getChars(0, strLen, chs, i * strLen);
+		}
+		return new String(chs, 0, chs.length);
+	}
+
+
+	public static final void repeat(char ch, int repeats, Appendable dst) throws IOException {
+		for(int i = 0; i < repeats; i++) {
+			dst.append(ch);
+		}
+	}
+
+
+	public static final void repeat(String str, int repeats, Appendable dst) throws IOException {
+		for(int i = 0; i < repeats; i++) {
+			dst.append(str);
+		}
+	}
+
+
+	public static final String repeatJoin(String str, String joiner, int repeats) {
+		int strLen = str.length();
+		int joinerLen = joiner.length();
+		int off = 0;
+		if(repeats > 0) {
+			char[] chs = new char[strLen * repeats + joinerLen * (repeats - 1)];
+			for(int i = 0, size = repeats - 1; i < size; i++) {
+				str.getChars(0, strLen, chs, off);
+				joiner.getChars(0, joinerLen, chs, off + strLen);
+				off += strLen + joinerLen;
+			}
+			str.getChars(0, strLen, chs, off);
+			return new String(chs, 0, chs.length);
+		}
+		return "";
+	}
+
+
+	public static final String repeatJoin(String str, char joiner, int repeats) {
+		int strLen = str.length();
+		int off = 0;
+		if(repeats > 0) {
+			char[] chs = new char[strLen * repeats + (repeats - 1)];
+			for(int i = 0, size = repeats - 1; i < size; i++) {
+				str.getChars(0, strLen, chs, off);
+				chs[off + strLen] = joiner;
+				off += strLen + 1;
+			}
+			str.getChars(0, strLen, chs, off);
+			return new String(chs, 0, chs.length);
+		}
+		return "";
+	}
+
+
+	public static final void repeatJoin(String str, String joiner, int repeats, Appendable dst) throws IOException {
+		if(repeats > 0) {
+			for(int i = 0, size = repeats - 1; i < size; i++) {
+				dst.append(str);
+				dst.append(joiner);
+			}
+			dst.append(str);
+		}
+	}
+
+
+	public static final void repeatJoin(String str, char joiner, int repeats, Appendable dst) throws IOException {
+		if(repeats > 0) {
+			for(int i = 0, size = repeats - 1; i < size; i++) {
+				dst.append(str);
+				dst.append(joiner);
+			}
+			dst.append(str);
+		}
+	}
+
+
 
 
 	/** Static methods for joining groups of objects

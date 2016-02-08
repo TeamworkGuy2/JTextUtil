@@ -1,6 +1,8 @@
 package twg2.text.stringUtils;
 
+import java.util.AbstractMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author TeamworkGuy2
@@ -163,41 +165,192 @@ public class StringTrim {
 	}
 
 
-	public static final String trimLeading(String str, char ch) {
-		return trimLeading(str, ch, false);
+	// ==== trim char ====
+	public static final String trimLeading(String str, char leadingChar) {
+		return trimLeading(str, leadingChar, false);
 	}
 
 
-	public static final String trimLeading(String str, char ch, boolean trimRepeats) {
+	public static final String trimLeading(String str, char leadingChar, boolean trimRepeats) {
 		int strLen = str.length();
 		if(trimRepeats) {
-			while(strLen > 0 && str.charAt(0) == ch) {
-				str = (strLen > 0 && str.charAt(0) == ch) ? str.substring(1, strLen) : str;
+			while(strLen > 0 && str.charAt(0) == leadingChar) {
+				str = (strLen > 0 && str.charAt(0) == leadingChar) ? str.substring(1, strLen) : str;
 				strLen--;
 			}
 			return str;
 		}
 		// remove a single leading char if matching
-		return (strLen > 0 && str.charAt(0) == ch) ? str.substring(1, strLen) : str;
+		return (strLen > 0 && str.charAt(0) == leadingChar) ? str.substring(1, strLen) : str;
 	}
 
 
-	public static final String trimTrailing(String str, char ch) {
-		return trimTrailing(str, ch, false);
+	public static final String trimTrailing(String str, char trailingChar) {
+		return trimTrailing(str, trailingChar, false);
 	}
 
 
-	public static final String trimTrailing(String str, char ch, boolean trimRepeats) {
+	public static final String trimTrailing(String str, char trailingChar, boolean trimRepeats) {
 		int strLen = str.length();
 		if(trimRepeats) {
-			while(strLen > 0 && str.charAt(str.length() - 1) == ch) {
-				str = (strLen > 0 && str.charAt(strLen - 1) == ch) ? str.substring(0, strLen - 1) : str;
+			while(strLen > 0 && str.charAt(str.length() - 1) == trailingChar) {
+				str = (strLen > 0 && str.charAt(strLen - 1) == trailingChar) ? str.substring(0, strLen - 1) : str;
 				strLen--;
 			}
 			return str;
 		}
 		// remove a single trailing char if matching
-		return (strLen > 0 && str.charAt(strLen - 1) == ch) ? str.substring(0, strLen - 1) : str;
+		return (strLen > 0 && str.charAt(strLen - 1) == trailingChar) ? str.substring(0, strLen - 1) : str;
+	}
+
+
+	// ==== trim String ====
+	public static final String trimLeading(String str, String leadingStr) {
+		return trimLeading(str, leadingStr, false);
+	}
+
+
+	public static final String trimLeading(String str, String leadingStr, boolean trimRepeats) {
+		int strLen = str.length();
+		int leadingStrLen = leadingStr.length();
+		if(trimRepeats) {
+			while(strLen >= leadingStrLen && str.startsWith(leadingStr)) {
+				str = str.substring(leadingStrLen, strLen);
+				strLen -= leadingStrLen;
+			}
+			return str;
+		}
+		// remove a single leading char if matching
+		return (strLen > leadingStrLen && str.startsWith(leadingStr)) ? str.substring(leadingStrLen, strLen) : str;
+	}
+
+
+	public static final String trimTrailing(String str, String trailingStr) {
+		return trimTrailing(str, trailingStr, false);
+	}
+
+
+	public static final String trimTrailing(String str, String trailingStr, boolean trimRepeats) {
+		int strLen = str.length();
+		int trailingStrLen = trailingStr.length();
+		if(trimRepeats) {
+			while(strLen >= trailingStrLen && str.endsWith(trailingStr)) {
+				str = str.substring(0, strLen - trailingStrLen);
+				strLen -= trailingStrLen;
+			}
+			return str;
+		}
+		// remove a single trailing char if matching
+		return (strLen > 0 && str.endsWith(trailingStr)) ? str.substring(0, strLen - trailingStrLen) : str;
+	}
+
+
+	// ==== count and trim char ====
+	public static final Map.Entry<Integer, String> countAndTrimLeading(String str, char ch) {
+		return countAndTrimLeading(str, ch, false);
+	}
+
+
+	public static final Map.Entry<Integer, String> countAndTrimLeading(String str, char ch, boolean trimRepeats) {
+		int strLen = str.length();
+		int replacementCount = 0;
+		if(trimRepeats) {
+			while(strLen > 0 && str.charAt(0) == ch) {
+				str = (strLen > 0 && str.charAt(0) == ch) ? str.substring(1, strLen) : str;
+				strLen--;
+				replacementCount++;
+			}
+			return new AbstractMap.SimpleImmutableEntry<>(replacementCount, str);
+		}
+		// remove a single leading char if matching
+		if(strLen > 0 && str.charAt(0) == ch) {
+			str = str.substring(1, strLen);
+			strLen--;
+			replacementCount++;
+		}
+		return new AbstractMap.SimpleImmutableEntry<>(replacementCount, str);
+	}
+
+
+	public static final Map.Entry<Integer, String> countAndTrimTrailing(String str, char ch) {
+		return countAndTrimTrailing(str, ch, false);
+	}
+
+
+	public static final Map.Entry<Integer, String> countAndTrimTrailing(String str, char ch, boolean trimRepeats) {
+		int strLen = str.length();
+		int replacementCount = 0;
+		if(trimRepeats) {
+			while(strLen > 0 && str.charAt(str.length() - 1) == ch) {
+				str = (strLen > 0 && str.charAt(strLen - 1) == ch) ? str.substring(0, strLen - 1) : str;
+				strLen--;
+				replacementCount++;
+			}
+			return new AbstractMap.SimpleImmutableEntry<>(replacementCount, str);
+		}
+		// remove a single trailing char if matching
+		if(strLen > 0 && str.charAt(strLen - 1) == ch) {
+			str = str.substring(0, strLen - 1);
+			strLen--;
+			replacementCount++;
+		}
+		return new AbstractMap.SimpleImmutableEntry<>(replacementCount, str);
+	}
+
+
+	// ==== count and trim String ====
+	public static final Map.Entry<Integer, String> countAndTrimLeading(String str, String leadingStr) {
+		return countAndTrimLeading(str, leadingStr, false);
+	}
+
+
+	public static final Map.Entry<Integer, String> countAndTrimLeading(String str, String leadingStr, boolean trimRepeats) {
+		int strLen = str.length();
+		int leadingStrLen = leadingStr.length();
+		int replacementCount = 0;
+		if(trimRepeats) {
+			while(strLen > 0 && str.startsWith(leadingStr)) {
+				str = str.substring(leadingStrLen, strLen);
+				strLen -= leadingStrLen;
+				replacementCount++;
+				
+			}
+			return new AbstractMap.SimpleImmutableEntry<>(replacementCount, str);
+		}
+		// remove a single leading char if matching
+		if(strLen > 0 && str.startsWith(leadingStr)) {
+			str = str.substring(leadingStrLen, strLen);
+			strLen -= leadingStrLen;
+			replacementCount++;
+		}
+		return new AbstractMap.SimpleImmutableEntry<>(replacementCount, str);
+	}
+
+
+	public static final Map.Entry<Integer, String> countAndTrimTrailing(String str, String trailingStr) {
+		return countAndTrimTrailing(str, trailingStr, false);
+	}
+
+
+	public static final Map.Entry<Integer, String> countAndTrimTrailing(String str, String trailingStr, boolean trimRepeats) {
+		int strLen = str.length();
+		int trailingStrLen = trailingStr.length();
+		int replacementCount = 0;
+		if(trimRepeats) {
+			while(strLen > 0 && str.endsWith(trailingStr)) {
+				str = str.substring(0, strLen - trailingStrLen);
+				strLen -= trailingStrLen;
+				replacementCount++;
+			}
+			return new AbstractMap.SimpleImmutableEntry<>(replacementCount, str);
+		}
+		// remove a single trailing char if matching
+		if(strLen > 0 && str.endsWith(trailingStr)) {
+			str = str.substring(0, strLen - trailingStrLen);
+			strLen -= trailingStrLen;
+			replacementCount++;
+		}
+		return new AbstractMap.SimpleImmutableEntry<>(replacementCount, str);
 	}
 
 }

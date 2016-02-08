@@ -1,8 +1,10 @@
 package twg2.text.test;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -60,7 +62,7 @@ public class StringTrimTest {
 
 
 	@Test
-	public void testCharSurroundingTrim() {
+	public void charSurroundingTrimTest() {
 		CharQuotedStrings[] tests = new CharQuotedStrings[] {
 				new CharQuotedStrings('"', "\"", "\"", "\"a\"", "a", Arrays.asList("\"\"", "\n\"", "a\"b\"", "\"\"123\"\""), Arrays.asList("", "\n\"", "a\"b\"", "\"123\"")),
 				new CharQuotedStrings('*', "*", "*", "*a*", "a", Arrays.asList("**", "\n*", "a*b*", "**123**"), Arrays.asList("", "\n*", "a*b*", "*123*"))
@@ -81,7 +83,7 @@ public class StringTrimTest {
 
 
 	@Test
-	public void testCharTrim() {
+	public void charTrimTest() {
 		CharQuotedStrings[] tests = new CharQuotedStrings[] {
 				new CharQuotedStrings('"', "\"", "", "\"a\"", "a", Arrays.asList("\"\"", "\n\"", "a\"b\"", "\"\"123\"\""), Arrays.asList("", "\n", "a\"b", "\"123\"")),
 				new CharQuotedStrings('*', "*", "", "*a*", "a", Arrays.asList("**", "\n*", "a*b*", "**123**"), Arrays.asList("", "\n", "a*b", "*123*"))
@@ -102,7 +104,7 @@ public class StringTrimTest {
 
 
 	@Test
-	public void testStringSurroundingTrim() {
+	public void stringSurroundingTrimTest() {
 		StrQuotedStrings[] tests = new StrQuotedStrings[] {
 				new StrQuotedStrings("<\"", "<\"", "<\"", "<\"a<\"", "a", Arrays.asList("<\"<\"", "\n<\"", "a<\"b<\"", "<\"<\"123<\"<\""), Arrays.asList("", "\n<\"", "a<\"b<\"", "<\"123<\"")),
 				new StrQuotedStrings("**", "**", "**", "**a**", "a", Arrays.asList("****", "\n**", "a**b**", "**123**"), Arrays.asList("", "\n**", "a**b**", "123"))
@@ -123,7 +125,7 @@ public class StringTrimTest {
 
 
 	@Test
-	public void testStringTrim() {
+	public void stringTrimTest() {
 		StrQuotedStrings[] tests = new StrQuotedStrings[] {
 				new StrQuotedStrings("<\"", "<\"", "", "<\"a<\"", "a", Arrays.asList("<\"<\"", "\n", "a<\"b<\"", "<\"<\"123<\"<\""), Arrays.asList("", "\n", "a<\"b", "<\"123<\"")),
 				new StrQuotedStrings("**", "**", "", "**a**", "a", Arrays.asList("****", "\n**", "a**b**", "**123**"), Arrays.asList("", "\n", "a**b", "123"))
@@ -148,6 +150,10 @@ public class StringTrimTest {
 		Assert.assertEquals("abc", StringTrim.trimLeading("?abc", '?'));
 		Assert.assertEquals("?abc", StringTrim.trimLeading("??abc", '?'));
 		Assert.assertEquals("abc", StringTrim.trimLeading("??abc", '?', true));
+
+		Assert.assertEquals("abc", StringTrim.trimLeading("=+abc", "=+"));
+		Assert.assertEquals("=+abc", StringTrim.trimLeading("=+=+abc", "=+"));
+		Assert.assertEquals("abc", StringTrim.trimLeading("=+=+abc", "=+", true));
 	}
 
 
@@ -156,6 +162,39 @@ public class StringTrimTest {
 		Assert.assertEquals("abc", StringTrim.trimTrailing("abc?", '?'));
 		Assert.assertEquals("abc?", StringTrim.trimTrailing("abc??", '?'));
 		Assert.assertEquals("abc", StringTrim.trimTrailing("abc??", '?', true));
+
+		Assert.assertEquals("abc", StringTrim.trimTrailing("abc=+", "=+"));
+		Assert.assertEquals("abc=+", StringTrim.trimTrailing("abc=+=+", "=+"));
+		Assert.assertEquals("abc", StringTrim.trimTrailing("abc=+=+", "=+", true));
+	}
+
+
+	@Test
+	public void countAndTrimLeadingTest() {
+		Assert.assertEquals(entry(1, "abc"), StringTrim.countAndTrimLeading("?abc", '?'));
+		Assert.assertEquals(entry(1, "?abc"), StringTrim.countAndTrimLeading("??abc", '?'));
+		Assert.assertEquals(entry(2, "abc"), StringTrim.countAndTrimLeading("??abc", '?', true));
+
+		Assert.assertEquals(entry(1, "abc"), StringTrim.countAndTrimLeading("=+abc", "=+"));
+		Assert.assertEquals(entry(1, "=+abc"), StringTrim.countAndTrimLeading("=+=+abc", "=+"));
+		Assert.assertEquals(entry(2, "abc"), StringTrim.countAndTrimLeading("=+=+abc", "=+", true));
+	}
+
+
+	@Test
+	public void countAndTrimTrailingTest() {
+		Assert.assertEquals(entry(1, "abc"), StringTrim.countAndTrimTrailing("abc?", '?'));
+		Assert.assertEquals(entry(1, "abc?"), StringTrim.countAndTrimTrailing("abc??", '?'));
+		Assert.assertEquals(entry(2, "abc"), StringTrim.countAndTrimTrailing("abc??", '?', true));
+
+		Assert.assertEquals(entry(1, "abc"), StringTrim.countAndTrimTrailing("abc=+", "=+"));
+		Assert.assertEquals(entry(1, "abc=+"), StringTrim.countAndTrimTrailing("abc=+=+", "=+"));
+		Assert.assertEquals(entry(2, "abc"), StringTrim.countAndTrimTrailing("abc=+=+", "=+", true));
+	}
+
+
+	private static final <K, V> Map.Entry<K, V> entry(K key, V value) {
+		return new AbstractMap.SimpleImmutableEntry<>(key, value);
 	}
 
 }
