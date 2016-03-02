@@ -23,7 +23,7 @@ public final class StringIndex {
 
 
 	/** Search for a character in an array of characters and return the absolute index
-	 * where the character occurs, or -1 if the character does not exist in the main array
+	 * where the first instance of the character occurs, or -1 if the character does not exist in the array
 	 * @param str the character array to search
 	 * @param strOff the offset into the character array at which to start searching
 	 * @param strLen the number of chars to compare starting at {@strOff} in {@code str}
@@ -48,6 +48,34 @@ public final class StringIndex {
 	}
 
 
+	/** Search for a character in an array of characters and return the absolute index
+	 * where the last instance of the character character occurs, or -1 if the character does not exist in the array
+	 * @param str the character array to search
+	 * @param strOff the offset into the character array at which to start searching
+	 * @param strLen the number of chars to compare starting at {@strOff} in {@code str}
+	 * @param matchChar the character to search for in {@code str}
+	 * @return the index of the found matching character, from index 0, or -1 if the character could not be found
+	 */
+	public static final int lastIndexOf(String str, int strOff, int strLen, int matchChar) {
+		int strLength = strOff + strLen;
+
+		if(matchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
+			// search for the first matching character
+			for(int i = strLength - 1; i >= strOff; i--) {
+				if(str.charAt(i) == matchChar) {
+					return i;
+				}
+			}
+			return -1;
+		}
+		else {
+			// TODO doesn't yet support supplementary code points
+			//return lastIndexOfSupplement(str, strOff, strLength - strOff, matchChar);
+			throw new IllegalArgumentException("lastIndexOf supplementary code point not yet supported");
+		}
+	}
+
+
 	/** Search for the index of a supplementary character in an array of characters
 	 * @param str the array of characters to search
 	 * @param strOff the offset into {@code str} at which to start comparing characters
@@ -57,13 +85,11 @@ public final class StringIndex {
 	 */
 	private static final int indexOfSupplement(String str, int strOff, int strLen, int matchChar) {
 		if(Character.isValidCodePoint(matchChar)) {
-			final int high = Character.highSurrogate(matchChar);
-			final int low = Character.lowSurrogate(matchChar);
+			final char high = Character.highSurrogate(matchChar);
+			final char low = Character.lowSurrogate(matchChar);
 			final int maxI = strOff + strLen - 1;
 			for(int i = strOff; i < maxI; i++) {
-				int a = str.charAt(i);
-				int b = str.charAt(i + 1);
-				if(a == high && b == low) {
+				if(str.charAt(i) == high && str.charAt(i + 1) == low) {
 					return i;
 				}
 			}
@@ -81,7 +107,7 @@ public final class StringIndex {
 
 
 	/** Search for a character in an array of characters and return the absolute index
-	 * where the character occurs, or -1 if the character does not exist in the main array
+	 * where the first instance of the character occurs, or -1 if the character does not exist in the array
 	 * @param str the character array to search
 	 * @param strOff the offset into the character array at which to start searching
 	 * @param strLen the number of chars to compare starting at {@strOff} in {@code str}
@@ -106,6 +132,34 @@ public final class StringIndex {
 	}
 
 
+	/** Search for a character in an array of characters and return the absolute index
+	 * where the last instance of the character character occurs, or -1 if the character does not exist in the array
+	 * @param str the character array to search
+	 * @param strOff the offset into the character array at which to start searching
+	 * @param strLen the number of chars to compare starting at {@strOff} in {@code str}
+	 * @param matchChar the character to search for in {@code str}
+	 * @return the index of the found matching character, from index 0, or -1 if the character could not be found
+	 */
+	public static final int lastIndexOf(char[] str, int strOff, int strLen, int matchChar) {
+		int strLength = strOff + strLen;
+
+		if(matchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
+			// search for the first matching character
+			for(int i = strLength - 1; i >= strOff; i--) {
+				if(str[i] == matchChar) {
+					return i;
+				}
+			}
+			return -1;
+		}
+		else {
+			// TODO doesn't yet support supplementary code points
+			//return lastIndexOfSupplement(str, strOff, strLength - strOff, matchChar);
+			throw new IllegalArgumentException("lastIndexOf supplementary code point not yet supported");
+		}
+	}
+
+
 	/** Search for the index of a supplementary character in an array of characters
 	 * @param str the array of characters to search
 	 * @param strOff the offset into {@code str} at which to start comparing characters
@@ -120,6 +174,90 @@ public final class StringIndex {
 			final int maxI = strOff + strLen - 1;
 			for(int i = strOff; i < maxI; i++) {
 				if(str[i] == high && str[i + 1] == low) {
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+
+
+	/**
+	 * @see #indexOf(StringBuilder, int, int, int)
+	 */
+	public static final int indexOf(StringBuilder str, int strOff, int matchChar) {
+		return indexOf(str, strOff, str.length() - strOff, matchChar);
+	}
+
+
+	/** Search for a character in an array of characters and return the absolute index
+	 * where the first instance of the character occurs, or -1 if the character does not exist in the array
+	 * @param str the character array to search
+	 * @param strOff the offset into the character array at which to start searching
+	 * @param strLen the number of chars to compare starting at {@strOff} in {@code str}
+	 * @param matchChar the character to search for in {@code str}
+	 * @return the index of the found matching character, from index 0, or -1 if the character could not be found
+	 */
+	public static final int indexOf(StringBuilder str, int strOff, int strLen, int matchChar) {
+		int strLength = strOff + strLen;
+
+		if(matchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
+			// search for the first matching character
+			for(int i = strOff; i < strLength; i++) {
+				if(str.charAt(i) == matchChar) {
+					return i;
+				}
+			}
+			return -1;
+		}
+		else {
+			return indexOfSupplement(str, strOff, strLength - strOff, matchChar);
+		}
+	}
+
+
+	/** Search for a character in an array of characters and return the absolute index
+	 * where the last instance of the character character occurs, or -1 if the character does not exist in the array
+	 * @param str the character array to search
+	 * @param strOff the offset into the character array at which to start searching
+	 * @param strLen the number of chars to compare starting at {@strOff} in {@code str}
+	 * @param matchChar the character to search for in {@code str}
+	 * @return the index of the found matching character, from index 0, or -1 if the character could not be found
+	 */
+	public static final int lastIndexOf(StringBuilder str, int strOff, int strLen, int matchChar) {
+		int strLength = strOff + strLen;
+
+		if(matchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
+			// search for the first matching character
+			for(int i = strLength - 1; i >= strOff; i--) {
+				if(str.charAt(i) == matchChar) {
+					return i;
+				}
+			}
+			return -1;
+		}
+		else {
+			// TODO doesn't yet support supplementary code points
+			//return lastIndexOfSupplement(str, strOff, strLength - strOff, matchChar);
+			throw new IllegalArgumentException("lastIndexOf supplementary code point not yet supported");
+		}
+	}
+
+
+	/** Search for the index of a supplementary character in an array of characters
+	 * @param str the array of characters to search
+	 * @param strOff the offset into {@code str} at which to start comparing characters
+	 * @param strLen the number of chars to compare starting at {@strOff} in {@code str}
+	 * @param matchChar the supplementary characters to search for
+	 * @return the lower index within the {@code str} array of the matching {@code matchChar}
+	 */
+	private static final int indexOfSupplement(StringBuilder str, int strOff, int strLen, int matchChar) {
+		if(Character.isValidCodePoint(matchChar)) {
+			final char high = Character.highSurrogate(matchChar);
+			final char low = Character.lowSurrogate(matchChar);
+			final int maxI = strOff + strLen - 1;
+			for(int i = strOff; i < maxI; i++) {
+				if(str.charAt(i) == high && str.charAt(i + 1) == low) {
 					return i;
 				}
 			}
@@ -705,7 +843,8 @@ public final class StringIndex {
 	 * where the sub string begins, or -1 if the sub string does not exist in the main array
 	 * @param str the char sequence to search
 	 * @param strOff the offset into the character array at which to start searching
-	 * @param searchChar the character to search for in {@code str}
+	 * @param subStr the sub string to search for in {@code str}
+	 * @param subStrOff the offset into the sub string array at which to start searching
 	 * @return the index of the found sub string, from index 0, or -1 if the sub string could not be found
 	 */
 	public static final int indexOf(CharSequence str, int strOff, int searchChar) {

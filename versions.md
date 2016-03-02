@@ -1,9 +1,21 @@
 --------
-####0.7.2
+####0.8.0
 
-date: 2016-1-16
+date: 2016-2-28
 
 commit: ?
+
+* Added StringIndex lastIndexOf()
+* Split StringEscape into a base, Json, Partial, and Xml specific files and moved to new twg2.text.stringEscape package
+* Moved test classes to separate test directory
+
+
+--------
+####0.7.2
+
+date: 2016-2-8
+
+commit: 9103614630787018da70515f6f519dc485dfdc63
 
 * Added StringJoin repeat() and repeatJoin() methods to allow for repeating a string several times and returning a string result or appending to a destination
 * Added StringTrim countAndTrimLeading() and countAndTrimTrailing() for returning a trimmed string as well as how many leading/trailing characters or strings were trimmed

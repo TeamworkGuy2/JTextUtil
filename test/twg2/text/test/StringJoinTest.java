@@ -13,6 +13,7 @@ import java.util.StringJoiner;
 import org.junit.Assert;
 import org.junit.Test;
 
+import checks.CheckTask;
 import twg2.text.stringUtils.StringJoin;
 
 /**
@@ -197,6 +198,16 @@ public class StringJoinTest {
 		StringJoin.repeatJoin("5*", "||", 3, sb);
 		Assert.assertEquals("5*||5*||5*", sb.toString());
 		sb.setLength(0);
+	}
+
+
+	@Test
+	public void stringJoinMiscellaneous() {
+		String[][] strs = new String[][] { { "Aa", "Bb" }, { "123", "_", ".." }, { "", "" }, { "" } };
+		String[] delimiters = new String[] { "-", "||", "=", "=" };
+		String[] expect = new String[] { "Aa-Bb", "123||_||..", "=", "" };
+
+		CheckTask.assertTests(strs, expect, (s, i) -> StringJoin.join(s, delimiters[i]));
 	}
 
 

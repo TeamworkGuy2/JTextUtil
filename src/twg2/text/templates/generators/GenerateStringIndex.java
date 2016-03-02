@@ -34,6 +34,11 @@ public class GenerateStringIndex {
 		stringType.getLength = ".length()";
 		stringType.getElement = ".charAt(";
 		stringType.getElementEnd = ")";
+		RandomAccessTypeInfo stringBuilderType = new RandomAccessTypeInfo();
+		stringBuilderType.type = "StringBuilder";
+		stringBuilderType.getLength = ".length()";
+		stringBuilderType.getElement = ".charAt(";
+		stringBuilderType.getElementEnd = ")";
 
 		MultiTypeInfo<RandomAccessTypeInfo> info = new MultiTypeInfo<>();
 		info.className = "StringIndex";
@@ -44,12 +49,14 @@ public class GenerateStringIndex {
 		info.types.add(new MultiTypeInfo.MultiType<>(stringType, charArrayType));
 		info.types.add(new MultiTypeInfo.MultiType<>(charArrayType, stringType));
 		info.types.add(new MultiTypeInfo.MultiType<>(charArrayType, charArrayType));
+		//info.types.add(new MultiTypeInfo.MultiType<>(stringBuilderType, stringType));
+		//info.types.add(new MultiTypeInfo.MultiType<>(stringBuilderType, charArrayType));
 
 		Writer out = new FileWriter(TemplateFilesIo.getDefaultInst().getSrcRelativePath(info).toFile());
 		ST stTmpl = STTemplates.fromFile(tmplDir + "TStringIndex.stg", "TStringIndex", TemplateImports.emptyInst());
 		TemplateRenderBuilder.newInst()
 				.addParam("var", info)
-				.addParam("singleTypes", Arrays.asList(stringType, charArrayType))
+				.addParam("singleTypes", Arrays.asList(stringType, charArrayType, stringBuilderType))
 				.writeDst(out)
 				.render(stTmpl);
 		out.close();

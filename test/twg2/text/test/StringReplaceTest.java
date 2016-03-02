@@ -146,6 +146,13 @@ public class StringReplaceTest {
 
 
 	@Test
+	public void stringReplaceMiscellaneous() {
+		String str = StringReplace.replaceEscapeLiterals("kd\\t\\nwith\\\\and \\\"\\f\\\'");
+		Assert.assertTrue("replace escape literals: " + str, str.equals("kd\t\nwith\\and \"\f\'"));
+	}
+
+
+	@Test
 	public void replaceToken() {
 		StringBuilder sb = new StringBuilder("a $string with $custom tokens and replace values");
 		StringReplace.replaceTokens(new Map.Entry[] {

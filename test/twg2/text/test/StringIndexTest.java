@@ -1,6 +1,5 @@
 package twg2.text.test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -161,10 +160,21 @@ public class StringIndexTest {
 	@Test
 	public void indexOf_StringOrCharAry_Char() {
 		Assert.assertEquals(10, StringIndex.indexOf("Aa Bb Ccc \u2460", 3, 8, (int)'\u2460'));
-		Assert.assertEquals(10, StringIndex.indexOf(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8), 3, 9, (int)0x1F3B8));
+		Assert.assertEquals(10, StringIndex.indexOf(StringTestUtils.fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8), 3, 9, (int)0x1F3B8));
 
 		Assert.assertEquals(10, StringIndex.indexOf("Aa Bb Ccc \u2460".toCharArray(), 3, 8, (int)'\u2460'));
-		Assert.assertEquals(10, StringIndex.indexOf(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8).toCharArray(), 3, 9, (int)0x1F3B8));
+		Assert.assertEquals(10, StringIndex.indexOf(StringTestUtils.fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8).toCharArray(), 3, 9, (int)0x1F3B8));
+	}
+
+
+	@Test
+	public void lastIndexOf_StringOrCharAry_Char() {
+		// TODO add support for supplementary lastIndexOf() chars at some point
+		Assert.assertEquals(12, StringIndex.lastIndexOf("\u2460 Aa Bb Ccc \u2460 \u2460", 3, 10, (int)'\u2460'));
+		//Assert.assertEquals(14, StringIndex.lastIndexOf(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8, "-", 0x1F3B8), 6, 9, (int)0x1F3B8));
+
+		Assert.assertEquals(12, StringIndex.lastIndexOf("\u2460 Aa Bb Ccc \u2460 \u2460".toCharArray(), 3, 10, (int)'\u2460'));
+		//Assert.assertEquals(14, StringIndex.lastIndexOf(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8, "-", 0x1F3B8).toCharArray(), 6, 9, (int)0x1F3B8));
 	}
 
 
@@ -181,31 +191,6 @@ public class StringIndexTest {
 		Assert.assertEquals(3, StringIndex.indexOf("Aa Bb Ccc 1", 3, 7, "Bb Ccc 2".toCharArray(), 0, 7));
 
 		Assert.assertEquals(3, StringIndex.indexOf("Aa Bb Ccc 1".toCharArray(), 3, 7, "Bb Ccc 2".toCharArray(), 0, 7));
-	}
-
-
-	@SafeVarargs
-	private static String fromStringsAndCodePoints(Object... strsOrCodePoints) {
-		List<Integer> codePoints = new ArrayList<>();
-		for(Object strOrCp : strsOrCodePoints) {
-			if(strOrCp instanceof String) {
-				for(char ch : ((String)strOrCp).toCharArray()) {
-					codePoints.add((int)ch);
-				}
-			}
-			else if(strOrCp instanceof Integer) {
-				codePoints.add((Integer)strOrCp);
-			}
-			else {
-				throw new IllegalArgumentException("unknown value " + (strOrCp != null ? strOrCp.getClass() : null) + ", is not a string or int code-point");
-			}
-		}
-
-		int[] cps = new int[codePoints.size()];
-		for(int i = 0, size = cps.length; i < size; i++) {
-			cps[i] = codePoints.get(i);
-		}
-		return new String(cps, 0, cps.length);
 	}
 
 }
