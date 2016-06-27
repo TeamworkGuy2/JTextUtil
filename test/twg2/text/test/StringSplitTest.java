@@ -169,6 +169,32 @@ public class StringSplitTest {
 	}
 
 
+	@Test
+	public void substringTest() {
+		Assert.assertEquals("", StringSplit.substring("-[][]", '[', ']')); // empty result string
+		Assert.assertEquals("a", StringSplit.substring("[a]-[b]", '[', ']')); // multi-simple
+		Assert.assertEquals("a", StringSplit.substring("a]-", '[', ']')); // no start
+		Assert.assertEquals("b", StringSplit.substring("a[b", '[', ']')); // no end
+		Assert.assertEquals("ab", StringSplit.substring("ab", '[', ']')); // no start AND no end
+		Assert.assertEquals("", StringSplit.substring("", '[', ']')); // empty string
+		Assert.assertEquals("-a", StringSplit.substring("-a]-b]-", '[', ']')); // no start multi
+		Assert.assertEquals("b[c", StringSplit.substring("a[b[c", '[', ']')); // no end multi
+	}
+
+
+	@Test
+	public void lastSubstringTest() {
+		Assert.assertEquals("", StringSplit.lastSubstring("-[][]", '[', ']')); // empty result string
+		Assert.assertEquals("b", StringSplit.lastSubstring("[a]-[b]", '[', ']')); // multi-simple
+		Assert.assertEquals("a", StringSplit.lastSubstring("a]-", '[', ']')); // no start
+		Assert.assertEquals("b", StringSplit.lastSubstring("a[b", '[', ']')); // no end
+		Assert.assertEquals("ab", StringSplit.lastSubstring("ab", '[', ']')); // no start AND no end
+		Assert.assertEquals("", StringSplit.lastSubstring("", '[', ']')); // empty string
+		Assert.assertEquals("-a", StringSplit.lastSubstring("-a]-b]-", '[', ']')); // no start multi
+		Assert.assertEquals("c", StringSplit.lastSubstring("a[b[c", '[', ']')); // no end multi
+	}
+
+
 	private static <K, V> Map.Entry<K, V> entry(K key, V value) {
 		return new AbstractMap.SimpleImmutableEntry<>(key, value);
 	}

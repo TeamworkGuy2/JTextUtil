@@ -401,10 +401,14 @@ public class StringSplit {
 	}
 
 
+	/** Get the sub string preceding the first index of 'patternChar'
+	 */
 	public static final String firstMatch(String src, char patternChar) {
 		return _firstMatch(src, src.indexOf(patternChar));
 	}
 
+	/** Get the sub string preceding the first index of 'pattern'
+	 */
 	public static final String firstMatch(String src, String pattern) {
 		return _firstMatch(src, src.indexOf(pattern));
 	}
@@ -414,10 +418,14 @@ public class StringSplit {
 	}
 
 
+	/** Get the sub string following the first index of 'patternChar'
+	 */
 	public static final String postFirstMatch(String src, char patternChar) {
 		return _postFirstMatch(src, src.indexOf(patternChar), 1);
 	}
 
+	/** Get the sub string following the first index of 'pattern'
+	 */
 	public static final String postFirstMatch(String src, String pattern) {
 		return _postFirstMatch(src, src.indexOf(pattern), pattern.length());
 	}
@@ -445,10 +453,14 @@ public class StringSplit {
 	}
 
 
+	/** Get the sub string following the last index of 'patternChar'
+	 */
 	public static final String lastMatch(String src, char patternChar) {
 		return _lastMatch(src, src.lastIndexOf(patternChar), 1);
 	}
 
+	/** Get the sub string following the last index of 'pattern'
+	 */
 	public static final String lastMatch(String src, String pattern) {
 		return _lastMatch(src, src.lastIndexOf(pattern), pattern.length());
 	}
@@ -458,10 +470,14 @@ public class StringSplit {
 	}
 
 
+	/** Get the sub string preceding the last index of 'patternChar'
+	 */
 	public static final String preLastMatch(String src, char patternChar) {
 		return _preLastMatch(src, src.lastIndexOf(patternChar));
 	}
 
+	/** Get the sub string preceding the last index of 'pattern'
+	 */
 	public static final String preLastMatch(String src, String pattern) {
 		return _preLastMatch(src, src.lastIndexOf(pattern));
 	}
@@ -486,6 +502,177 @@ public class StringSplit {
 		String post = src.substring(idxPost > -1 && idxPost + pattern.length() >= src.length() ? src.length() : (idxPost < 0 ? src.length() : idxPost + pattern.length()));
 
 		return new AbstractMap.SimpleImmutableEntry<>(pre, post);
+	}
+
+
+	// ==== substring(char) methods ====
+
+	/** Find the first sub-string between a start and end char, default to the start and end of the string if either search char cannot be found
+	 * @see #_substring(String, char, boolean, char, boolean, boolean, boolean)
+	 */
+	public static String substring(String src, char startChar, char endChar) {
+		return _substring(src, startChar, true, endChar, true, false, false);
+	}
+
+
+	/** Find the first sub-string between a start and end char, throw an error if either search char cannot be found
+	 * @see #_substring(String, char, boolean, char, boolean, boolean, boolean)
+	 */
+	public static String substringThrows(String src, char startChar, char endChar) {
+		return _substring(src, startChar, true, endChar, true, true, false);
+	}
+
+
+	/** Find the first sub-string between a start and end char, return null if either search char cannot be found
+	 * @see #_substring(String, char, boolean, char, boolean, boolean, boolean)
+	 */
+	public static String substringNull(String src, char startChar, char endChar) {
+		return _substring(src, startChar, true, endChar, true, false, true);
+	}
+
+
+	/** Find the last sub-string between a start and end char, default to the start and end of the string if either search char cannot be found
+	 * @see #_substring(String, char, boolean, char, boolean, boolean, boolean)
+	 */
+	public static String lastSubstring(String src, char startChar, char endChar) {
+		return _substring(src, startChar, false, endChar, true, false, false);
+	}
+
+
+	/** Find the last sub-string between a start and end char, throw an error if either search char cannot be found
+	 * @see #_substring(String, char, boolean, char, boolean, boolean, boolean)
+	 */
+	public static String lastSubstringThrows(String src, char startChar, char endChar) {
+		return _substring(src, startChar, false, endChar, true, true, false);
+	}
+
+
+	/** Find the last sub-string between a start and end char, return null if either search char cannot be found
+	 * @see #_substring(String, char, boolean, char, boolean, boolean, boolean)
+	 */
+	public static String lastSubstringNull(String src, char startChar, char endChar) {
+		return _substring(src, startChar, false, endChar, true, false, true);
+	}
+
+
+	/** Find a sub string between the last index of a start and end string.<br>
+	 * For example:<br>
+	 * {@code lastSubstring("In 'A Thesis on Subatomic Wormholes' there are...", '"', '"', true)}<br>
+	 * returns:<br>
+	 * {@code "A Thesis on Subatomic Wormholes"}
+	 * @param src the source string
+	 * @param startChar the starting string, if this cannot be found in {@code src}, the start index defaults to 0
+	 * @param startFirst true to use {@link String#indexOf(String)}, false to use {@link String#lastIndexOf(String)} when searching {@code src} for {@code startChar}
+	 * @param endChar the ending string, if this cannot be found in {@code src}, the end index defaults to {@code src.length() - 1}
+	 * @param endFirst true to use {@link String#indexOf(String, int)}, false to use {@link String#lastIndexOf(String, int)} when searching {@code src} for {@code endChar}
+	 * @param throwIfEitherNotFound if either {@code startChar} or {@code endChar} cannot be found in {@code src}, throw an error instead of defaulting to the start/end of the {@code src} string.  Overrides {@code nullIfEitherNotFound}
+	 * @param nullIfEitherNotFound if either {@code startChar} or {@code endChar} cannot be found in {@code src}, return null instead of defaulting to the start/end of the {@code src} string
+	 * @return the sub string between {@code startChar} and {@code endChar} excluding both
+	 */
+	public static String _substring(String src, char startChar, boolean startFirst, char endChar, boolean endFirst, boolean throwIfEitherNotFound, boolean nullIfEitherNotFound) {
+		int startIdx = startFirst ? src.indexOf(startChar) : src.lastIndexOf(startChar);
+		if(startIdx < 0) {
+			if(throwIfEitherNotFound) {
+				throw new StringIndexOutOfBoundsException("could not find startStr in src");
+			}
+		}
+
+		int startOff = startIdx + 1; // +1 even if startIdx could not be found (-1), this works
+		int endIdx = endFirst ? src.indexOf(endChar, startOff) : src.lastIndexOf(endChar, startOff);
+		if(endIdx < 0) {
+			if(throwIfEitherNotFound) {
+				throw new StringIndexOutOfBoundsException("could not find endStr in src");
+			}
+			endIdx = !nullIfEitherNotFound ? src.length() : -1;
+		}
+
+		return (nullIfEitherNotFound && (startIdx < 0 || endIdx < 0)) ? null : src.substring(startOff, endIdx);
+	}
+
+
+	// ==== substring(String) methods ====
+
+	/** Find the first sub-string between a start and end string, default to the start and end of the string if either search string cannot be found
+	 * @see #_substring(String, String, boolean, String, boolean, boolean, boolean)
+	 */
+	public static String substring(String src, String startStr, String endStr) {
+		return _substring(src, startStr, true, endStr, true, false, false);
+	}
+
+
+	/** Find the first sub-string between a start and end char, throw an error if either the search char cannot be found
+	 * @see #_substring(String, String, boolean, String, boolean, boolean, boolean)
+	 */
+	public static String substringThrows(String src, String startStr, String endStr) {
+		return _substring(src, startStr, true, endStr, true, true, false);
+	}
+
+
+	/** Find the first sub-string between a start and end string, return null if either search string cannot be found
+	 * @see #_substring(String, String, boolean, String, boolean, boolean, boolean)
+	 */
+	public static String substringNull(String src, String startStr, String endStr) {
+		return _substring(src, startStr, true, endStr, true, false, true);
+	}
+
+
+	/** Find the last sub-string between a start and end string, default to the start and end of the string if either search string cannot be found
+	 * @see #_substring(String, String, boolean, String, boolean, boolean, boolean)
+	 */
+	public static String lastSubstring(String src, String startStr, String endStr) {
+		return _substring(src, startStr, false, endStr, true, false, false);
+	}
+
+
+	/** Find the last sub-string between a start and end char, throw an error if either the search char cannot be found
+	 * @see #_substring(String, String, boolean, String, boolean, boolean, boolean)
+	 */
+	public static String lastSubstringThrows(String src, String startStr, String endStr) {
+		return _substring(src, startStr, false, endStr, true, true, false);
+	}
+
+
+	/** Find the last sub-string between a start and end string, return null if either search string cannot be found
+	 * @see #_substring(String, String, boolean, String, boolean, boolean, boolean)
+	 */
+	public static String lastSubstringNull(String src, String startStr, String endStr) {
+		return _substring(src, startStr, false, endStr, true, false, true);
+	}
+
+
+	/** Find a sub string between the last index of a start and end string.<br>
+	 * For example:<br>
+	 * {@code lastSubstring("In 'A Thesis on Subatomic Wormholes' there are...", "\"", "\"", true)}<br>
+	 * returns:<br>
+	 * {@code "A Thesis on Subatomic Wormholes"}
+	 * @param src the source string
+	 * @param startStr the starting string, if this cannot be found in {@code src}, the start index defaults to 0
+	 * @param startFirst true to use {@link String#indexOf(String)}, false to use {@link String#lastIndexOf(String)} when searching {@code src} for {@code startStr}
+	 * @param endStr the ending string, if this cannot be found in {@code src}, the end index defaults to {@code src.length() - 1}
+	 * @param endFirst true to use {@link String#indexOf(String, int)}, false to use {@link String#lastIndexOf(String, int)} when searching {@code src} for {@code endStr}
+	 * @param throwIfEitherNotFound if either {@code startStr} or {@code endStr} cannot be found in {@code src}, throw an error instead of defaulting to the start/end of the {@code src} string.  Overrides {@code nullIfEitherNotFound}
+	 * @param nullIfEitherNotFound if either {@code startStr} or {@code endStr} cannot be found in {@code src}, return null instead of defaulting to the start/end of the {@code src} string
+	 * @return the sub string between {@code startStr} and {@code endStr} excluding both
+	 */
+	public static String _substring(String src, String startStr, boolean startFirst, String endStr, boolean endFirst, boolean throwIfEitherNotFound, boolean nullIfEitherNotFound) {
+		int startIdx = startFirst ? src.indexOf(startStr) : src.lastIndexOf(startStr);
+		if(startIdx < 0) {
+			if(throwIfEitherNotFound) {
+				throw new StringIndexOutOfBoundsException("could not find startStr in src");
+			}
+			startIdx = -startStr.length(); // works because startIdx is only used by startOff which add startStr.length()
+		}
+
+		int startOff = startIdx + startStr.length();
+		int endIdx = endFirst ? src.indexOf(endStr, startOff) : src.lastIndexOf(endStr, startOff);
+		if(endIdx < 0) {
+			if(throwIfEitherNotFound) {
+				throw new StringIndexOutOfBoundsException("could not find endStr in src");
+			}
+			endIdx = !nullIfEitherNotFound ? src.length() : -1;
+		}
+
+		return (nullIfEitherNotFound && (startIdx < 0 || endIdx < 0)) ? null : src.substring(startOff, endIdx);
 	}
 
 }

@@ -32,11 +32,11 @@ public class StringEscapePartial {
 
 
 	/** Parse a sub-string until an ending character is reached, unless the ending
-	 * character appears in a quoted section.
+	 * character appears in a quoted section. The ending quote from a quoted section is included in the returned index.<br>
 	 * For example, if the ending characters are {@code ','} and {@code ']'}, and the {@code str} is:<br>
-	 * {@code "a string containing "quotes, [], and commas", further string"}<br>
+	 * {@code a string containing "quotes, [], and commas", further string}<br>
 	 * the result is:<br>
-	 * {@code "a string containing "quotes, [], and commas"}
+	 * {@code a string containing "quotes, [], and commas"}
 	 * 
 	 * @param src
 	 * @param offset
