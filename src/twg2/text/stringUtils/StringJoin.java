@@ -2,6 +2,7 @@ package twg2.text.stringUtils;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.function.Function;
@@ -68,26 +69,31 @@ public class StringJoin {
 	 * @see StringJoiner
 	 */
 	public static final String join(List<String> strs, String delimiter) {
+		return join(strs, 0, strs.size(), delimiter);
+	}
+
+
+	public static final String join(List<String> strs, int off, int len, String delimiter) {
 		StringBuilder strB = new StringBuilder();
-		join(strs, delimiter, strB);
+		join(strs, off, len, delimiter, strB);
 		return strB.toString();
 	}
 
 
-	public static final void join(List<String> strs, String delimiter, StringBuilder dst) {
+	public static final void join(List<String> strs, int off, int len, String delimiter, StringBuilder dst) {
 		try {
-			join(strs, delimiter, (Appendable)dst);
+			join(strs, off, len, delimiter, (Appendable)dst);
 		} catch(IOException ioe) {
 			throw new UncheckedIOException(ioe);
 		}
 	}
 
 
-	public static final void join(List<String> strs, String delimiter, Appendable dst) throws IOException {
+	public static final void join(List<String> strs, int off, int len, String delimiter, Appendable dst) throws IOException {
 		List<String> strsList = (List<String>)strs;
-		int countTo = strsList.size() - 1;
-		if(countTo > -1) {
-			for(int i = 0; i < countTo; i++) {
+		int countTo = off + len - 1;
+		if(len > 0) {
+			for(int i = off; i < countTo; i++) {
 				dst.append(strsList.get(i));
 				dst.append(delimiter);
 			}
@@ -110,9 +116,25 @@ public class StringJoin {
 	}
 
 
+	public static final String join(Iterable<String> strs, int off, int len, String delimiter) {
+		StringBuilder strB = new StringBuilder();
+		join(strs, off, len, delimiter, strB);
+		return strB.toString();
+	}
+
+
 	public static final void join(Iterable<String> strs, String delimiter, StringBuilder dst) {
 		try {
 			join(strs, delimiter, (Appendable)dst);
+		} catch(IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+	}
+
+
+	public static final void join(Iterable<String> strs, int off, int len, String delimiter, StringBuilder dst) {
+		try {
+			join(strs, off, len, delimiter, (Appendable)dst);
 		} catch(IOException ioe) {
 			throw new UncheckedIOException(ioe);
 		}
@@ -127,6 +149,25 @@ public class StringJoin {
 			}
 			dst.append(str);
 			firstLoop = false;
+		}
+	}
+
+
+	public static final void join(Iterable<String> strs, int off, int len, String delimiter, Appendable dst) throws IOException {
+		boolean firstLoop = true;
+		int i = 0;
+		Iterator<String> iter = strs.iterator();
+		while(iter.hasNext() && i < off) { iter.next(); i++; }
+
+		int size = off + len;
+		while(iter.hasNext() && i < size) {
+			String str = iter.next();
+			if(!firstLoop) {
+				dst.append(delimiter);
+			}
+			dst.append(str);
+			firstLoop = false;
+			i++;
 		}
 	}
 
@@ -242,6 +283,13 @@ public class StringJoin {
 		}
 
 
+		public static final String join(Object[] objs, int off, int len, String delimiter) {
+			StringBuilder strB = new StringBuilder();
+			join(objs, off, len, delimiter, strB);
+			return strB.toString();
+		}
+
+
 		public static final void join(Object[] objs, int off, int len, String delimiter, StringBuilder dst) {
 			try {
 				join(objs, off, len, delimiter, (Appendable)dst);
@@ -269,27 +317,31 @@ public class StringJoin {
 		 * @see StringJoin#join(List, String)
 		 */
 		public static final String join(List<? extends Object> objs, String delimiter) {
+			return join(objs, 0, objs.size(), delimiter);
+		}
+
+
+		public static final String join(List<? extends Object> objs, int off, int len, String delimiter) {
 			StringBuilder strB = new StringBuilder();
-			join(objs, delimiter, strB);
-			
+			join(objs, off, len, delimiter, strB);
 			return strB.toString();
 		}
 
 
-		public static final void join(List<? extends Object> objs, String delimiter, StringBuilder dst) {
+		public static final void join(List<? extends Object> objs, int off, int len, String delimiter, StringBuilder dst) {
 			try {
-				join(objs, delimiter, (Appendable)dst);
+				join(objs, off, len, delimiter, (Appendable)dst);
 			} catch(IOException ioe) {
 				throw new UncheckedIOException(ioe);
 			}
 		}
 
 
-		public static final void join(List<? extends Object> objs, String delimiter, Appendable dst) throws IOException {
+		public static final void join(List<? extends Object> objs, int off, int len, String delimiter, Appendable dst) throws IOException {
 			List<? extends Object> strsList = (List<? extends Object>)objs;
-			int countTo = strsList.size() - 1;
-			if(countTo > -1) {
-				for(int i = 0; i < countTo; i++) {
+			int countTo = off + len - 1;
+			if(len > 0) {
+				for(int i = off; i < countTo; i++) {
 					Object obj = strsList.get(i);
 					dst.append(obj != null ? obj.toString() : "null");
 					dst.append(delimiter);
@@ -312,9 +364,25 @@ public class StringJoin {
 		}
 
 
+		public static final String join(Iterable<? extends Object> objs, int off, int len, String delimiter) {
+			StringBuilder strB = new StringBuilder();
+			join(objs, off, len, delimiter, strB);
+			return strB.toString();
+		}
+
+
 		public static final void join(Iterable<? extends Object> objs, String delimiter, StringBuilder dst) {
 			try {
 				join(objs, delimiter, (Appendable)dst);
+			} catch(IOException ioe) {
+				throw new UncheckedIOException(ioe);
+			}
+		}
+
+
+		public static final void join(Iterable<? extends Object> objs, int off, int len, String delimiter, StringBuilder dst) {
+			try {
+				join(objs, off, len, delimiter, (Appendable)dst);
 			} catch(IOException ioe) {
 				throw new UncheckedIOException(ioe);
 			}
@@ -329,6 +397,25 @@ public class StringJoin {
 				}
 				dst.append(obj != null ? obj.toString() : "null");
 				firstLoop = false;
+			}
+		}
+
+
+		public static final void join(Iterable<? extends Object> objs, int off, int len, String delimiter, Appendable dst) throws IOException {
+			boolean firstLoop = true;
+			int i = 0;
+			Iterator<? extends Object> iter = objs.iterator();
+			while(iter.hasNext() && i < off) { iter.next(); i++; }
+
+			int size = off + len;
+			while(iter.hasNext() && i < size) {
+				Object obj = iter.next();
+				if(!firstLoop) {
+					dst.append(delimiter);
+				}
+				dst.append(obj != null ? obj.toString() : "null");
+				firstLoop = false;
+				i++;
 			}
 		}
 

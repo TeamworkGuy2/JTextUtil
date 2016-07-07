@@ -19,7 +19,7 @@ import checks.CheckTask;
 public class StringReplaceTest {
 
 	@Test
-	public void stringReplaceTest() {
+	public void replaceStringsTest() {
 		String[] strs = new String[] {   "&amp; with &lt; or &gt;", "*** or ** * ***", "***", "*** a six***seven***" };
 		String[] expect = new String[] { "& with < or >",           "* or ** * *",     "*",   "* a six*seven*" };
 
@@ -32,7 +32,7 @@ public class StringReplaceTest {
 	}
 
 	@Test
-	public void stringReplaceOffsetTest() {
+	public void replaceStringsOffsetTest() {
 		String[] strs = new String[] {   "&lt;+=&lt; or &gt;", "*** or ** * ***", "***", "*** a six***seven***" };
 		String[] expect = new String[] { "&lt;+=< or >",       "*** or ** * *",   "***", "*** a six*seven*" };
 
@@ -43,6 +43,19 @@ public class StringReplaceTest {
 		CheckTask.assertTests(strs, expect, (s) -> StringReplace.replaceStrings(s, strOffset, searchStrs, replaceStrs));
 
 		CheckTask.assertTests(strs, expect, (s) -> StringReplace.replaceStrings(s, strOffset, new LinkedList<>(searchStrs), replaceStrs));
+	}
+
+
+	@Test
+	public void charArrayReplaceTest() {
+		String[] strs = new String[] {   "*** or ** * ***", "*** a six***seven***" };
+		String[] expect = new String[] { " ** * *",         "six*seven*" };
+
+		String searchStr = "***";
+		String replaceStr = "*";
+
+		int strOffset = 6;
+		CheckTask.assertTests(strs, expect, (s) -> { StringBuilder sb = new StringBuilder(); StringReplace.replace(s.toCharArray(), strOffset, searchStr, replaceStr, sb); return sb.toString(); });
 	}
 
 

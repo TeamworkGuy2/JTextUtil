@@ -26,9 +26,9 @@ public final class StringEscape {
 	/** Add escape characters to special characters in a {@link CharSequence}<br>
 	 * For example, given:<br>
 	 * {@code str = "a \"block\" char '\"'"}<br>
-	 * a call to:<br>
+	 * For example:<br>
 	 * {@code escape(str, '\\', '\"', '\\', new StringBuilder())}<br>
-	 * would return with the contents of the last, appendable, parameter equal to:<br>
+	 * appends the following to 'dst':<br>
 	 * {@code a \\\"block\\\" char '\\\"'}
 	 * @param str the input character sequence to escape
 	 * @param escapeChar the escape character to add before {@code escape1} and {@code escape2}
@@ -74,10 +74,10 @@ public final class StringEscape {
 
 
 	/** Unwrap a sequence of escaped characters.<br>
-	 * For example, a call:<br>
+	 * For example:<br>
 	 * {@code unescape("a \\\"block\\\" char '\\\"'", 0, '\\', '"', new StringBuilder())}<br>
 	 * would return {@code 21} (the index of the end character or end of the string)<br>
-	 * and the last, appendable, parameter would contain:<br>
+	 * appends the following to 'dst':<br>
 	 * {@code a "block" char '"'}
 	 * @param src the input character sequence to read characters from
 	 * @param offset the offset into {@code src} at which to start unwrapping characters

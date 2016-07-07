@@ -25,7 +25,7 @@ public class StringEscapeJson {
 
 	public static final String toJsonString(String str, int off, int len) {
 		StringBuilder sb = new StringBuilder();
-		toJsonString(str, 0, str.length(), sb);
+		toJsonString(str, off, len, sb);
 		return sb.toString();
 	}
 
@@ -71,7 +71,7 @@ public class StringEscapeJson {
 
 	public static final String fromJsonString(String str, int off, int len) {
 		StringBuilder sb = new StringBuilder();
-		fromJsonString(str, 0, str.length(), sb);
+		fromJsonString(str, off, len, sb);
 		return sb.toString();
 	}
 

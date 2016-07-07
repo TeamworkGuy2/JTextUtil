@@ -1,5 +1,5 @@
 {
-	"version" : "0.9.0",
+	"version" : "0.9.1",
 	"name" : "jtext-util",
 	"description" : "String search, replace, and transform functions that provide more control, at the expense of verbosity, than those already in the Java API",
 	"homepage" : "https://github.com/TeamworkGuy2/JTextFluff",

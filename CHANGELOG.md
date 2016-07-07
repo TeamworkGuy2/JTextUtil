@@ -4,7 +4,16 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.9.0](N/A) - 2016-06-23
+###[0.9.1](N/A) - 2016-07-07
+####Added
+* StringJoin join() overloads with 'off' and 'len' parameters
+
+####Fixed
+* StringEscapeJson offset/length being ignored
+
+
+--------
+###[0.9.0](https://github.com/TeamworkGuy2/JTextFluff/commit/d48b7163392bbfab2a5eca4bc6f06d2143b29a0f) - 2016-06-26
 ####Added
 * StringSplit substring*() and lastSubstring*() methods
 
