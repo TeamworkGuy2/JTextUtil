@@ -3,7 +3,7 @@ package twg2.text.stringEscape;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
-import twg2.text.stringUtils.StringIndex;
+import twg2.text.stringSearch.StringIndex;
 
 /**
  * @author TeamworkGuy2

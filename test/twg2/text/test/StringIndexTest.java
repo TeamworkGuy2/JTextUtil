@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import twg2.text.stringUtils.StringIndex;
+import twg2.text.stringSearch.StringIndex;
 import checks.CheckTask;
 
 /**

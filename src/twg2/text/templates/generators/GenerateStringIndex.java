@@ -20,7 +20,7 @@ import twg2.text.templates.RandomAccessTypeInfo;
  */
 public class GenerateStringIndex {
 	private static String tmplDir = "src/twg2/text/templates/";
-	private static String pkgName = "twg2.text.stringUtils";
+	private static String pkgName = "twg2.text.stringSearch";
 
 
 	public static final void generateStringIndex() throws IOException {
@@ -29,11 +29,13 @@ public class GenerateStringIndex {
 		charArrayType.getLength = ".length";
 		charArrayType.getElement = "[";
 		charArrayType.getElementEnd = "]";
+
 		RandomAccessTypeInfo stringType = new RandomAccessTypeInfo();
 		stringType.type = "String";
 		stringType.getLength = ".length()";
 		stringType.getElement = ".charAt(";
 		stringType.getElementEnd = ")";
+
 		RandomAccessTypeInfo stringBuilderType = new RandomAccessTypeInfo();
 		stringBuilderType.type = "StringBuilder";
 		stringBuilderType.getLength = ".length()";

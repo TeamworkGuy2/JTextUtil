@@ -1,14 +1,17 @@
 JTextFluff
 ==============
-version: 0.9.1
+version: 0.10.0
 
 Dependencies: none
 
 ####twg2.text.stringEscape
 Escape and unescape methods for JSON, XML, and strings with special characters (i.e. non-ASCII, quotes, or \t \b \f \r characters). 
 
+####twg2.text.stringSearch
+String search methods for indexOf, endsWith, startsWith, compare, contains, and common prefix/suffix (StringCommonality). 
+
 ####twg2.text.stringUtils
-String utility methods for indexOf, endsWith, startsWith, join, split, trim, replace, compare, and other replacement and transformation methods. 
+String utility methods for join, split, substring, trim, replace, n-th match, hex conversion (StringHex), empty/whitespace checking (StringCheck), and other replacement and transformation methods. 
 Meant to provide more options than available in the Java API as of Java 1.8. 
 
 ####twg2.text.stringTemplate

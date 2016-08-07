@@ -1,4 +1,4 @@
-package twg2.text.stringUtils;
+package twg2.text.stringSearch;
 
 import java.util.Collection;
 import java.util.List;

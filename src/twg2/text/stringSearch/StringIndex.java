@@ -1,4 +1,4 @@
-package twg2.text.stringUtils;
+package twg2.text.stringSearch;
 
 import java.util.List;
 import java.util.RandomAccess;

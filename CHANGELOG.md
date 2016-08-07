@@ -4,9 +4,20 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.9.1](N/A) - 2016-07-07
+###[0.10.0](N/A) - 2016-08-07
+####Added
+* StringSearchOp for string comparison
+
+####Changed
+* Added new twg2.text.stringSearch package
+  * moved StringCommonality, StringCompare, StringIndex into this package
+
+
+--------
+###[0.9.1](https://github.com/TeamworkGuy2/JTextFluff/commit/cd020a56da7a9549c2be5814bda830e59c23d245) - 2016-07-07
 ####Added
 * StringJoin join() overloads with 'off' and 'len' parameters
+* Additional unit tests
 
 ####Fixed
 * StringEscapeJson offset/length being ignored

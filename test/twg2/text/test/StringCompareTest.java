@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import org.junit.Assert;
 import org.junit.Test;
 
-import twg2.text.stringUtils.StringCompare;
+import twg2.text.stringSearch.StringCompare;
 import checks.CheckTask;
 
 /**

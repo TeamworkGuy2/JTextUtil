@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.RandomAccess;
 
+import twg2.text.stringSearch.StringCommonality;
+import twg2.text.stringSearch.StringCompare;
+import twg2.text.stringSearch.StringIndex;
+
 /** Methods for replacing portions of a string
  * @author TeamworkGuy2
  * @since 2014-10-18
