@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.10.0](N/A) - 2016-08-07
+###[0.10.1](N/A) - 2016-08-15
+####Added
+* StringPad
+
+
+--------
+###[0.10.0](https://github.com/TeamworkGuy2/JTextFluff/commit/621ad58574853f831ce5bc7e669e1447b8f306f9) - 2016-08-07
 ####Added
 * StringSearchOp for string comparison
 
