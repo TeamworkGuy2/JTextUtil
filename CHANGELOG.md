@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.10.1](N/A) - 2016-08-15
+###[0.10.2](N/A) - 2016-08-27
+####Changed
+* Changed remote git repository name
+
+
+--------
+###[0.10.1](https://github.com/TeamworkGuy2/JTextFluff/commit/1d91013ca264434f32d59ac84b2e720444433689) - 2016-08-15
 ####Added
 * StringPad
 
