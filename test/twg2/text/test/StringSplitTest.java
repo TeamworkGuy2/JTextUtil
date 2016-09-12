@@ -19,6 +19,57 @@ import checks.CheckTask;
 public class StringSplitTest {
 
 
+	static class StrOffLen {
+		String pattern;
+		String str;
+		int off;
+		int len;
+
+
+		public static final StrOffLen of(String str, String pattern) {
+			return of(str, 0, str.length(), pattern);
+		}
+
+
+		public static final StrOffLen of(String str, int off, int len, String pattern) {
+			StrOffLen s = new StrOffLen();
+			s.pattern = pattern;
+			s.str = str;
+			s.off = off;
+			s.len = len;
+			return s;
+		}
+
+	}
+
+
+
+
+	static class CharsOffLen {
+		String pattern;
+		char[] chars;
+		int off;
+		int len;
+
+
+		public static final CharsOffLen of(String str, String pattern) {
+			return of(str.toCharArray(), 0, str.length(), pattern);
+		}
+
+
+		public static final CharsOffLen of(char[] chs, int off, int len, String pattern) {
+			CharsOffLen s = new CharsOffLen();
+			s.pattern = pattern;
+			s.chars = chs;
+			s.off = off;
+			s.len = len;
+			return s;
+		}
+
+	}
+
+
+
 	@Test
 	public void stringSplitTest() {
 		String[] matches = new String[] {
@@ -103,13 +154,32 @@ public class StringSplitTest {
 
 
 	@Test
-	public void countMatchesTest() {
+	public void countStringMatchesTest() {
 		Assert.assertEquals(2, StringSplit.countMatches("abc, def, ghi", ","));
 		Assert.assertEquals(3, StringSplit.countMatches("aaa", "a"));
 		Assert.assertEquals(3, StringSplit.countMatches("aaaaaa", "aa"));
 		Assert.assertEquals(0, StringSplit.countMatches("", "-"));
 		Assert.assertEquals(0, StringSplit.countMatches("123", "-"));
 		Assert.assertEquals(1, StringSplit.countMatches("-", "-"));
+	}
+
+
+	@Test
+	public void countCharMatchesTest() {
+		CharsOffLen[] datas = new CharsOffLen[] {
+			CharsOffLen.of("abc, def, ghi", ","),
+			CharsOffLen.of("aaa", "a"),
+			CharsOffLen.of("aaaaaa", "aa"),
+			CharsOffLen.of("", "-"),
+			CharsOffLen.of("123", "-"),
+			CharsOffLen.of("-", "-"),
+		};
+		Integer[] expected = new Integer[] {
+			2, 3, 3, 0, 0, 1
+		};
+
+		CheckTask.assertTests(datas, expected, (s) -> StringSplit.countMatches(s.chars, s.off, s.len, s.pattern.toCharArray(), 0, s.pattern.length()));
+		CheckTask.assertTests(datas, expected, (s) -> StringSplit.countMatches(chars("~~~", s.chars), 3 + s.off, s.len, s.pattern.toCharArray(), 0, s.pattern.length()));
 	}
 
 
@@ -223,6 +293,16 @@ public class StringSplitTest {
 
 	private static <K, V> Map.Entry<K, V> entry(K key, V value) {
 		return new AbstractMap.SimpleImmutableEntry<>(key, value);
+	}
+
+
+	private static final char[] chars(String str, char[] chs) {
+		return str(str, chs).toCharArray();
+	}
+
+
+	private static final String str(String str, char[] chs) {
+		return (str + new String(chs));
 	}
 
 }

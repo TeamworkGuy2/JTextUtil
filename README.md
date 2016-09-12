@@ -1,6 +1,6 @@
-JTextFluff
+JTextUtil
 ==============
-version: 0.10.2
+version: 0.10.3
 
 Dependencies: none
 
@@ -13,9 +13,6 @@ String search methods for indexOf, endsWith, startsWith, compare, contains, and 
 ####twg2.text.stringUtils
 String utility methods for join, pad, split, substring, trim, replace, n-th match, hex conversion (StringHex), empty/whitespace checking (StringCheck), and other replacement and transformation methods. 
 Meant to provide more options than available in the Java API as of Java 1.8. 
-
-####twg2.text.stringTemplate
-Stronger typed way to represent a PrintStream.printf() style string, a template string contains a list of parts, each of which is either a string literal or a placeholder with a data type. 
 
 ####twg2.text.test
 JUnit tests and examples (requires [JUnit 4] (http://junit.org/))

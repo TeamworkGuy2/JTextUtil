@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import twg2.text.stringSearch.StringIndex;
+
 /** A utility for simple string splitting.
  * @author TeamworkGuy2
  * @since 2013-12-21
@@ -372,8 +374,6 @@ public class StringSplit {
 		int srcSize = src.length();
 		int patternSize = pattern.length();
 		int index = 0;
-		int indexPlusPatternSize = 0;
-		int nextIndex = 0;
 		int matchingCount = 0;
 
 		// Since the first .indexOf() call uses index+patternSize, we want the first index to be at 0
@@ -381,9 +381,44 @@ public class StringSplit {
 		// Keep adding new strings until on cannot be found
 		// (reaching the maximum number of strings is handled inside the loop)
 		do {
-			indexPlusPatternSize = index + patternSize; // small optimization (me being picky)
+			int indexPlusPatternSize = index + patternSize;
 			// Find the next matching string index after the current matching string index
-			nextIndex = src.indexOf(pattern, indexPlusPatternSize);
+			int nextIndex = src.indexOf(pattern, indexPlusPatternSize);
+			// If no more matching strings can be found, include the remainder of
+			// the string after the last matching string
+			nextIndex = (nextIndex == -1) ? srcSize : nextIndex;
+			// If the matching string index is greater than or equal to the end
+			// of the string, then break, there is no more string left to parse
+			if(indexPlusPatternSize > srcSize) { break; }
+			// If the next found index is the end of the string, set the index
+			// to -1 so that the outer while loop ends, else keep the current index
+			index = (nextIndex == srcSize) ? -1 : nextIndex;
+			// Increment the number of split sub strings
+			matchingCount++;
+		} while(index != -1); // While at end because (index = -patternSize) could equal -1 if the pattern size is -1
+
+		return matchingCount - 1; // -1 because loop counts the number of strings between matching patterns, the number of matching patterns is 1 less
+	}
+
+
+	public static final int countMatches(char[] src, int srcOff, int srcLen, char[] pattern, int patternOff, int patternLen) {
+		if(src == null || pattern == null) {
+			return 0;
+		}
+
+		int srcSize = srcOff + srcLen;
+		int patternSize = patternLen;
+		int index = srcOff;
+		int matchingCount = 0;
+
+		// Since the first .indexOf() call uses index+patternSize, we want the first index to be at 0
+		index = -patternSize;
+		// Keep adding new strings until on cannot be found
+		// (reaching the maximum number of strings is handled inside the loop)
+		do {
+			int indexPlusPatternSize = index + patternSize;
+			// Find the next matching string index after the current matching string index
+			int nextIndex = StringIndex.indexOf(src, indexPlusPatternSize, srcSize - indexPlusPatternSize, pattern, patternOff, patternLen);
 			// If no more matching strings can be found, include the remainder of
 			// the string after the last matching string
 			nextIndex = (nextIndex == -1) ? srcSize : nextIndex;
