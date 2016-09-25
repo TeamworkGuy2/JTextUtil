@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.10.3](N/A) - 2016-09-11
+###[0.10.4](N/A) - 2016-09-24
+#### Added
+* Added StringSplit.splitAtBoundary()
+
+
+--------
+###[0.10.3](https://github.com/TeamworkGuy2/JTextUtil/commit/cb0f1e114944175eafe06cc8311609187a2cc93e) - 2016-09-11
 #### Added
 * Added StringSplit.countMatches(char[], int, int, char[], int, int)
 

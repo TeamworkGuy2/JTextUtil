@@ -710,4 +710,67 @@ public class StringSplit {
 		return (nullIfEitherNotFound && (startIdx < 0 || endIdx < 0)) ? null : src.substring(startOff, endIdx);
 	}
 
+
+	// ==== Split at spaces ====
+	/** Split a string into multiple sub-string at boundary characters while keeping each string's length less than or equal to the maxLength
+	 * Example: splitAtBoundary("the quick sly fox", ' ', 5)
+	 * returns: ["the", "quick", "sly", "fox"]
+	 *
+	 * @param longStr the string to split up
+	 * @param maxLen the max length of each sub-string
+	 * @return a list of sub-strings split at the first boundary character before {@code maxLen} or the {@code maxLen}
+	 */
+	public static List<String> splitAtBoundary(String longStr, char boundryMarker, int maxLen) {
+		int len = longStr.length();
+		int offset = 0;
+		List<String> strs = new ArrayList<>();
+
+		while(true) {
+			int nextSplitLen = getNextBoundarySplitIndex(longStr, offset, len, boundryMarker, maxLen);
+			strs.add(longStr.substring(offset, offset + nextSplitLen));
+			nextSplitLen += (offset + nextSplitLen < len && longStr.charAt(offset + nextSplitLen) == boundryMarker ? 1 : 0);
+			if(offset + nextSplitLen >= len) {
+				break;
+			}
+			offset += nextSplitLen;
+		}
+
+		return strs;
+	}
+
+
+	/** Determine the next index at which to split a string (up to a max sub-string size), preferring to split at boundary characters (e.g. spaces between words)
+	 * Example: getNextWordSplitIndex("the quick sly fox", 4, ' ', 5)
+	 * returns: 5 // meaning 4 (the offset) + 5 is the next absolute split index which produces "quick"
+	 *
+	 * Example: getNextWordSplitIndex("the quick sly fox", 10, ' ', 5)
+	 * returns: 3 // meaning 10 (the offset) + 3 is the next absolute split index which produces "sly"
+	 *
+	 * @param str the string
+	 * @param the character to split on
+	 * @param offset an initial (0-based) offset at which to start searching for a split point
+	 * @param maxLen the max length of the sub-string
+	 * @return the number of characters to take from the string, 'offset' is not included.
+	 */
+	private static int getNextBoundarySplitIndex(String str, int offset, int strLen, char boundaryMarker, int maxLen) {
+		int idx = str.indexOf(boundaryMarker, offset) - offset;
+		// look for the last boundary less than maxLen + 1 (+1 because we drop the boundary if it comes at the end of a max length sub-string)
+		while(idx > -1 && idx < maxLen + 1) {
+			int nextIdx = str.indexOf(boundaryMarker, offset + idx + 1) - offset;
+			// if no more boundaries exist or the next boundary is at an index greater than maxLen, then break
+			if(nextIdx < 0 || nextIdx >= maxLen + 1) {
+				// if remainder of the string is less than the maxLen, just take all of it
+				if(nextIdx < 0 && strLen - offset <= maxLen) {
+					idx = strLen - offset;
+				}
+				break;
+			}
+			// the next boundary index is still less than maxLen
+			idx = nextIdx;
+		}
+		return (idx < 0
+				? Math.min(strLen - offset, maxLen) // if no boundary exist in the remaining string, take the remainder or maxLen, whichever is smaller
+				: (idx >= maxLen + 1 ? maxLen : idx)); // if the index is somehow too large (shouldn't be possible) cap it at maxLen, otherwise return the next valid index
+	}
+
 }

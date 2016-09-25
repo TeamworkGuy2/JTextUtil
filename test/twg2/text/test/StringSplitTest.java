@@ -291,6 +291,15 @@ public class StringSplitTest {
 	}
 
 
+	@Test
+	public void splitAtBoundary() {
+		Assert.assertEquals(Arrays.asList("the", "quick", "sly", "fox"), StringSplit.splitAtBoundary("the quick sly fox", ' ', 5));
+		Assert.assertEquals(Arrays.asList("the", "quick", "sly fox"), StringSplit.splitAtBoundary("the quick sly fox", ' ', 8));
+		Assert.assertEquals(Arrays.asList("a", "sto", "p b", "c", "def"), StringSplit.splitAtBoundary("a stop b c def", ' ', 3));
+		Assert.assertEquals(Arrays.asList("a", "stop", "b c", "def"), StringSplit.splitAtBoundary("a stop b c def", ' ', 4));
+	}
+
+
 	private static <K, V> Map.Entry<K, V> entry(K key, V value) {
 		return new AbstractMap.SimpleImmutableEntry<>(key, value);
 	}
