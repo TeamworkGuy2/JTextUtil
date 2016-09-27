@@ -4,7 +4,16 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.10.4](N/A) - 2016-09-24
+###[0.10.5](N/A) - 2016-09-26
+#### Added
+* Added StringJoin.join(Iterator, ...) and StringJoin.Objects.join(Iterator, ...)
+
+#### Changed
+* Improved StringJoin and StringHex unit tests
+
+
+--------
+###[0.10.4](https://github.com/TeamworkGuy2/JTextUtil/commit/6d7676e216cd63cfed9fb4f96180a5d647cb8372) - 2016-09-24
 #### Added
 * Added StringSplit.splitAtBoundary()
 

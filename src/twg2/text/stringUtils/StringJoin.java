@@ -154,14 +154,70 @@ public class StringJoin {
 
 
 	public static final void join(Iterable<String> strs, int off, int len, String delimiter, Appendable dst) throws IOException {
+		join(strs.iterator(), off, len, delimiter, dst);
+	}
+
+
+	// ==== Iterator<String> ====
+	/** Join a collection of strings using a delimiter
+	 * @param strs the collection of strings
+	 * @param delimiter the delimiter to place between strings
+	 * @return a string consisting of each of {@code strs} separated by {@code delimiter}
+	 * @see StringJoiner
+	 */
+	public static final String join(Iterator<String> strs, String delimiter) {
+		StringBuilder strB = new StringBuilder();
+		join(strs, delimiter, strB);
+		return strB.toString();
+	}
+
+
+	public static final String join(Iterator<String> strs, int off, int len, String delimiter) {
+		StringBuilder strB = new StringBuilder();
+		join(strs, off, len, delimiter, strB);
+		return strB.toString();
+	}
+
+
+	public static final void join(Iterator<String> strs, String delimiter, StringBuilder dst) {
+		try {
+			join(strs, delimiter, (Appendable)dst);
+		} catch(IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+	}
+
+
+	public static final void join(Iterator<String> strs, int off, int len, String delimiter, StringBuilder dst) {
+		try {
+			join(strs, off, len, delimiter, (Appendable)dst);
+		} catch(IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+	}
+
+
+	public static final void join(Iterator<String> strs, String delimiter, Appendable dst) throws IOException {
+		boolean firstLoop = true;
+		while(strs.hasNext()) {
+			String str = strs.next();
+			if(!firstLoop) {
+				dst.append(delimiter);
+			}
+			dst.append(str);
+			firstLoop = false;
+		}
+	}
+
+
+	public static final void join(Iterator<String> strs, int off, int len, String delimiter, Appendable dst) throws IOException {
 		boolean firstLoop = true;
 		int i = 0;
-		Iterator<String> iter = strs.iterator();
-		while(iter.hasNext() && i < off) { iter.next(); i++; }
+		while(strs.hasNext() && i < off) { strs.next(); i++; }
 
 		int size = off + len;
-		while(iter.hasNext() && i < size) {
-			String str = iter.next();
+		while(strs.hasNext() && i < size) {
+			String str = strs.next();
 			if(!firstLoop) {
 				dst.append(delimiter);
 			}
@@ -172,7 +228,7 @@ public class StringJoin {
 	}
 
 
-	// ==== Miscellaneous ====
+	// ==== Repeat and repeatJoin ====
 	public static final String repeat(char ch, int repeats) {
 		char[] chs = new char[repeats];
 		for(int i = 0; i < repeats; i++) {
@@ -402,14 +458,68 @@ public class StringJoin {
 
 
 		public static final void join(Iterable<? extends Object> objs, int off, int len, String delimiter, Appendable dst) throws IOException {
+			join(objs.iterator(), off, len, delimiter, dst);
+		}
+
+
+		// ==== Iterator<Object> ====
+		/** Joins a group of objects with a delimiter using the default {@link Object#toString() toString()}.
+		 * Null values are converted to {@code "null"}
+		 * @see StringJoin#join(Iterable, String)
+		 */
+		public static final String join(Iterator<? extends Object> objs, String delimiter) {
+			StringBuilder strB = new StringBuilder();
+			join(objs, delimiter, strB);
+			return strB.toString();
+		}
+
+
+		public static final String join(Iterator<? extends Object> objs, int off, int len, String delimiter) {
+			StringBuilder strB = new StringBuilder();
+			join(objs, off, len, delimiter, strB);
+			return strB.toString();
+		}
+
+
+		public static final void join(Iterator<? extends Object> objs, String delimiter, StringBuilder dst) {
+			try {
+				join(objs, delimiter, (Appendable)dst);
+			} catch(IOException ioe) {
+				throw new UncheckedIOException(ioe);
+			}
+		}
+
+
+		public static final void join(Iterator<? extends Object> objs, int off, int len, String delimiter, StringBuilder dst) {
+			try {
+				join(objs, off, len, delimiter, (Appendable)dst);
+			} catch(IOException ioe) {
+				throw new UncheckedIOException(ioe);
+			}
+		}
+
+
+		public static final void join(Iterator<? extends Object> objs, String delimiter, Appendable dst) throws IOException {
+			boolean firstLoop = true;
+			while(objs.hasNext()) {
+				Object obj = objs.next();
+				if(!firstLoop) {
+					dst.append(delimiter);
+				}
+				dst.append(obj != null ? obj.toString() : "null");
+				firstLoop = false;
+			}
+		}
+
+
+		public static final void join(Iterator<? extends Object> objs, int off, int len, String delimiter, Appendable dst) throws IOException {
 			boolean firstLoop = true;
 			int i = 0;
-			Iterator<? extends Object> iter = objs.iterator();
-			while(iter.hasNext() && i < off) { iter.next(); i++; }
+			while(objs.hasNext() && i < off) { objs.next(); i++; }
 
 			int size = off + len;
-			while(iter.hasNext() && i < size) {
-				Object obj = iter.next();
+			while(objs.hasNext() && i < size) {
+				Object obj = objs.next();
 				if(!firstLoop) {
 					dst.append(delimiter);
 				}
@@ -430,7 +540,7 @@ public class StringJoin {
 	 */
 	public static class Func {
 
-		// ==== custom Function func ====
+		// ==== custom toString func ====
 		/** Joins a group of objects with a delimiter using a custom toString function, which takes an object and returns its string representation.
 		 * Null values are converted to {@code "null"}
 		 * @see StringJoin#join(List, String)

@@ -11,14 +11,14 @@ import java.io.UncheckedIOException;
  * @author TeamworkGuy2
  * @since 2013-12-21
  */
-public class StringHex {
+public final class StringHex {
 	public static final char escapeStart = '\\';
 
-	private static final char[] hex = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-	private static final char zero = '0';
-	private static final char nine = '9';
-	private static final char a = 'A';
-	private static final char f = 'F';
+	static final char[] hex = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+	static final char zero = '0';
+	static final char nine = '9';
+	static final char a = 'A';
+	static final char f = 'F';
 
 
 	private StringHex() { throw new AssertionError("cannot instantiate static class StringHex"); }
@@ -166,7 +166,20 @@ public class StringHex {
 	 * @throws IOException if there is an error reading from the input reader
 	 */
 	public static final byte[] decodeHexStream(final Reader input) throws IOException {
-		int size = 8192; // must be divisible by 2
+		return decodeHexStream(input, 8192);
+	}
+
+
+	/**
+	 * @param input string to convert to an array of bytes.
+	 * @param size must be divisible by 2
+	 * @return an array of bytes containing the interpreted byte values of the hexadecimal stream
+	 * @see #decodeHexStream(Reader)
+	 * @throws IOException if there is an error reading from the input reader
+	 */
+	public static final byte[] decodeHexStream(final Reader input, final int size) throws IOException {
+		if(Integer.bitCount(size) != 1) { throw new IllegalArgumentException("'size' must be a power of 2"); }
+
 		ByteArrayOutputStream out = new ByteArrayOutputStream(size);
 		char[] cbuf = new char[size];
 		boolean lastReadOdd = false;

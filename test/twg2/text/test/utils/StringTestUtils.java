@@ -1,4 +1,4 @@
-package twg2.text.test;
+package twg2.text.test.utils;
 
 import java.util.ArrayList;
 import java.util.List;

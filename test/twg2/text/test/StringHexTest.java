@@ -3,11 +3,14 @@ package twg2.text.test;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import twg2.text.stringUtils.StringHex;
+import twg2.text.test.utils.StringChunkReader;
 
 /**
  * @author TeamworkGuy2
@@ -20,12 +23,19 @@ public class StringHexTest {
 	public void testEncodeDecodeHex() throws IOException {
 		String hexStr = "9AF0E";
 		String hexStrFull = "9AF0E0";
-		byte[] hexBytes = { (byte)154, (byte)240, (byte)224 };
-		byte[] hexBytesOff1Len2 = { (byte)175 };
+		byte[] hexBytes = bytes(154, 240, 224);
+		byte[] hexBytesOff1Len2 = bytes(175);
+
+		List<String> hexChunks = Arrays.asList("5B06", "3", "4412", "E8");
+		byte[] hexByteChunks = bytes(91, 6, 52/*3", "4*/, 65, 46, 128);
 
 		StringReader hexStrReader = new StringReader(hexStr);
 		byte[] bytes = StringHex.decodeHexStream(hexStrReader);
 		Assert.assertArrayEquals(hexBytes, bytes);
+
+		StringChunkReader hexChunkReader = new StringChunkReader(hexChunks);
+		bytes = StringHex.decodeHexStream(hexChunkReader, 1024);
+		Assert.assertArrayEquals(hexByteChunks, bytes);
 
 		bytes = StringHex.decodeHexString(hexStr);
 		Assert.assertArrayEquals(hexBytes, bytes);
@@ -46,9 +56,25 @@ public class StringHexTest {
 		resStr = StringHex.toHexString(hexBytes, 1, 2);
 		Assert.assertEquals(hexStrFull.substring(2, 2 + 4), resStr);
 
+		StringBuilder sb = new StringBuilder();
+		StringHex.writeHexString(hexBytes, 0, 3, sb);
+		Assert.assertEquals(hexStrFull, sb.toString());
+
 		StringWriter output = new StringWriter();
 		StringHex.writeHexString(hexBytes, 0, 3, output);
 		Assert.assertEquals(hexStrFull, output.toString());
+	}
+
+
+	private static byte[] bytes(int... bytes) {
+		byte[] b = new byte[bytes.length];
+		for(int i = 0, size = bytes.length; i < size; i++) {
+			if(bytes[i] > 255 || bytes[i] < -128) {
+				throw new IllegalArgumentException("argument out of range, byte[" + i + "] = " + bytes[i] + " is not a byte between -128 and 127");
+			}
+			b[i] = (byte)bytes[i];
+		}
+		return b;
 	}
 
 }

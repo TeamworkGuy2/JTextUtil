@@ -1,6 +1,6 @@
 JTextUtil
 ==============
-version: 0.10.4
+version: 0.10.5
 
 Dependencies: none
 

@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import twg2.text.stringSearch.StringIndex;
+import twg2.text.test.utils.StringTestUtils;
 import checks.CheckTask;
 
 /**
