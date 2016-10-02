@@ -46,15 +46,31 @@ public class StringEscapeJson {
 				dst.append('\\');
 				switch(ch) {
 					case '\b': ch = 'b'; break;
-					case '\t': ch = 't'; break;
 					case '\f': ch = 'f'; break;
 					case '\n': ch = 'n'; break;
 					case '\r': ch = 'r'; break;
+					case '\t': ch = 't'; break;
 					default: break;
 				}
 			}
 			dst.append(ch);
 		}
+	}
+
+
+	public static final void toJsonString(char ch, Appendable dst) throws IOException {
+		if(ch == '"' || ch == '\\' || ch == '\b' || ch == '\f' || ch == '\n' || ch == '\r' || ch == '\t') {
+			dst.append('\\');
+			switch(ch) {
+				case '\b': ch = 'b'; break;
+				case '\f': ch = 'f'; break;
+				case '\n': ch = 'n'; break;
+				case '\r': ch = 'r'; break;
+				case '\t': ch = 't'; break;
+				default: break;
+			}
+		}
+		dst.append(ch);
 	}
 
 

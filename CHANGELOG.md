@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.10.5](N/A) - 2016-09-26
+###[0.10.6](N/A) - 2016-10-02
+#### Added
+* Added StringEscapeJson.toJsonString(char, Appendable) override
+
+
+--------
+###[0.10.5](https://github.com/TeamworkGuy2/JTextUtil/commit/d0299113a4f3478320321a7e9dfa8ffac84ce9c6) - 2016-09-26
 #### Added
 * Added StringJoin.join(Iterator, ...) and StringJoin.Objects.join(Iterator, ...)
 
