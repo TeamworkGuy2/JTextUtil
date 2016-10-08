@@ -1,7 +1,5 @@
 package twg2.text.stringSearch;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +9,6 @@ import java.util.Map;
  * @since 2014-12-19
  */
 public class StringCommonality {
-
 
 	// TODO prefixes and suffixes can be iterated over in one loop by taking the common starting/ending
 	// portions between the first and second string, second and third string, etc.
@@ -36,6 +33,10 @@ public class StringCommonality {
 	}
 
 
+	/** Find a common substring among a group of strings (with optional limits on the sub-string search range within each string)
+	 * @return an empty string or a common sub-string shared by all the {@code strs}
+	 * @see #commonStringRange(int, int, int, List, boolean, boolean)
+	 */
 	public static String commonStringPortion(int minIndex, int maxIndex, int startOffset, List<String> strs, boolean direction, boolean startAtEndOfStr) {
 		int count = commonStringRange(minIndex, maxIndex, startOffset, strs, direction, startAtEndOfStr);
 		if(count == 0) {
@@ -68,7 +69,7 @@ public class StringCommonality {
 	 * False: substrings are found by matching backward starting at {@code startOffset}
 	 * @return the length of the common substring found among all the {@code strs}, based on the above stated rules about the input parameters
 	 */
-	public static int commonStringRange(int minIndex, int maxIndex, int startOffset, Collection<String> strs, boolean direction, boolean startAtEndOfStr) {
+	public static int commonStringRange(int minIndex, int maxIndex, int startOffset, List<String> strs, boolean direction, boolean startAtEndOfStr) {
 		if(minIndex < 0) {
 			throw new IndexOutOfBoundsException("minIndex " + minIndex + " must be greater than or equal to 0");
 		}
@@ -80,12 +81,13 @@ public class StringCommonality {
 		}
 
 		int size = strs.size();
+		// special case for an empty list or a list of 1 string
 		if(size < 2) {
 			if(size < 1) {
 				return 0;
 			}
 			else {
-				int strLen = strs.iterator().next().length();
+				int strLen = strs.get(0).length();
 				if(direction == true) {
 					int startIndex = startOffset;
 					return Math.min(strLen, maxIndex) - startIndex;
@@ -96,17 +98,15 @@ public class StringCommonality {
 			}
 		}
 
-		Iterator<String> iter = strs.iterator();
 		int iiOff = (startAtEndOfStr ? 1 : 0);
 		int commonCount = Integer.MAX_VALUE;
 		int i = 0;
 		int sizeI = 0;
-		String str2 = iter.next();
+		String str2 = strs.get(0);
 
-		// TODO could change to while(iter.hasNext()), but we already have the size from checking earlier
 		for(i = 0, sizeI = size - 1; i < sizeI; i++) {
 			String str1 = str2;
-			str2 = iter.next();
+			str2 = strs.get(i + 1);
 			int str1Len = str1.length();
 			int str2Len = str2.length();
 			int str1Off = (direction ? startOffset : (startAtEndOfStr ? str1Len - startOffset : startOffset));
@@ -138,6 +138,7 @@ public class StringCommonality {
 				return 0;
 			}
 		}
+
 		if(i != size - 1) {
 			throw new IllegalStateException("collection had " + (i < size - 1 ? "fewer" : "more") + " values than expected based on .size()");
 		}
@@ -152,19 +153,19 @@ public class StringCommonality {
 	 * @return the common string prefix of all of the map entry keys
 	 */
 	public static <T> String findPrefix(int offset, Map.Entry<String, T>[] strs) {
-		StringBuilder strB = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		String firstString = strs[0].getKey();
 		int size = strs.length;
 		for(int i = offset; ; i++) {
 			boolean match = true;
 			if(i >= firstString.length()) {
-				return strB.toString();
+				return sb.toString();
 			}
 			char c = firstString.charAt(i);
 			for(int ii = 0; ii < size; ii++) {
 				String str = strs[ii].getKey();
 				if(i >= str.length()) {
-					return strB.toString();
+					return sb.toString();
 				}
 				if(str.charAt(i) != c) {
 					match = false;
@@ -172,10 +173,10 @@ public class StringCommonality {
 				}
 			}
 			if(match) {
-				strB.append(c);
+				sb.append(c);
 			}
 			else {
-				return strB.toString();
+				return sb.toString();
 			}
 		}
 	}

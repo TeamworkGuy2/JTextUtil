@@ -115,22 +115,22 @@ public class StringReplaceTest {
 		List<String> replaceStrs = Arrays.asList("->", ".", "::");
 
 		int strOffset = 2;
-		CheckTask.assertTests(strs, expect, (s) -> {
+		CheckTask.assertTests(strs, expect, (String s) -> {
 			String str = StringReplace.replaceStrings(s, strOffset, searchStr, replaceStrs, true/*repeatReplacements*/);
 			return str;
 		});
 
-		CheckTask.assertTests(strs, expect, (s) -> {
+		CheckTask.assertTests(strs, expect, (String s) -> {
 			String str = StringReplace.replaceStrings(s, strOffset, searchStr, new LinkedList<>(replaceStrs), true/*repeatReplacements*/);
 			return str;
 		});
 
-		CheckTask.assertTests(strs, expectNoRepeat, (s) -> {
+		CheckTask.assertTests(strs, expectNoRepeat, (String s) -> {
 			String str = StringReplace.replaceStrings(s, strOffset, searchStr, replaceStrs, false/*repeatReplacements*/);
 			return str;
 		});
 
-		CheckTask.assertTests(strs, expectNoRepeat, (s) -> {
+		CheckTask.assertTests(strs, expectNoRepeat, (String s) -> {
 			String str = StringReplace.replaceStrings(s, strOffset, searchStr, new LinkedList<>(replaceStrs), false/*repeatReplacements*/);
 			return str;
 		});
@@ -146,12 +146,12 @@ public class StringReplaceTest {
 		String replaceStr = "%%";
 
 		int strOffset = 2;
-		CheckTask.assertTests(strs, expect, (s) -> {
+		CheckTask.assertTests(strs, expect, (String s) -> {
 			String str = StringReplace.replaceStrings(s, strOffset, searchStrs, replaceStr);
 			return str;
 		});
 
-		CheckTask.assertTests(strs, expect, (s) -> {
+		CheckTask.assertTests(strs, expect, (String s) -> {
 			String str = StringReplace.replaceStrings(s, strOffset, new LinkedList<>(searchStrs), replaceStr);
 			return str;
 		});
@@ -161,10 +161,14 @@ public class StringReplaceTest {
 	@Test
 	public void stringReplaceMiscellaneous() {
 		String str = StringReplace.replaceEscapeLiterals("kd\\t\\nwith\\\\and \\\"\\f\\\'");
-		Assert.assertTrue("replace escape literals: " + str, str.equals("kd\t\nwith\\and \"\f\'"));
+		Assert.assertEquals("kd\t\nwith\\and \"\f\'", str);
+
+		str = StringReplace.replaceEscapeLiterals("\\t\\n\\\\\'");
+		Assert.assertEquals("\t\n\\\'", str);
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void replaceToken() {
 		StringBuilder sb = new StringBuilder("a $string with $custom tokens and replace values");

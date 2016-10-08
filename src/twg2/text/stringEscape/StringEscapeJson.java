@@ -33,8 +33,8 @@ public class StringEscapeJson {
 	public static final void toJsonString(String str, int off, int len, StringBuilder dst) {
 		try {
 			toJsonString(str, off, len, (Appendable)dst);
-		} catch (IOException e) {
-			throw new UncheckedIOException("StringBuilder threw IOException", e);
+		} catch (IOException ioe) {
+			throw new UncheckedIOException(ioe);
 		}
 	}
 
@@ -95,8 +95,8 @@ public class StringEscapeJson {
 	public static final void fromJsonString(String str, int off, int len, StringBuilder dst) {
 		try {
 			fromJsonString(str, off, len, (Appendable)dst);
-		} catch (IOException e) {
-			throw new UncheckedIOException("StringBuilder threw IOException", e);
+		} catch (IOException ioe) {
+			throw new UncheckedIOException(ioe);
 		}
 	}
 

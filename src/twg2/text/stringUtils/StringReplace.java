@@ -36,16 +36,16 @@ public final class StringReplace {
 	 */
 	public static final String replaceEscapeLiterals(String str) {
 		StringBuilder converted = new StringBuilder(str);
-		int index = 0;
-		index = converted.indexOf(escapeStartStr, 0);
+		int index = converted.indexOf(escapeStartStr, 0);
 		int escapeIdIndex = -1;
 		while(index > -1) {
 			if(index + 1 >= converted.length() ||
 					(escapeIdIndex = ArrayUtilCopy.indexOf(escapeIdentifiers, converted.charAt(index + 1))) == -1) {
 				break;
 			}
-			converted.replace(index, index+2, "" + escapeChars[escapeIdIndex]);
-			index = converted.indexOf(escapeStartStr, index+1);
+			converted.setCharAt(index, escapeChars[escapeIdIndex]);
+			converted.deleteCharAt(index + 1);
+			index = converted.indexOf(escapeStartStr, index + 1);
 		}
 		return converted.toString();
 	}
@@ -82,8 +82,8 @@ public final class StringReplace {
 		}
 		StringBuilder validated = new StringBuilder(content);
 		while(index > -1) {
-			validated.replace(index, index+search.length(), replace);
-			index = validated.indexOf(search, index+replace.length());
+			validated.replace(index, index + search.length(), replace);
+			index = validated.indexOf(search, index + replace.length());
 		}
 		return validated.toString();
 	}
@@ -105,8 +105,8 @@ public final class StringReplace {
 			return content;
 		}
 		while(index > -1) {
-			content.replace(index, index+search.length(), replace);
-			index = content.indexOf(search, index+replace.length());
+			content.replace(index, index + search.length(), replace);
+			index = content.indexOf(search, index + replace.length());
 		}
 		return content;
 	}
@@ -132,11 +132,11 @@ public final class StringReplace {
 		StringBuilder validated = new StringBuilder(content);
 		if(searchStrs instanceof List && searchStrs instanceof RandomAccess &&
 				replaceStrs instanceof List && replaceStrs instanceof RandomAccess) {
-			List<String> searchStrsList = (List<String>)searchStrs;
-			List<String> replaceStrsList = (List<String>)replaceStrs;
-			for(int i = 0, size = searchStrsList.size(); i < size; i++) {
-				String search = searchStrsList.get(i);
-				String replace = replaceStrsList.get(i);
+			List<String> searchList = (List<String>)searchStrs;
+			List<String> replaceList = (List<String>)replaceStrs;
+			for(int i = 0, size = searchList.size(); i < size; i++) {
+				String search = searchList.get(i);
+				String replace = replaceList.get(i);
 				int index = validated.indexOf(search, contentOffset);
 				while(index > -1) {
 					validated.replace(index, index + search.length(), replace);
@@ -175,9 +175,9 @@ public final class StringReplace {
 	public static String replaceStrings(String content, int contentOffset, Collection<String> searchStrs, String replaceStr) {
 		StringBuilder validated = new StringBuilder(content);
 		if(searchStrs instanceof List && searchStrs instanceof RandomAccess) {
-			List<String> searchStrsList = (List<String>)searchStrs;
-			for(int i = 0, size = searchStrsList.size(); i < size; i++) {
-				String search = searchStrsList.get(i);
+			List<String> searchList = (List<String>)searchStrs;
+			for(int i = 0, size = searchList.size(); i < size; i++) {
+				String search = searchList.get(i);
 				int index = validated.indexOf(search, contentOffset);
 				while(index > -1) {
 					validated.replace(index, index + search.length(), replaceStr);
@@ -221,12 +221,12 @@ public final class StringReplace {
 	public static String replaceStrings(String content, int contentOffset, String searchStr, Collection<String> replaceStrs, boolean repeatReplacements) {
 		StringBuilder validated = new StringBuilder(content);
 		if(replaceStrs instanceof List && replaceStrs instanceof RandomAccess) {
-			List<String> replaceStrsList = (List<String>)replaceStrs;
+			List<String> replaceList = (List<String>)replaceStrs;
 			int index = validated.indexOf(searchStr, contentOffset);
-			int replaceStrsSize = replaceStrsList.size();
+			int replaceStrsSize = replaceList.size();
 			int i = 0;
 			while(index > -1) {
-				String replace = replaceStrsList.get(i);
+				String replace = replaceList.get(i);
 				validated.replace(index, index + searchStr.length(), replace);
 				index = validated.indexOf(searchStr, index + replace.length());
 				if(i + 1 == replaceStrsSize && !repeatReplacements) {
@@ -269,17 +269,17 @@ public final class StringReplace {
 	 * @return the length change of {@code dst} after replacing the matching strings in {@code content}
 	 */
 	public static int replace(char[] content, int contentOffset, String search, String replace, StringBuilder dst) {
-		dst.append(content, contentOffset, content.length-contentOffset);
+		dst.append(content, contentOffset, content.length - contentOffset);
 		if(StringIndex.indexOf(content, 0, search, 0) == -1) {
 			return 0;
 		}
 		int lengthChange = 0;
-		int replaceLengthDiff = replace.length() - search.length();
+		int replaceLenDiff = replace.length() - search.length();
 		int index = dst.indexOf(search, 0);
 		while(index > -1) {
-			dst.replace(index, index+search.length(), replace);
-			lengthChange += replaceLengthDiff;
-			index = dst.indexOf(search, index+replace.length());
+			dst.replace(index, index + search.length(), replace);
+			lengthChange += replaceLenDiff;
+			index = dst.indexOf(search, index + replace.length());
 		}
 		return lengthChange;
 	}
@@ -289,9 +289,8 @@ public final class StringReplace {
 	 * @see #replaceStrings(char[], int, Collection, Collection, StringBuilder)
 	 */
 	public static int replaceStrings(String content, Map<String, String> searchReplaceStrs, StringBuilder dst) {
-		int dstOff = dst.length();
 		dst.append(content);
-		return replaceStrings(searchReplaceStrs.entrySet().iterator(), dst, dstOff);
+		return replaceStrings(searchReplaceStrs.entrySet().iterator(), dst, dst.length());
 	}
 
 
@@ -308,9 +307,8 @@ public final class StringReplace {
 	 */
 	public static int replaceStrings(String content, Collection<String> searchStrs, Collection<String> replaceStrs,
 			StringBuilder dst) {
-		int dstOff = dst.length();
 		dst.append(content);
-		return replaceStrings(searchStrs, replaceStrs, dst, dstOff);
+		return replaceStrings(searchStrs, replaceStrs, dst, dst.length());
 	}
 
 
@@ -319,9 +317,8 @@ public final class StringReplace {
 	 */
 	public static int replaceStrings(String content, int contentOff, Collection<String> searchStrs, Collection<String> replaceStrs,
 			StringBuilder dst) {
-		int dstOff = dst.length();
 		dst.append(content, contentOff, content.length() - contentOff);
-		return replaceStrings(searchStrs, replaceStrs, dst, dstOff);
+		return replaceStrings(searchStrs, replaceStrs, dst, dst.length());
 	}
 
 
@@ -342,9 +339,8 @@ public final class StringReplace {
 	 */
 	public static int replaceStrings(char[] content, int contentOffset, Collection<String> searchStrs, Collection<String> replaceStrs,
 			StringBuilder dst) {
-		int dstOff = dst.length();
 		dst.append(content, contentOffset, content.length - contentOffset);
-		return replaceStrings(searchStrs, replaceStrs, dst, dstOff);
+		return replaceStrings(searchStrs, replaceStrs, dst, dst.length());
 	}
 
 
@@ -357,16 +353,16 @@ public final class StringReplace {
 		}
 		int lengthChange = 0;
 		if(searchStrs instanceof List && searchStrs instanceof RandomAccess && replaceStrs instanceof List && replaceStrs instanceof RandomAccess) {
-			List<String> searchStrList = (List<String>)searchStrs;
-			List<String> replaceStrList = (List<String>)replaceStrs;
+			List<String> searchList = (List<String>)searchStrs;
+			List<String> replaceList = (List<String>)replaceStrs;
 			for(int i = 0, size = searchStrs.size(); i < size; i++) {
-				String search = searchStrList.get(i);
-				String replace = replaceStrList.get(i);
-				int replaceLengthDiff = replace.length() - search.length();
+				String search = searchList.get(i);
+				String replace = replaceList.get(i);
+				int replaceLenDiff = replace.length() - search.length();
 				int index = contentAndDst.indexOf(search, contentAndDstOffset);
 				while(index > -1) {
 					contentAndDst.replace(index, index + search.length(), replace);
-					lengthChange += replaceLengthDiff;
+					lengthChange += replaceLenDiff;
 					index = contentAndDst.indexOf(search, index + replace.length());
 				}
 			}
@@ -377,11 +373,11 @@ public final class StringReplace {
 			while(searchIter.hasNext()) {
 				String search = searchIter.next();
 				String replace = replaceIter.next();
-				int replaceLengthDiff = replace.length() - search.length();
+				int replaceLenDiff = replace.length() - search.length();
 				int index = contentAndDst.indexOf(search, contentAndDstOffset);
 				while(index > -1) {
 					contentAndDst.replace(index, index + search.length(), replace);
-					lengthChange += replaceLengthDiff;
+					lengthChange += replaceLenDiff;
 					index = contentAndDst.indexOf(search, index + replace.length());
 				}
 			}
@@ -400,11 +396,11 @@ public final class StringReplace {
 			Map.Entry<String, String> entry = searchAndReplaceStrs.next();
 			String search = entry.getKey();
 			String replace = entry.getValue();
-			int replaceLengthDiff = replace.length() - search.length();
+			int replaceLenDiff = replace.length() - search.length();
 			int index = contentAndDst.indexOf(search, contentAndDstOffset);
 			while(index > -1) {
 				contentAndDst.replace(index, index + search.length(), replace);
-				lengthChange += replaceLengthDiff;
+				lengthChange += replaceLenDiff;
 				index = contentAndDst.indexOf(search, index + replace.length());
 			}
 		}
@@ -424,8 +420,7 @@ public final class StringReplace {
 	 * @param isSorted true if the {@code tokens} entry array is sorted, false if it is not
 	 * @return the resulting string with matching tokens replaced
 	 */
-	public static final String replaceTokens(String str, Map.Entry<String, String>[] tokens,
-			boolean isSorted) {
+	public static final String replaceTokens(String str, Map.Entry<String, String>[] tokens, boolean isSorted) {
 		StringBuilder sb = new StringBuilder(str);
 		replaceTokens(null, tokens, isSorted, true, sb);
 		return sb.toString();
@@ -455,7 +450,8 @@ public final class StringReplace {
 	}
 
 
-	public static final StringBuilder replaceTokens(Map.Entry<String, String>[] tokens, boolean isSorted, boolean preserveOrder, StringBuilder srcAndDst) {
+	public static final StringBuilder replaceTokens(Map.Entry<String, String>[] tokens,
+			boolean isSorted, boolean preserveOrder, StringBuilder srcAndDst) {
 		return replaceTokens((a, b) -> a.getKey().compareTo(b.getKey()), tokens, isSorted, preserveOrder, srcAndDst);
 	}
 
@@ -500,7 +496,7 @@ public final class StringReplace {
 					index = srcAndDst.indexOf(prefix, index + match.getValue().length());
 				}
 				else {
-					index = srcAndDst.indexOf(prefix, index+1);
+					index = srcAndDst.indexOf(prefix, index + 1);
 				}
 			}
 		}

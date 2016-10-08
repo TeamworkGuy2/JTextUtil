@@ -15,10 +15,27 @@ public final class StringEscape {
 	private StringEscape() { throw new AssertionError("cannot instantiate static class StringEscape"); }
 
 
-	/**
-	 * @see #escape(CharSequence, int, char, char, char, Appendable)
+	/** @see #escape(CharSequence, int, char, char, char, Appendable)
 	 */
-	public static final void escape(CharSequence str, char escapeChar, char escape1, char escape2, Appendable dst) {
+	public static final void escape(CharSequence str, char escapeChar, char escape1, char escape2, StringBuilder dst) {
+		escape(str, 0, escapeChar, escape1, escape2, dst);
+	}
+
+
+	/** @see #escape(CharSequence, int, char, char, char, Appendable)
+	 */
+	public static final void escape(CharSequence str, int offset, char escapeChar, char escape1, char escape2, StringBuilder dst) {
+		try {
+			escape(str, offset, escapeChar, escape1, escape2, (Appendable)dst);
+		} catch(IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+	}
+
+
+	/** @see #escape(CharSequence, int, char, char, char, Appendable)
+	 */
+	public static final void escape(CharSequence str, char escapeChar, char escape1, char escape2, Appendable dst) throws IOException {
 		escape(str, 0, escapeChar, escape1, escape2, dst);
 	}
 
@@ -37,38 +54,51 @@ public final class StringEscape {
 	 * @param dst the destination to write the escape characters to
 	 * @see StringEscape#unescape(CharSequence, int, char, char, Appendable)
 	 */
-	public static final void escape(CharSequence str, int offset, char escapeChar, char escape1, char escape2, Appendable dst) {
-		// TODO repeating escapeChar when escapeChar equals escape1 or escape2 produces ambigious results
-		try {
-			char prevChar = 0;
-			char nextChar = 0;
-			for(int i = offset, size = str.length(); i < size; i++) {
-				char chI = str.charAt(i);
-				nextChar = i < size - 1 ? str.charAt(i + 1) : 0;
+	public static final void escape(CharSequence str, int offset, char escapeChar, char escape1, char escape2, Appendable dst) throws IOException {
+		// TODO repeating escapeChar when escapeChar equals escape1 or escape2 produces ambiguous results
+		char prevChar = 0;
+		char nextChar = 0;
+		for(int i = offset, size = str.length(); i < size; i++) {
+			char chI = str.charAt(i);
+			nextChar = i < size - 1 ? str.charAt(i + 1) : 0;
 
-				if(chI == escape1 && (i == offset || prevChar != escapeChar) && (i == size - 1 || (nextChar != escapeChar && nextChar != escape1 && nextChar != escape2))) {
-					dst.append(escapeChar);
-					dst.append(escape1);
-				}
-				else if(chI == escape2 && (i == offset || prevChar != escapeChar) && (i == size - 1 || (nextChar != escapeChar && nextChar != escape1 && nextChar != escape2))) {
-					dst.append(escapeChar);
-					dst.append(escape2);
-				}
-				else {
-					dst.append(chI);
-				}
-				prevChar = chI;
+			if(chI == escape1 && (i == offset || prevChar != escapeChar) && (i == size - 1 || (nextChar != escapeChar && nextChar != escape1 && nextChar != escape2))) {
+				dst.append(escapeChar);
+				dst.append(escape1);
 			}
+			else if(chI == escape2 && (i == offset || prevChar != escapeChar) && (i == size - 1 || (nextChar != escapeChar && nextChar != escape1 && nextChar != escape2))) {
+				dst.append(escapeChar);
+				dst.append(escape2);
+			}
+			else {
+				dst.append(chI);
+			}
+			prevChar = chI;
+		}
+	}
+
+
+	/** @see #unescape(CharSequence, int, int, char, char, Appendable)
+	 */
+	public static final int unescape(CharSequence src, int offset, char escapeChar, char chEnd, StringBuilder dst) {
+		return unescape(src, offset, src.length() - offset, escapeChar, chEnd, dst);
+	}
+
+
+	/** @see #unescape(CharSequence, int, int, char, char, Appendable)
+	 */
+	public static final int unescape(CharSequence src, int offset, int length, char escapeChar, char chEnd, StringBuilder dst) {
+		try {
+			return unescape(src, offset, length, escapeChar, chEnd, (Appendable)dst);
 		} catch(IOException ioe) {
 			throw new UncheckedIOException(ioe);
 		}
 	}
 
 
-	/**
-	 * @see #unescape(CharSequence, int, int, char, char, Appendable)
+	/** @see #unescape(CharSequence, int, int, char, char, Appendable)
 	 */
-	public static final int unescape(CharSequence src, int offset, char escapeChar, char chEnd, Appendable dst) {
+	public static final int unescape(CharSequence src, int offset, char escapeChar, char chEnd, Appendable dst) throws IOException {
 		return unescape(src, offset, src.length() - offset, escapeChar, chEnd, dst);
 	}
 
@@ -89,47 +119,60 @@ public final class StringEscape {
 	 * or the length of the {@code src} string if no {@code chEnd} character was encountered
 	 * @see StringEscape#escape(CharSequence, char, char, char, Appendable) 
 	 */
-	public static final int unescape(CharSequence src, int offset, int length, char escapeChar, char chEnd, Appendable dst) {
+	public static final int unescape(CharSequence src, int offset, int length, char escapeChar, char chEnd, Appendable dst) throws IOException {
 		int i = offset;
-		try {
-			for(int size = offset + length; i < size; i++) {
-				char chI = src.charAt(i);
-				if(chI == escapeChar) {
-					i++;
-					if(i >= size) {
-						return i;
-					}
-					chI = src.charAt(i);
-				}
-				else if(chI == chEnd) {
+		for(int size = offset + length; i < size; i++) {
+			char chI = src.charAt(i);
+			if(chI == escapeChar) {
+				i++;
+				if(i >= size) {
 					return i;
 				}
-				dst.append(chI);
+				chI = src.charAt(i);
 			}
-		} catch(IOException ioe) {
-			throw new UncheckedIOException(ioe);
+			else if(chI == chEnd) {
+				return i;
+			}
+			dst.append(chI);
 		}
 		return i;
 	}
 
 
 	// TODO what does this and unwrapChar() do, provide examples
-	public static final void escapeChar(String str, char chReplaceBefore, char ch1, char ch2, Appendable dst) {
+	public static final void escapeChar(String str, char chReplaceBefore, char ch1, char ch2, StringBuilder dst) {
 		try {
-			for(int i = 0, size = str.length(); i < size; i++) {
-				char chI = str.charAt(i);
-				if(chI == ch1) {
-					dst.append(chReplaceBefore);
-					dst.append(ch1);
-				}
-				else if(chI == ch2) {
-					dst.append(chReplaceBefore);
-					dst.append(ch2);
-				}
-				else {
-					dst.append(chI);
-				}
+			escapeChar(str, chReplaceBefore, ch1, ch2, (Appendable)dst);
+		} catch(IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
+
+	// TODO what does this and unwrapChar() do, provide examples
+	public static final void escapeChar(String str, char chReplaceBefore, char ch1, char ch2, Appendable dst) throws IOException {
+		for(int i = 0, size = str.length(); i < size; i++) {
+			char chI = str.charAt(i);
+			if(chI == ch1) {
+				dst.append(chReplaceBefore);
+				dst.append(ch1);
 			}
+			else if(chI == ch2) {
+				dst.append(chReplaceBefore);
+				dst.append(ch2);
+			}
+			else {
+				dst.append(chI);
+			}
+		}
+	}
+
+
+	/** @see #unescapeChar(CharSequence, int, char, char, Appendable)
+	 */
+	public static final int unescapeChar(CharSequence strSrc, int offset, char chReplace, char chEnd, StringBuilder dst) {
+		try {
+			return unescapeChar(strSrc, offset, chReplace, chEnd, (Appendable)dst);
 		} catch(IOException e) {
 			throw new UncheckedIOException(e);
 		}
@@ -144,25 +187,21 @@ public final class StringEscape {
 	 * @param dst the destination to store the read characters in
 	 * @return the index of the {@code chEnd} that parsing stopped at
 	 */
-	public static final int unescapeChar(CharSequence strSrc, int offset, char chReplace, char chEnd, Appendable dst) {
+	public static final int unescapeChar(CharSequence strSrc, int offset, char chReplace, char chEnd, Appendable dst) throws IOException {
 		int i = offset;
-		try {
-			for(int size = strSrc.length(); i < size; i++) {
-				char chI = strSrc.charAt(i);
-				if(chI == chEnd) {
+		for(int size = strSrc.length(); i < size; i++) {
+			char chI = strSrc.charAt(i);
+			if(chI == chEnd) {
+				return i;
+			}
+			if(chI == chReplace) {
+				i++;
+				if(i >= size) {
 					return i;
 				}
-				if(chI == chReplace) {
-					i++;
-					if(i >= size) {
-						return i;
-					}
-					chI = strSrc.charAt(i);
-				}
-				dst.append(chI);
+				chI = strSrc.charAt(i);
 			}
-		} catch(IOException e) {
-			throw new UncheckedIOException(e);
+			dst.append(chI);
 		}
 		return i;
 	}

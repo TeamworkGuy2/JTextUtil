@@ -95,7 +95,7 @@ public class StringEscapeXml {
 	public static StringBuilder unescapeXml(String content, StringBuilder dst) {
 		int offset = 0;
 		if(dst == null) {
-			dst = new StringBuilder(content);
+			dst = new StringBuilder(content.length()).append(content);
 		}
 		else {
 			offset = dst.length();

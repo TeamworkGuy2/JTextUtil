@@ -172,14 +172,14 @@ public class StringJoinTest {
 	@Test
 	public void joinObjectsArray() {
 		// test Object[] -> String
-		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.Objects.join(objAry, delimiter));
-		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 2, 3), StringJoin.Objects.join(objAry, 2, 3, delimiter));
-		Assert.assertEquals("", StringJoin.Objects.join(new Object[0], ", "));
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.join(objAry, delimiter));
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 2, 3), StringJoin.join(objAry, 2, 3, delimiter));
+		Assert.assertEquals("", StringJoin.join(new Object[0], ", "));
 
 		// test (Object[], off, len, dst) -> String
 		StringBuilder sb = new StringBuilder();
 
-		StringJoin.Objects.join(objAry, 2, 2, delimiter, sb);
+		StringJoin.join(objAry, 2, 2, delimiter, sb);
 		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 2, 2), sb.toString());
 	}
 
@@ -187,13 +187,13 @@ public class StringJoinTest {
 	@Test
 	public void joinObjectsList() {
 		// test List<Object> -> String
-		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.Objects.join(objList, delimiter));
-		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 2, 2), StringJoin.Objects.join(objList, 2, 2, delimiter));
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.join(objList, delimiter));
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 2, 2), StringJoin.join(objList, 2, 2, delimiter));
 
 		// test (List<Object>, dst) -> String
 		StringBuilder sb = new StringBuilder();
 
-		StringJoin.Objects.join(objList, delimiter, sb);
+		StringJoin.join(objList, delimiter, sb);
 		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), sb.toString());
 	}
 
@@ -201,17 +201,17 @@ public class StringJoinTest {
 	@Test
 	public void joinObjectsIterable() {
 		// test Iterable<Object> -> String
-		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.Objects.join(objSet, delimiter));
-		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 1, 2), StringJoin.Objects.join(objSet, 1, 2, delimiter));
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.join(objSet, delimiter));
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 1, 2), StringJoin.join(objSet, 1, 2, delimiter));
 
 		// test (Iterable<Object>, dst) -> String
 		StringBuilder sb = new StringBuilder();
 
-		StringJoin.Objects.join(objSet, delimiter, sb);
+		StringJoin.join(objSet, delimiter, sb);
 		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), sb.toString());
 		sb.setLength(0);
 
-		StringJoin.Objects.join(objSet, 2, 3, delimiter, sb);
+		StringJoin.join(objSet, 2, 3, delimiter, sb);
 		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 2, 3), sb.toString());
 	}
 
@@ -219,28 +219,28 @@ public class StringJoinTest {
 	@Test
 	public void joinObjectsIterator() {
 		// test Iterator<Object> -> String
-		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.Objects.join(objList.iterator(), delimiter));
-		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 1, 2), StringJoin.Objects.join(objList.iterator(), 1, 2, delimiter));
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), StringJoin.join(objList.iterator(), delimiter));
+		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 1, 2), StringJoin.join(objList.iterator(), 1, 2, delimiter));
 
 		// test (Iterator<Object>, dst) -> String
 		StringBuilder sb = new StringBuilder();
 
-		StringJoin.Objects.join(objList.iterator(), delimiter, sb);
+		StringJoin.join(objList.iterator(), delimiter, sb);
 		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 0, objAryStrs.length), sb.toString());
 		sb.setLength(0);
 
-		StringJoin.Objects.join(objList.iterator(), 2, 3, delimiter, sb);
+		StringJoin.join(objList.iterator(), 2, 3, delimiter, sb);
 		Assert.assertEquals(stringJoiner(delimiter, objAryStrs, 2, 3), sb.toString());
 	}
 
 
 	@Test
 	public void stringJoinFunc() {
-		Assert.assertEquals("", StringJoin.Func.join(Arrays.asList(), delimiter, (a) -> "t:" + a));
-		Assert.assertEquals("t:a", StringJoin.Func.join(Arrays.asList("a"), delimiter, (a) -> "t:" + a));
-		Assert.assertEquals("t:arg2, t:arg12", StringJoin.Func.join(Arrays.asList(new ToString(2), new ToString(12)), delimiter, (a) -> "t:" + a));
-		Assert.assertEquals("t:arg2, null", StringJoin.Func.join(Arrays.asList(new ToString(2), null), delimiter, (a) -> "t:" + a));
-		Assert.assertEquals("t:arg2, t:NIL", StringJoin.Func.joinManualNulls(Arrays.asList(new ToString(2), null), delimiter, (a) -> "t:" + (a != null ? a : "NIL")));
+		Assert.assertEquals("", StringJoin.join(Arrays.asList(), delimiter, (a) -> "t:" + a));
+		Assert.assertEquals("t:a", StringJoin.join(Arrays.asList("a"), delimiter, (a) -> "t:" + a));
+		Assert.assertEquals("t:arg2, t:arg12", StringJoin.join(Arrays.asList(new ToString(2), new ToString(12)), delimiter, (a) -> "t:" + a));
+		Assert.assertEquals("t:arg2, null", StringJoin.join(Arrays.asList(new ToString(2), null), delimiter, (a) -> "t:" + a));
+		Assert.assertEquals("t:arg2, t:NIL", StringJoin.joinManualNulls(Arrays.asList(new ToString(2), null), delimiter, (a) -> "t:" + (a != null ? a : "NIL")));
 	}
 
 

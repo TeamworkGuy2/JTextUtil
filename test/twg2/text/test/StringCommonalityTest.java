@@ -19,7 +19,7 @@ public class StringCommonalityTest {
 
 	@Test
 	public void findPrefixTest() {
-		new CommonalityData(true, Arrays.asList(of("alp", 0), of("p", 2), of("", 4)), Arrays.asList(
+		new CommonalityData(true, Arrays.asList(of("alp", 0), of("p", 2), of("", 8)), Arrays.asList(
 				"alpha, beta, gamma",
 				"alphabet",
 				"alpine"
@@ -65,21 +65,20 @@ public class StringCommonalityTest {
 
 
 	@Test
-	public void commonPrefixSuffixTest() {
-		// prefix
-		{
-			String[][] strs = new String[][] { { "" }, { "a_b", "a_b_c" }, { "this.that", "this_that" }, { "abc", "c" } };
-			String[] expect = new String[] { "", "a_b", "this", "" };
+	public void commonPrefixTest() {
+		String[][] strs = new String[][] { { "" }, { "", "a" }, { "a_b", "a_b_c" }, { "this.that", "this_that" }, { "abc", "c" } };
+		String[] expect = new String[] { "", "", "a_b", "this", "" };
 
-			CheckTask.assertTests(strs, expect, (strSet) -> StringCommonality.findPrefix(0, Arrays.asList(strSet)));
-		}
-		// suffix
-		{
-			String[][] strs = new String[][] { { "" }, { "a_b", "a_b_c" }, { "this.that", "this_that" }, { "abc", "c" } };
-			String[] expect = new String[] { "", "", "that", "c" };
+		CheckTask.assertTests(strs, expect, (strSet) -> StringCommonality.findPrefix(0, Arrays.asList(strSet)));
+	}
 
-			CheckTask.assertTests(strs, expect, (strSet) -> StringCommonality.findSuffix(0, Arrays.asList(strSet)));
-		}
+
+	@Test
+	public void commonSuffixTest() {
+		String[][] strs = new String[][] { { "" }, { "", "a" }, { "a_b", "a_b_c" }, { "this.that", "this_that" }, { "abc", "c" } };
+		String[] expect = new String[] { "", "", "", "that", "c" };
+
+		CheckTask.assertTests(strs, expect, (strSet) -> StringCommonality.findSuffix(0, Arrays.asList(strSet)));
 	}
 
 

@@ -15,19 +15,43 @@ public class StringEscapePartial {
 
 
 	// ==== String ====
-	/**
-	 * @see #unescapePartialQuoted(String, int, int, char, char, char, char, boolean, Appendable)
+	/** @see #unescapePartialQuoted(String, int, int, char, char, char, char, boolean, Appendable)
 	 */
-	public static final int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, Appendable dst) {
+	public static final int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, StringBuilder dst) {
 		return unescapePartialQuoted(src, offset, src.length() - offset, escapeChar, quote, endCh1, endCh1, false, dst);
 	}
 
 
-	/**
-	 * @see #unescapePartialQuoted(String, int, int, char, char, char, char, boolean, Appendable)
+	/** @see #unescapePartialQuoted(String, int, int, char, char, char, char, boolean, Appendable)
 	 */
-	public static final int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, char endCh2, Appendable dst) {
+	public static final int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, Appendable dst) throws IOException {
+		return unescapePartialQuoted(src, offset, src.length() - offset, escapeChar, quote, endCh1, endCh1, false, dst);
+	}
+
+
+	/** @see #unescapePartialQuoted(String, int, int, char, char, char, char, boolean, Appendable)
+	 */
+	public static final int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, char endCh2, StringBuilder dst) {
 		return unescapePartialQuoted(src, offset, src.length() - offset, escapeChar, quote, endCh1, endCh2, false, dst);
+	}
+
+
+	/** @see #unescapePartialQuoted(String, int, int, char, char, char, char, boolean, Appendable)
+	 */
+	public static final int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, char endCh2, Appendable dst) throws IOException {
+		return unescapePartialQuoted(src, offset, src.length() - offset, escapeChar, quote, endCh1, endCh2, false, dst);
+	}
+
+
+	/** @see #unescapePartialQuoted(String, int, int, char, char, char, char, boolean, Appendable)
+	 */
+	public static final int unescapePartialQuoted(String src, int offset, int length, char escapeChar, char quote,
+			char endCh1, char endCh2, boolean throwIfNoEndChar, StringBuilder dst) {
+		try {
+			return unescapePartialQuoted(src, offset, length, escapeChar, quote, endCh1, endCh2, throwIfNoEndChar, (Appendable)dst);
+		} catch(IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
 	}
 
 
@@ -52,7 +76,7 @@ public class StringEscapePartial {
 	 * of the {@code src} string if no {@code endCh1/endCh2} character was encountered 
 	 */
 	public static final int unescapePartialQuoted(String src, int offset, int length, char escapeChar, char quote,
-			char endCh1, char endCh2, boolean throwIfNoEndChar, Appendable dst) {
+			char endCh1, char endCh2, boolean throwIfNoEndChar, Appendable dst) throws IOException {
 		final int offLen = offset + length;
 		boolean added = false;
 		int endIndex = StringIndex.indexOf(src, offset, length, endCh1);
@@ -66,11 +90,7 @@ public class StringEscapePartial {
 		if(quoteIndex > -1 && quoteIndex < endIndex) {
 			// append the portion of the string up to the quote
 			if(offset < quoteIndex) {
-				try {
-					dst.append(src, offset, quoteIndex + 1);
-				} catch (IOException e) {
-					throw new UncheckedIOException(e);
-				}
+				dst.append(src, offset, quoteIndex + 1);
 			}
 			// unescape the quoted portion of the string
 			endIndex = StringEscape.unescape(src, quoteIndex + 1, offLen - (quoteIndex + 1), escapeChar, quote, dst);
@@ -83,11 +103,7 @@ public class StringEscapePartial {
 			}
 			// if the string ended without a closing quote for the quoted portion, add a closing quote
 			if(offset < quoteIndex) {
-				try {
-					dst.append(quote);
-				} catch (IOException e) {
-					throw new UncheckedIOException(e);
-				}
+				dst.append(quote);
 			}
 			added = true;
 		}
@@ -101,11 +117,7 @@ public class StringEscapePartial {
 			}
 		}
 		else if(!added) {
-			try {
-				dst.append(src, offset, endIndex);
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
-			}
+			dst.append(src, offset, endIndex);
 		}
 
 		return endIndex;

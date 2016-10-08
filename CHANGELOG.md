@@ -4,7 +4,20 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.10.6](N/A) - 2016-10-02
+###[0.11.0](N/A) - 2016-10-08
+#### Added
+* Added StringCase isDashCase() and toDashCase() with additional unit tests
+
+#### Changed
+* Moved StringJoin.Objects methods into base StringJoin class
+* Moved StringJoin.Func methods into base StringJoin class
+* Changed StringEscape and StringEscapePartial:
+  * methods which take 'Appendable dst' params to throw IOException
+  * added additional overloaded methods which take StringBuilder and do not throw IOException
+
+
+--------
+###[0.10.6](https://github.com/TeamworkGuy2/JTextUtil/commit/1b81c02b2af0ac1186c1bab9c8534c6f851be2e9) - 2016-10-02
 #### Added
 * Added StringEscapeJson.toJsonString(char, Appendable) override
 

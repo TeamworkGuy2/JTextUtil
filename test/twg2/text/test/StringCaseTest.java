@@ -29,15 +29,17 @@ public class StringCaseTest {
 
 	@Test
 	public void stringCaseCheck() {
-		StringCases camelCase = new StringCases(Arrays.asList("abc"), Arrays.asList("a_c", "Abc"));
-		StringCases titleCase = new StringCases(Arrays.asList("AlphaChar"), Arrays.asList("alphaChar"));
-		StringCases underscoreLowerCase = new StringCases(Arrays.asList("moon_base"), Arrays.asList("moon_Base", "Moon_base", "Moon_Base"));
-		StringCases underscoreTitleCase = new StringCases(Arrays.asList("Nanite_Cloud"), Arrays.asList("nanite_cloud", "Nanite_clound", "nanite_Cloud"));
+		StringCases camelCase = new StringCases(list("abc"), list("a_c", "Abc"));
+		StringCases titleCase = new StringCases(list("AlphaChar"), list("alphaChar", "Alpha_Char", "Alpha-Char"));
+		StringCases dashCase = new StringCases(list("alpha-char", "-b"), list("alphaChar", "Alpha-char", "Alpha-Char"));
+		StringCases underscoreLowerCase = new StringCases(list("moon_base", "_b"), list("moon_Base", "Moon_base", "Moon_Base"));
+		StringCases underscoreTitleCase = new StringCases(list("Nanite_Cloud", "_B"), list("nanite_cloud", "Nanite_clound", "nanite_Cloud"));
 
 		toStringCases(camelCase, "camelCase", StringCase::isCamelCase);
-		toStringCases(titleCase, "titleCase", StringCase::isTitleCase);
-		toStringCases(underscoreLowerCase, "underscoreLowerCase", StringCase::isUnderscoreLowerCase);
-		toStringCases(underscoreTitleCase, "underscoreUpperCase", StringCase::isUnderscoreTitleCase);
+		toStringCases(titleCase, "TitleCase", StringCase::isTitleCase);
+		toStringCases(dashCase, "dash-case", StringCase::isDashCase);
+		toStringCases(underscoreLowerCase, "underscore_lower-case", StringCase::isUnderscoreLowerCase);
+		toStringCases(underscoreTitleCase, "Underscore_Upper_Case", StringCase::isUnderscoreTitleCase);
 	}
 
 
@@ -57,23 +59,25 @@ public class StringCaseTest {
 
 	@Test
 	public void stringToCase() {
-		String[] strs = new String[] { "abc", "Alpha", "Subpar", "SupPar", "Al_Cid", "var_val_byte", "A_", "_A", "a", "_" };
-		String[] camelCase = new String[] { "abc", "alpha", "subpar", "supPar", "alCid", "varValByte", "a", "a", "a", "_" };
-		String[] titleCase = new String[] { "Abc", "Alpha", "Subpar", "SupPar", "AlCid", "VarValByte", "A", "A", "A", "_" };
-		String[] underscoreLowerCase = new String[] { "abc", "alpha", "subpar", "sup_par", "al_cid", "var_val_byte", "a_", "_a", "a", "_" };
-		String[] underscoreTitleCase = new String[] { "Abc", "Alpha", "Subpar", "Sup_Par", "Al_Cid", "Var_Val_Byte", "A_", "_A", "A", "_" };
+		String[] strs = new String[]                { "abc", "Alpha", "Subpar", "SupPar",  "Al_Cid", "a-b", "at-b-", "-c", "var_val_byte", "A_", "_A", "a", "_" };
+		String[] camelCase = new String[]           { "abc", "alpha", "subpar", "supPar",  "alCid",  "aB",  "atB",   "C",  "varValByte",   "a",  "a",  "a", "_" };
+		String[] titleCase = new String[]           { "Abc", "Alpha", "Subpar", "SupPar",  "AlCid",  "AB",  "AtB",   "C",  "VarValByte",   "A",  "A",  "A", "_" };
+		String[] dashCase = new String[]            { "abc", "alpha", "subpar", "sup-par", "al-cid", "a-b", "at-b-", "-c", "var-val-byte", "a-", "-a", "a", "-" };
+		String[] underscoreLowerCase = new String[] { "abc", "alpha", "subpar", "sup_par", "al_cid", "a_b", "at_b_", "_c", "var_val_byte", "a_", "_a", "a", "_" };
+		String[] underscoreTitleCase = new String[] { "Abc", "Alpha", "Subpar", "Sup_Par", "Al_Cid", "A_B", "At_B_", "_C", "Var_Val_Byte", "A_", "_A", "A", "_" };
 
 		for(int i = 0, size = strs.length; i < size; i++) {
-			Assert.assertEquals("camelCase", StringCase.toCamelCase(strs[i]), camelCase[i]);
-			Assert.assertEquals("TitleCase", StringCase.toTitleCase(strs[i]), titleCase[i]);
-			Assert.assertEquals("underscoreLowerCase", StringCase.toUnderscoreLowerCase(strs[i]), underscoreLowerCase[i]);
-			Assert.assertEquals("underscoreTitleCase", StringCase.toUnderscoreTitleCase(strs[i]), underscoreTitleCase[i]);
-			/*System.out.println("str: " + str +
-					",\tcamelCase: " + StringCase.toCamelCase(str) +
-					",\tTitleCase: " + StringCase.toTitleCase(str) +
-					",\tunderscore_lower_case: " + StringCase.toUnderscoreLowerCase(str) +
-					",\tUnderscore_Upper_Case: " + StringCase.toUnderscoreTitleCase(str));*/
+			Assert.assertEquals("camelCase " + i, camelCase[i], StringCase.toCamelCase(strs[i]));
+			Assert.assertEquals("TitleCase " + i, titleCase[i], StringCase.toTitleCase(strs[i]));
+			Assert.assertEquals("dash-case " + i, dashCase[i], StringCase.toDashCase(strs[i]));
+			Assert.assertEquals("underscore_lower_case " + i, underscoreLowerCase[i], StringCase.toUnderscoreLowerCase(strs[i]));
+			Assert.assertEquals("Underscore_Title_Case " + i, underscoreTitleCase[i], StringCase.toUnderscoreTitleCase(strs[i]));
 		}
+	}
+
+
+	private static final List<String> list(String... strs) {
+		return Arrays.asList(strs);
 	}
 
 }

@@ -158,22 +158,27 @@ public final class StringToProperties {
 				}
 			}
 
-			try {
-				loadKeyValueString(str, 0, keyLength, sb);
-				String key = sb.toString();
-				sb.setLength(0);
-				loadKeyValueString(str, valueStart, strLen - valueStart, sb);
-				String value = sb.toString();
-				sb.setLength(0);
-				dst.add(new AbstractMap.SimpleImmutableEntry<>(key, value));
-			} catch (IOException e) {
-				throw new UncheckedIOException("StringBuilder threw IOException", e);
-			}
+			loadKeyValueString(str, 0, keyLength, sb);
+			String key = sb.toString();
+			sb.setLength(0);
+			loadKeyValueString(str, valueStart, strLen - valueStart, sb);
+			String value = sb.toString();
+			sb.setLength(0);
+			dst.add(new AbstractMap.SimpleImmutableEntry<>(key, value));
 		}
 	}
 
 
-	private static final <T extends Appendable> void loadKeyValueString(String str, int off, int len, T dst) throws IOException {
+	private static final void loadKeyValueString(String str, int off, int len, StringBuilder dst) {
+		try {
+			loadKeyValueString(str, off, len, (Appendable)dst);
+		} catch (IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+	}
+
+
+	private static final void loadKeyValueString(String str, int off, int len, Appendable dst) throws IOException {
 		int end = off + len;
 		while(off < end) {
 			char a = str.charAt(off++);
