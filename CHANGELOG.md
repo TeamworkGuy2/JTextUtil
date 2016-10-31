@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.11.0](N/A) - 2016-10-08
+###[0.11.1](N/A) - 2016-10-30
+#### Added
+* Added StringEscapeJson toJsonString() and fromJsonString() overloads which don't require string offset and length
+
+
+--------
+###[0.11.0](https://github.com/TeamworkGuy2/JTextUtil/commit/9f1c9bd4af821ebe504919c430d639037558ac6c) - 2016-10-08
 #### Added
 * Added StringCase isDashCase() and toDashCase() with additional unit tests
 

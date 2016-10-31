@@ -30,12 +30,22 @@ public class StringEscapeJson {
 	}
 
 
+	public static final void toJsonString(String str, StringBuilder dst) {
+		toJsonString(str, 0, str.length(), dst);
+	}
+
+
 	public static final void toJsonString(String str, int off, int len, StringBuilder dst) {
 		try {
 			toJsonString(str, off, len, (Appendable)dst);
 		} catch (IOException ioe) {
 			throw new UncheckedIOException(ioe);
 		}
+	}
+
+
+	public static final void toJsonString(String str, Appendable dst) throws IOException {
+		toJsonString(str, 0, str.length(), dst);
 	}
 
 
@@ -92,12 +102,22 @@ public class StringEscapeJson {
 	}
 
 
+	public static final void fromJsonString(String str, StringBuilder dst) {
+		fromJsonString(str, 0, str.length(), dst);
+	}
+
+
 	public static final void fromJsonString(String str, int off, int len, StringBuilder dst) {
 		try {
 			fromJsonString(str, off, len, (Appendable)dst);
 		} catch (IOException ioe) {
 			throw new UncheckedIOException(ioe);
 		}
+	}
+
+
+	public static final void fromJsonString(String str, Appendable dst) throws IOException {
+		fromJsonString(str, 0, str.length(), dst);
 	}
 
 
