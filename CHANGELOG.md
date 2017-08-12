@@ -4,13 +4,19 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.11.1](N/A) - 2016-10-30
+### [0.11.2](https://github.com/TeamworkGuy2/JTextUtil/commit/295e57a6016ecedbf3f68eb7f65aff98b27961c7) - 2016-10-30
+#### Added
+* Added StringCompare.compareIgnoreCase(String, String) overload and unit test
+
+
+--------
+### [0.11.1](https://github.com/TeamworkGuy2/JTextUtil/commit/295e57a6016ecedbf3f68eb7f65aff98b27961c7) - 2016-10-30
 #### Added
 * Added StringEscapeJson toJsonString() and fromJsonString() overloads which don't require string offset and length
 
 
 --------
-###[0.11.0](https://github.com/TeamworkGuy2/JTextUtil/commit/9f1c9bd4af821ebe504919c430d639037558ac6c) - 2016-10-08
+### [0.11.0](https://github.com/TeamworkGuy2/JTextUtil/commit/9f1c9bd4af821ebe504919c430d639037558ac6c) - 2016-10-08
 #### Added
 * Added StringCase isDashCase() and toDashCase() with additional unit tests
 
@@ -23,13 +29,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.10.6](https://github.com/TeamworkGuy2/JTextUtil/commit/1b81c02b2af0ac1186c1bab9c8534c6f851be2e9) - 2016-10-02
+### [0.10.6](https://github.com/TeamworkGuy2/JTextUtil/commit/1b81c02b2af0ac1186c1bab9c8534c6f851be2e9) - 2016-10-02
 #### Added
 * Added StringEscapeJson.toJsonString(char, Appendable) override
 
 
 --------
-###[0.10.5](https://github.com/TeamworkGuy2/JTextUtil/commit/d0299113a4f3478320321a7e9dfa8ffac84ce9c6) - 2016-09-26
+### [0.10.5](https://github.com/TeamworkGuy2/JTextUtil/commit/d0299113a4f3478320321a7e9dfa8ffac84ce9c6) - 2016-09-26
 #### Added
 * Added StringJoin.join(Iterator, ...) and StringJoin.Objects.join(Iterator, ...)
 
@@ -38,31 +44,31 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.10.4](https://github.com/TeamworkGuy2/JTextUtil/commit/6d7676e216cd63cfed9fb4f96180a5d647cb8372) - 2016-09-24
+### [0.10.4](https://github.com/TeamworkGuy2/JTextUtil/commit/6d7676e216cd63cfed9fb4f96180a5d647cb8372) - 2016-09-24
 #### Added
 * Added StringSplit.splitAtBoundary()
 
 
 --------
-###[0.10.3](https://github.com/TeamworkGuy2/JTextUtil/commit/cb0f1e114944175eafe06cc8311609187a2cc93e) - 2016-09-11
+### [0.10.3](https://github.com/TeamworkGuy2/JTextUtil/commit/cb0f1e114944175eafe06cc8311609187a2cc93e) - 2016-09-11
 #### Added
 * Added StringSplit.countMatches(char[], int, int, char[], int, int)
 
 
 --------
-###[0.10.2](https://github.com/TeamworkGuy2/JTextUtil/commit/573390227bb299d442f19b76f5761c8bc80e5a3c) - 2016-08-27
+### [0.10.2](https://github.com/TeamworkGuy2/JTextUtil/commit/573390227bb299d442f19b76f5761c8bc80e5a3c) - 2016-08-27
 #### Changed
 * Changed remote git repository name
 
 
 --------
-###[0.10.1](https://github.com/TeamworkGuy2/JTextFluff/commit/1d91013ca264434f32d59ac84b2e720444433689) - 2016-08-15
+### [0.10.1](https://github.com/TeamworkGuy2/JTextFluff/commit/1d91013ca264434f32d59ac84b2e720444433689) - 2016-08-15
 #### Added
 * StringPad
 
 
 --------
-###[0.10.0](https://github.com/TeamworkGuy2/JTextFluff/commit/621ad58574853f831ce5bc7e669e1447b8f306f9) - 2016-08-07
+### [0.10.0](https://github.com/TeamworkGuy2/JTextFluff/commit/621ad58574853f831ce5bc7e669e1447b8f306f9) - 2016-08-07
 #### Added
 * StringSearchOp for string comparison
 
@@ -72,7 +78,7 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.9.1](https://github.com/TeamworkGuy2/JTextFluff/commit/cd020a56da7a9549c2be5814bda830e59c23d245) - 2016-07-07
+### [0.9.1](https://github.com/TeamworkGuy2/JTextFluff/commit/cd020a56da7a9549c2be5814bda830e59c23d245) - 2016-07-07
 #### Added
 * StringJoin join() overloads with 'off' and 'len' parameters
 * Additional unit tests
@@ -82,7 +88,7 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.9.0](https://github.com/TeamworkGuy2/JTextFluff/commit/d48b7163392bbfab2a5eca4bc6f06d2143b29a0f) - 2016-06-26
+### [0.9.0](https://github.com/TeamworkGuy2/JTextFluff/commit/d48b7163392bbfab2a5eca4bc6f06d2143b29a0f) - 2016-06-26
 #### Added
 * StringSplit substring*() and lastSubstring*() methods
 
@@ -94,7 +100,7 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.8.0](https://github.com/TeamworkGuy2/JTextFluff/commit/78acc7e47201b572db507634e5b3517b874e9c8f) - 2016-02-28
+### [0.8.0](https://github.com/TeamworkGuy2/JTextFluff/commit/78acc7e47201b572db507634e5b3517b874e9c8f) - 2016-02-28
 #### Added
 * Added StringIndex lastIndexOf()
 
@@ -104,7 +110,7 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.7.2](https://github.com/TeamworkGuy2/JTextFluff/commit/9103614630787018da70515f6f519dc485dfdc63) - 2016-02-08
+### [0.7.2](https://github.com/TeamworkGuy2/JTextFluff/commit/9103614630787018da70515f6f519dc485dfdc63) - 2016-02-08
 #### Added
 * Added StringJoin repeat() and repeatJoin() methods to repeat a string several times and return a string result or appending to a destination
 * Added StringTrim countAndTrimLeading() and countAndTrimTrailing() to return a trimmed string as well as how many leading/trailing characters or strings were trimmed
@@ -114,7 +120,7 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.7.1](https://github.com/TeamworkGuy2/JTextFluff/commit/07ef4c94a2ec576cc8aeb55ef9b6871ff304f304) -  2016-01-16
+### [0.7.1](https://github.com/TeamworkGuy2/JTextFluff/commit/07ef4c94a2ec576cc8aeb55ef9b6871ff304f304) -  2016-01-16
 #### Added
 * Added more JUnit tests
 
@@ -124,7 +130,7 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.7.0](https://github.com/TeamworkGuy2/JTextFluff/commit/94a5ebba1b9c37887dd017f87b3849eaa261ac56) - 2016-01-10
+### [0.7.0](https://github.com/TeamworkGuy2/JTextFluff/commit/94a5ebba1b9c37887dd017f87b3849eaa261ac56) - 2016-01-10
 #### Added
 * Additional tests and cleaning of old debugging statements and variable names
 * Added StringTrim trimLeading() and trimTrailing()

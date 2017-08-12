@@ -209,6 +209,11 @@ public final class StringCompare {
 	}
 
 
+	public static final boolean containsIgnoreCase(String str, String searchStr) {
+		return indexOfIgnoreCase(str, 0, str.length(), searchStr, 0, searchStr.length(), 0) > -1;
+	}
+
+
 	public static final boolean containsEqualIgnoreCase(final String[] strs, String str) {
 		for(int i = 0, size = strs.length; i < size; i++) {
 			if(strs[i] != null && strs[i].equalsIgnoreCase(str)) {
@@ -424,4 +429,41 @@ public final class StringCompare {
 		return size - offset1;
 	}
 
+
+	static int indexOfIgnoreCase(String source, int sourceOffset, int sourceCount,
+			String target, int targetOffset, int targetCount, int fromIndex) {
+		if (fromIndex >= sourceCount) {
+			return (targetCount == 0 ? sourceCount : -1);
+		}
+		if (fromIndex < 0) {
+			fromIndex = 0;
+		}
+		if (targetCount == 0) {
+			return fromIndex;
+		}
+
+		char first = Character.toUpperCase(target.charAt(targetOffset));
+		int max = sourceOffset + (sourceCount - targetCount);
+
+		for (int i = sourceOffset + fromIndex; i <= max; i++) {
+			/* Look for first character. */
+			if (Character.toUpperCase(source.charAt(i)) != first) {
+				while (++i <= max && Character.toUpperCase(source.charAt(i)) != first);
+			}
+
+			/* Found first character, now look at the rest of v2 */
+			if (i <= max) {
+				int j = i + 1;
+				int end = j + targetCount - 1;
+				for (int k = targetOffset + 1; j < end && Character.toUpperCase(source.charAt(j)) == Character.toUpperCase(target.charAt(k)); j++, k++);
+
+				if (j == end) {
+					/* Found whole string. */
+					return i - sourceOffset;
+				}
+			}
+		}
+		return -1;
+	}
+   
 }

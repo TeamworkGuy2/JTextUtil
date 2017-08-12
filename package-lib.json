@@ -1,7 +1,7 @@
 {
-	"version" : "0.11.1",
+	"version" : "0.11.2",
 	"name" : "jtext-util",
-	"description" : "String search, replace, and transform functions that provide more control, at the expense of verbosity, than those already in the Java API",
+	"description" : "String search, replace, and transform functions that provide more control, at the trade-off of verbosity, than those already in the Java API",
 	"homepage" : "https://github.com/TeamworkGuy2/JTextUtil",
 	"license" : "MIT",
 	"main" : "./bin/jtext_util.jar",

@@ -30,6 +30,11 @@ public class StringCompareTest {
 
 	@Test
 	public void ignoreCase() {
+		Assert.assertTrue(StringCompare.containsIgnoreCase("Char", "Char"));
+		Assert.assertTrue(StringCompare.containsIgnoreCase("Chars", "char"));
+		Assert.assertFalse(StringCompare.containsIgnoreCase("Chars", "char="));
+		Assert.assertFalse(StringCompare.containsIgnoreCase("", "char="));
+
 		String[] strs = new String[] { "Alpha", "Beta", "Charlie", "Delta" };
 
 		Assert.assertTrue(StringCompare.containsEqualIgnoreCase(strs, "Alpha"));
@@ -41,9 +46,11 @@ public class StringCompareTest {
 
 		Assert.assertTrue(StringCompare.containsIgnoreCase(strs, "Char"));
 		Assert.assertTrue(StringCompare.containsIgnoreCase(strs, "char"));
+		Assert.assertTrue(StringCompare.containsIgnoreCase(strs, "elta"));
 		Assert.assertFalse(StringCompare.containsIgnoreCase(strs, "char="));
 		Assert.assertTrue(StringCompare.containsIgnoreCase(Arrays.asList(strs), "Char"));
 		Assert.assertTrue(StringCompare.containsIgnoreCase(Arrays.asList(strs), "char"));
+		Assert.assertTrue(StringCompare.containsIgnoreCase(Arrays.asList(strs), "elta"));
 		Assert.assertFalse(StringCompare.containsIgnoreCase(Arrays.asList(strs), "char="));
 	}
 
