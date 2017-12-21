@@ -4,7 +4,15 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.11.2](https://github.com/TeamworkGuy2/JTextUtil/commit/295e57a6016ecedbf3f68eb7f65aff98b27961c7) - 2016-10-30
+### [0.11.3](N/A) - 2017-12-20
+#### Changed
+* Upgrade to Java 9
+* Changed `StringCompare` `anyStartWith()`, `compareStartsWith()`, and `equal()` `StringBuilder` parameters to `CharSequence`
+* Changed `StringIndex` `indexOf()`, `lastIndexOf()`, `indexOfSupplement()`, and `startsWithIndex()` `StringBuilder` parameters to `CharSequence`
+
+
+--------
+### [0.11.2](https://github.com/TeamworkGuy2/JTextUtil/commit/874950940409f0cd71e62c499504abb5a56c0f0f) - 2017-08-12
 #### Added
 * Added StringCompare.compareIgnoreCase(String, String) overload and unit test
 

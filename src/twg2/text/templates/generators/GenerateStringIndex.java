@@ -37,7 +37,7 @@ public class GenerateStringIndex {
 		stringType.getElementEnd = ")";
 
 		RandomAccessTypeInfo stringBuilderType = new RandomAccessTypeInfo();
-		stringBuilderType.type = "StringBuilder";
+		stringBuilderType.type = "CharSequence";
 		stringBuilderType.getLength = ".length()";
 		stringBuilderType.getElement = ".charAt(";
 		stringBuilderType.getElementEnd = ")";

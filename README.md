@@ -1,6 +1,6 @@
 JTextUtil
 ==============
-version: 0.11.2
+version: 0.11.3
 
 Dependencies: none
 
@@ -15,4 +15,4 @@ String utility methods for join, pad, split, substring, trim, replace, n-th matc
 Meant to provide more options than available in the Java API as of Java 1.8. 
 
 ### twg2.text.test
-JUnit tests and examples (requires [JUnit 4] (http://junit.org/))
+JUnit tests and examples (requires [JUnit 5](http://junit.org/))

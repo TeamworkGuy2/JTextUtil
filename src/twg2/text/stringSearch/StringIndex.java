@@ -183,9 +183,9 @@ public final class StringIndex {
 
 
 	/**
-	 * @see #indexOf(StringBuilder, int, int, int)
+	 * @see #indexOf(CharSequence, int, int, int)
 	 */
-	public static final int indexOf(StringBuilder str, int strOff, int matchChar) {
+	public static final int indexOf(CharSequence str, int strOff, int matchChar) {
 		return indexOf(str, strOff, str.length() - strOff, matchChar);
 	}
 
@@ -198,7 +198,7 @@ public final class StringIndex {
 	 * @param matchChar the character to search for in {@code str}
 	 * @return the index of the found matching character, from index 0, or -1 if the character could not be found
 	 */
-	public static final int indexOf(StringBuilder str, int strOff, int strLen, int matchChar) {
+	public static final int indexOf(CharSequence str, int strOff, int strLen, int matchChar) {
 		int strLength = strOff + strLen;
 
 		if(matchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
@@ -224,7 +224,7 @@ public final class StringIndex {
 	 * @param matchChar the character to search for in {@code str}
 	 * @return the index of the found matching character, from index 0, or -1 if the character could not be found
 	 */
-	public static final int lastIndexOf(StringBuilder str, int strOff, int strLen, int matchChar) {
+	public static final int lastIndexOf(CharSequence str, int strOff, int strLen, int matchChar) {
 		int strLength = strOff + strLen;
 
 		if(matchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
@@ -251,7 +251,7 @@ public final class StringIndex {
 	 * @param matchChar the supplementary characters to search for
 	 * @return the lower index within the {@code str} array of the matching {@code matchChar}
 	 */
-	private static final int indexOfSupplement(StringBuilder str, int strOff, int strLen, int matchChar) {
+	private static final int indexOfSupplement(CharSequence str, int strOff, int strLen, int matchChar) {
 		if(Character.isValidCodePoint(matchChar)) {
 			final char high = Character.highSurrogate(matchChar);
 			final char low = Character.lowSurrogate(matchChar);
@@ -839,38 +839,17 @@ public final class StringIndex {
 	}
 
 
-	/** Search for a sub string of characters in an array of characters and return the absolute index
-	 * where the sub string begins, or -1 if the sub string does not exist in the main array
-	 * @param str the char sequence to search
-	 * @param strOff the offset into the character array at which to start searching
-	 * @param subStr the sub string to search for in {@code str}
-	 * @param subStrOff the offset into the sub string array at which to start searching
-	 * @return the index of the found sub string, from index 0, or -1 if the sub string could not be found
-	 */
-	public static final int indexOf(CharSequence str, int strOff, int searchChar) {
-		int maxI = str.length();
-
-		for(int i = strOff; i < maxI; i++) {
-			if(str.charAt(i) == searchChar) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-
-	/** Returns the list index of the string that starts with {@code strBuilder}
-	 * @param strs the list of strings, the start of each is compared to {@code strBuilder}
-	 * @param strBuilder the string builder contents to compare to the start of each string
-	 * in {@code strs}
-	 * @param offsetStrB the offset into the string builder's contents at which to start
+	/** Returns the list index of the string that starts with {@code startStr}
+	 * @param strs the list of strings, the start of each is compared to {@code startStr}
+	 * @param startStr the character sequence to compare to the start of each string in {@code strs}
+	 * @param offsetStartStr the offset into the start string's contents at which to start
 	 * comparing characters to strings from {@code strs}
-	 * @return the {@code str} index of the string that starts with the contents of {@code strBldr},
-	 * -1 if none of the strings start with {@code strBuilder}
+	 * @return the {@code str} index of the string that starts with the contents of {@code startStr},
+	 * -1 if none of the strings start with {@code startStr}
 	 */
-	public static final int startsWithIndex(List<String> strs, StringBuilder strBuilder, int offsetStrB) {
+	public static final int startsWithIndex(List<String> strs, CharSequence startStr, int offsetStartStr) {
 		for(int strI = 0, len = strs.size(); strI < len; strI++) {
-			if(StringCompare.compareStartsWith(strs.get(strI), strBuilder, offsetStrB) == 0) {
+			if(StringCompare.compareStartsWith(strs.get(strI), startStr, offsetStartStr) == 0) {
 				return strI;
 			}
 		}

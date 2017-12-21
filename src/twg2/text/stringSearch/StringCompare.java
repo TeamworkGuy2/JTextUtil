@@ -8,7 +8,7 @@ import java.util.RandomAccess;
 /** Utility methods for comparing portions of strings.<br>
  * Includes {@link #startsWithAny(String, String...)} and {@link #endsWithAny(String, String...)}
  * to find common prefixes and suffixes amongst a group of strings.<br>
- * And the complementary {@link #anyStartWith(List, StringBuilder)} that searching for
+ * And the complementary {@link #anyStartWith(List, CharSequence)} that searching for
  * any string in a list that starts with a specified sub-string.<br>
  * {@link #compareEqualCount(CharSequence, CharSequence)} to compare how many consecutive
  * characters are equal between two strings.
@@ -85,7 +85,7 @@ public final class StringCompare {
 	 * @return true if any of the strings in {@code strs} starts with the contents of {@code startStr},
 	 * false if none of the strings start with {@code startStr}
 	 */
-	public static final boolean anyStartWith(final List<String> strs, final StringBuilder startStr) {
+	public static final boolean anyStartWith(final List<String> strs, final CharSequence startStr) {
 		for(int i = 0, len = strs.size(); i < len; i++) {
 			if(compareStartsWith(strs.get(i), startStr, 0) == 0) {
 				return true;
@@ -103,7 +103,7 @@ public final class StringCompare {
 	 * @return true if any of the strings in {@code strs} starts with the contents of {@code startStr},
 	 * false if none of the strings start with {@code startStr}
 	 */
-	public static final boolean anyStartWith(List<String> strs, final StringBuilder startStr, int startStrOffset) {
+	public static final boolean anyStartWith(List<String> strs, final CharSequence startStr, int startStrOffset) {
 		for(int i = 0, len = strs.size(); i < len; i++) {
 			if(compareStartsWith(strs.get(i), startStr, startStrOffset) == 0) {
 				return true;
@@ -129,7 +129,7 @@ public final class StringCompare {
 	 * @return 0 if {@code str} starts with {@code startStr}, greater than 0 if {@code str}
 	 * is greater than {@code startStr}, less than 0 if {@code str} is less than {@code startStr}
 	 */
-	public static final int compareStartsWith(String str, final StringBuilder startStr, int startStrOffset) {
+	public static final int compareStartsWith(String str, final CharSequence startStr, int startStrOffset) {
 		int sbRemLen = startStr.length() - startStrOffset;
 		int len = str.length() > sbRemLen ? sbRemLen : str.length();
 		int k = 0;
@@ -152,7 +152,7 @@ public final class StringCompare {
 	 * @param strB the string builder to compare
 	 * @return true if the string and string builder's contents are equal, false otherwise
 	 */
-	public static final boolean equal(String str, final StringBuilder strB) {
+	public static final boolean equal(String str, final CharSequence strB) {
 		if(str.length() != strB.length()) { return false; }
 
 		for(int i = str.length() - 1; i > -1; i--) {
