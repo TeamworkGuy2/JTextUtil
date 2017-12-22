@@ -4,9 +4,17 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.11.3](N/A) - 2017-12-20
+### [0.11.4](N/A) - 2017-12-22
+#### Fixed
+* Correctly upgrade `.classpath` to Java 9
+* Fix some test warnings
+
+
+--------
+### [0.11.3](https://github.com/TeamworkGuy2/JTextUtil/commit/3224c1d31c9d7d6350356494947f64b3b0dbd32a) - 2017-12-20
 #### Changed
 * Upgrade to Java 9
+* Upgraded to JUnit 5
 * Changed `StringCompare` `anyStartWith()`, `compareStartsWith()`, and `equal()` `StringBuilder` parameters to `CharSequence`
 * Changed `StringIndex` `indexOf()`, `lastIndexOf()`, `indexOfSupplement()`, and `startsWithIndex()` `StringBuilder` parameters to `CharSequence`
 

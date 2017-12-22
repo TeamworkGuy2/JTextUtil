@@ -3,14 +3,6 @@ package twg2.text.test.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import twg2.text.stringEscape.StringEscape;
-import twg2.text.stringUtils.StringJoin;
-import twg2.text.stringUtils.StringReplace;
-import checks.CheckTask;
-
 /**
  * @author TeamworkGuy2
  * @since 2014-8-24

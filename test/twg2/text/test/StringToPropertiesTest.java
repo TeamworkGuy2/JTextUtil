@@ -9,7 +9,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.junit.Assert;
@@ -37,7 +37,7 @@ public class StringToPropertiesTest {
 
 
 	public void readPropertiesCustomFromTo(Reader reader, Properties props) throws IOException {
-		List<Map.Entry<String, String>> dst = new ArrayList<>();
+		List<Entry<String, String>> dst = new ArrayList<>();
 		List<String> dstComments = new ArrayList<>();
 
 		BufferedReader bufReader = new BufferedReader(reader);
@@ -52,7 +52,7 @@ public class StringToPropertiesTest {
 
 		StringToProperties.loadKeyValueStrings(lines, dst, dstComments);
 
-		for(Map.Entry<String, String> entry : dst) {
+		for(Entry<String, String> entry : dst) {
 			props.setProperty(entry.getKey(), entry.getValue());
 		}
 	}
@@ -92,13 +92,14 @@ public class StringToPropertiesTest {
 	@Test
 	public void toEntries() throws IOException {
 		Properties initialProps = createTestProperties();
-		Collection<Map.Entry<String, String>> propEntries = (Collection<Map.Entry<String, String>>)(Collection)initialProps.entrySet();
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		Collection<Entry<String, String>> propEntries = (Collection<Entry<String, String>>)(Collection)initialProps.entrySet();
 
-		List<Map.Entry<String, String>> customResProps = new ArrayList<>();
+		List<Entry<String, String>> customResProps = new ArrayList<>();
 		StringToProperties._saveKeyValueStrings(propEntries, customResProps);
 
 		int i = 0;
-		for(Map.Entry<Object, Object> prop : initialProps.entrySet()) {
+		for(Entry<Object, Object> prop : initialProps.entrySet()) {
 			// create a 'Properties' contain a single prop, write it, compare it to the custom written value
 			Properties initialProp = new Properties();
 			initialProp.setProperty((String)prop.getKey(), (String)prop.getValue());

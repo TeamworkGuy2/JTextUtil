@@ -114,16 +114,15 @@ public class StringIndexTest {
 			String[] strs2 = new String[] {	"string <%-with text-%>", "<%-a", "-%>", "and <!--<%-%>", "<!--%>"};
 			Integer[] expect2 = new Integer[] {7, 0, 0, 10, 3};
 
-			String str2 = "!#";
 			String prefix = "<!--";
 			List<String> matchStrs = Arrays.asList("<%-", "-%>");
 			int prefixOff = 0;
-			char[] prefixC = prefix.toCharArray();
+			char[] prefixChars = prefix.toCharArray();
 
 			CheckTask.assertTests(strs2, expect2, (s) -> {
-				int index = StringIndex.indexOfMatchNotPrefixedBy(s.toCharArray(), 0, matchStrs, prefixC, prefixOff);
+				int index = StringIndex.indexOfMatchNotPrefixedBy(s.toCharArray(), 0, matchStrs, prefixChars, prefixOff);
 				if(index > -1) {
-					index = StringIndex.indexOfNotPrefixedBy(s.toCharArray(), 0, matchStrs.get(index), 0, prefixC, prefixOff);
+					index = StringIndex.indexOfNotPrefixedBy(s.toCharArray(), 0, matchStrs.get(index), 0, prefixChars, prefixOff);
 				}
 				return index;
 			});
