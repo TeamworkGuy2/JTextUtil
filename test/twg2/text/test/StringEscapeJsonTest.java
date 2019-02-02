@@ -1,5 +1,6 @@
 package twg2.text.test;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import org.junit.Assert;
@@ -36,7 +37,7 @@ public class StringEscapeJsonTest {
 
 
 	@Test
-	public void jsonStrOffLen() {
+	public void jsonStrOffLen() throws IOException {
 		String[] raw = new String[] {
 			"a \\\\ -\" \b\n s",
 			"--arc \u2460 =||=",
@@ -55,6 +56,12 @@ public class StringEscapeJsonTest {
 		for(int i = 0, size = raw.length; i < size; i++) {
 			String jsonFromRaw = StringEscapeJson.toJsonString(raw[i], off, len);
 			Assert.assertEquals(json[i], jsonFromRaw);
+
+			StringBuilder sb = new StringBuilder();
+			for(char ch : raw[i].substring(off, off + len).toCharArray()) {
+				StringEscapeJson.toJsonString(ch, sb);
+			}
+			Assert.assertEquals(json[i], sb.toString());
 
 			String prefix = randStr(0, 10);
 			String suffix = randStr(0, 10);

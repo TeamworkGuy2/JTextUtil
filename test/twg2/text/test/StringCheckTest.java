@@ -2,8 +2,8 @@ package twg2.text.test;
 
 import org.junit.Test;
 
+import twg2.junitassist.checks.CheckTask;
 import twg2.text.stringUtils.StringCheck;
-import checks.CheckTask;
 
 /**
  * @author TeamworkGuy2

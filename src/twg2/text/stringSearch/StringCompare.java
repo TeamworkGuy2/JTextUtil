@@ -1,6 +1,5 @@
 package twg2.text.stringSearch;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.RandomAccess;
@@ -81,7 +80,7 @@ public final class StringCompare {
 
 	/** Returns true if any of the list of strings starts with {@code startStr}
 	 * @param strs the list of strings, the start of each is compared to {@code startStr}
-	 * @param startStr compare this string builder's contents to the start of each string
+	 * @param startStr compare this char sequence to the start of each string
 	 * @return true if any of the strings in {@code strs} starts with the contents of {@code startStr},
 	 * false if none of the strings start with {@code startStr}
 	 */
@@ -97,13 +96,12 @@ public final class StringCompare {
 
 	/** Returns true if any of the list of strings starts with {@code startStr}
 	 * @param strs the list of strings, the start of each is compared to {@code startStr}
-	 * @param startStr compare this string builder's contents to the start of each string
-	 * @param startStrOffset the offset into the string builder's contents at which to start
-	 * comparing characters to strings from {@code strs}
+	 * @param startStr compare this char sequence to the start of each string
+	 * @param startStrOffset the offset into the char sequence at which to start comparing characters to strings from {@code strs}
 	 * @return true if any of the strings in {@code strs} starts with the contents of {@code startStr},
 	 * false if none of the strings start with {@code startStr}
 	 */
-	public static final boolean anyStartWith(List<String> strs, final CharSequence startStr, int startStrOffset) {
+	public static final boolean anyStartWith(final List<String> strs, final CharSequence startStr, int startStrOffset) {
 		for(int i = 0, len = strs.size(); i < len; i++) {
 			if(compareStartsWith(strs.get(i), startStr, startStrOffset) == 0) {
 				return true;
@@ -113,7 +111,7 @@ public final class StringCompare {
 	}
 
 
-	/** Compare a string to the string builder's contents. Returns 0 if {@code str} starts
+	/** Compare a string to the {@link CharSequence}. Returns 0 if {@code str} starts
 	 * with the contents of {@code startStr}.
 	 * <pre>
 	 * str="b" > startStr="ab"
@@ -123,15 +121,15 @@ public final class StringCompare {
 	 * str="abc" == startStr="abc"
 	 * </pre>
 	 * @param str the string to compare to
-	 * @param startStr the string builder contents to compare to the beginning of {@code str}
-	 * @param startStrOffset the offset into the string builder's contents at which to start
-	 * comparing characters to {@code str}
+	 * @param startStr the char sequence to compare to the beginning of {@code str}
+	 * @param startStrOffset the offset into the CharSequence at which to start comparing characters to {@code str}
 	 * @return 0 if {@code str} starts with {@code startStr}, greater than 0 if {@code str}
 	 * is greater than {@code startStr}, less than 0 if {@code str} is less than {@code startStr}
 	 */
 	public static final int compareStartsWith(String str, final CharSequence startStr, int startStrOffset) {
-		int sbRemLen = startStr.length() - startStrOffset;
-		int len = str.length() > sbRemLen ? sbRemLen : str.length();
+		int strLen = str.length();
+		int ssRemLen = startStr.length() - startStrOffset;
+		int len = strLen > ssRemLen ? ssRemLen : strLen;
 		int k = 0;
 		for( ; k < len; k++) {
 			char c1 = str.charAt(k);
@@ -140,23 +138,24 @@ public final class StringCompare {
 				return c1 - c2;
 			}
 		}
-		if((sbRemLen == 0 || k == 0) && str.length() != 0) {
+		// startStr empty or 0 characters matched and str is not empty, then str is greater
+		if((ssRemLen == 0 || k == 0) && strLen != 0) {
 			return 1;
 		}
-		return k == len ? 0 : str.length() - sbRemLen;
+		return (k == len && strLen >= ssRemLen ? 0 : strLen - ssRemLen);
 	}
 
 
-	/** Compares a string to a string builder's contents
+	/** Compares a string to a {@link CharSequence}
 	 * @param str the string to compare
-	 * @param strB the string builder to compare
-	 * @return true if the string and string builder's contents are equal, false otherwise
+	 * @param charSeq the char sequence to compare
+	 * @return true if the string and char sequence are equal, false otherwise
 	 */
-	public static final boolean equal(String str, final CharSequence strB) {
-		if(str.length() != strB.length()) { return false; }
+	public static final boolean equal(String str, final CharSequence charSeq) {
+		if(str.length() != charSeq.length()) { return false; }
 
 		for(int i = str.length() - 1; i > -1; i--) {
-			if(str.charAt(i) != strB.charAt(i)) { return false; }
+			if(str.charAt(i) != charSeq.charAt(i)) { return false; }
 		}
 		return true;
 	}
@@ -166,7 +165,7 @@ public final class StringCompare {
 	 * @see #equal(char[], int, char[], int, int)
 	 */
 	public static final boolean equal(String str1, int str1Off, String str2, int str2Off, int len) {
-		if(str1Off + len > str1.length()) {
+		if(str1Off + len > str1.length() || str2Off + len > str2.length()) {
 			return false;
 		}
 		for(int i = len - 1; i > -1; i--) {
@@ -199,7 +198,39 @@ public final class StringCompare {
 	}
 
 
+	public static final boolean containsAll(String src, final String[] subStrs) {
+		for(String subStr : subStrs) {
+			if(src.indexOf(subStr, 0) == -1) {
+				return false;
+			}
+		}
+		return subStrs.length > 0;
+	}
+
+
+	public static final boolean containsAll(String src, Iterable<String> subStrs) {
+		boolean any = false;
+		for(String subStr : subStrs) {
+			any = true;
+			if(src.indexOf(subStr, 0) == -1) {
+				return false;
+			}
+		}
+		return any;
+	}
+
+
 	public static final boolean containsAny(String src, final String[] subStrs) {
+		for(String subStr : subStrs) {
+			if(src.indexOf(subStr, 0) > -1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	public static final boolean containsAny(String src, Iterable<String> subStrs) {
 		for(String subStr : subStrs) {
 			if(src.indexOf(subStr, 0) > -1) {
 				return true;
@@ -240,7 +271,7 @@ public final class StringCompare {
 	 * @param str
 	 * @return true if the {@code strs} collection contains {@code str}, ignoring case, false if not
 	 */
-	public static final boolean containsEqualIgnoreCase(final Collection<String> strs, String str) {
+	public static final boolean containsEqualIgnoreCase(final Iterable<String> strs, String str) {
 		if(strs instanceof RandomAccess && strs instanceof List) {
 			List<String> strList = (List<String>)strs;
 			for(int i = 0, size = strList.size(); i < size; i++) {
@@ -266,7 +297,7 @@ public final class StringCompare {
 	 * @param str
 	 * @return true if {@code strs} collection contains {@code str} ignoring case, false if not
 	 */
-	public static final boolean containsIgnoreCase(final Collection<String> strs, String str) {
+	public static final boolean containsIgnoreCase(final Iterable<String> strs, String str) {
 		String strUpper = str.toUpperCase();
 		if(strs instanceof RandomAccess && strs instanceof List) {
 			List<String> strList = (List<String>)strs;

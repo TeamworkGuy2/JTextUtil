@@ -1,11 +1,11 @@
 JTextUtil
 ==============
-version: 0.11.4
+version: 0.11.5
 
 Dependencies: none
 
 ### twg2.text.stringEscape
-Escape and unescape methods for JSON (`StringEscapeJson`), XML (`StringEscapeXml`), and strings with non-ASCII characters, quotes, or \t \b \f \r characters (`StringEscape` and `StringEscapePartial`).
+Escape and unescape methods for JSON (`StringEscapeJson`), XML (`StringEscapeXml`), and strings with non-ASCII characters, quotes, or `\t \b \f \r` characters (`StringEscape` and `StringEscapePartial`).
 
 ### twg2.text.stringSearch
 String search methods for indexOf/lastIndexOf (`StringIndex`), endsWith, startsWith, compare, contains (`StringCompare`), and common prefix/suffix (`StringCommonality`).

@@ -5,8 +5,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import twg2.junitassist.checks.CheckTask;
 import twg2.text.stringEscape.StringEscapePartial;
-import checks.CheckTask;
 
 /**
  * @author TeamworkGuy2

@@ -13,7 +13,7 @@ import java.util.StringJoiner;
 import org.junit.Assert;
 import org.junit.Test;
 
-import checks.CheckTask;
+import twg2.junitassist.checks.CheckTask;
 import twg2.text.stringUtils.StringJoin;
 
 /**

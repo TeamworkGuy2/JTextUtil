@@ -121,16 +121,32 @@ public class StringEscapeTest {
 	@Test
 	public void escapeUnescapeMiscellaneous() {
 		String src = "a \\\"block\\\" char '\\\"'";
+		String unwrapped = "a \"block\" char '\"'";
+
 		StringBuilder strDst = new StringBuilder();
 		StringEscape.unescapeChar(src, 0, '\\', '"', strDst);
-		String unwrapped = strDst.toString();
-		Assert.assertTrue("a \"block\" char '\"'".equals(unwrapped));
+		Assert.assertEquals(unwrapped, strDst.toString());
 
 		strDst.setLength(0);
 		StringEscape.escapeChar(unwrapped, '\\', '"', (char)0, strDst);
-		String wrapped = strDst.toString();
-		Assert.assertTrue(src.equals(wrapped));
-	}
+		Assert.assertEquals(src, strDst.toString());
 
+		src = "a \\\"block\\ end\"-";
+		// behavior quirk - unescape drops the escape char regardless of what follows it
+		unwrapped = "a \"block end";
+		String wrapped = "a \\\"block end";
+
+		strDst.setLength(0);
+		StringEscape.unescapeChar(src, 0, '\\', '"', strDst);
+		Assert.assertEquals(unwrapped, strDst.toString());
+
+		strDst.setLength(0);
+		StringEscape.escapeChar(unwrapped, '\\', '"', (char)0, strDst);
+		Assert.assertEquals(wrapped, strDst.toString());
+
+		strDst.setLength(0);
+		StringEscape.escapeChar(unwrapped, '\\', (char)0, '"', strDst);
+		Assert.assertEquals(wrapped, strDst.toString());
+	}
 
 }

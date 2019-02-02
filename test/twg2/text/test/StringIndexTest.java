@@ -1,14 +1,16 @@
 package twg2.text.test;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import twg2.junitassist.checks.CheckTask;
 import twg2.text.stringSearch.StringIndex;
-import twg2.text.test.utils.StringTestUtils;
-import checks.CheckTask;
+
+import static twg2.text.test.utils.StringTestUtils.fromStringsAndCodePoints;
 
 /**
  * @author TeamworkGuy2
@@ -121,6 +123,7 @@ public class StringIndexTest {
 
 			CheckTask.assertTests(strs2, expect2, (s) -> {
 				int index = StringIndex.indexOfMatchNotPrefixedBy(s.toCharArray(), 0, matchStrs, prefixChars, prefixOff);
+				Assert.assertEquals(index, StringIndex.indexOfMatchNotPrefixedBy(s.toCharArray(), 0, new LinkedList<>(matchStrs), prefixChars, prefixOff));
 				if(index > -1) {
 					index = StringIndex.indexOfNotPrefixedBy(s.toCharArray(), 0, matchStrs.get(index), 0, prefixChars, prefixOff);
 				}
@@ -141,56 +144,84 @@ public class StringIndexTest {
 				""
 		};
 
-		Assert.assertEquals(5, StringIndex.indexOfMatch("".toCharArray(), 0, matchStrs));
-		Assert.assertEquals(4, StringIndex.indexOfMatch("end".toCharArray(), 0, matchStrs));
-		Assert.assertEquals(1, StringIndex.indexOfMatch("=Str".toCharArray(), 1, matchStrs));
+		Assert.assertEquals(5, StringIndex.indexOfMatch(charAry(""), 0, matchStrs));
+		Assert.assertEquals(4, StringIndex.indexOfMatch(charAry("end"), 0, matchStrs));
+		Assert.assertEquals(1, StringIndex.indexOfMatch(charAry("=Str"), 1, matchStrs));
 
-		Assert.assertEquals(5, StringIndex.indexOfMatch("".toCharArray(), 0, Arrays.asList(matchStrs)));
-		Assert.assertEquals(4, StringIndex.indexOfMatch("end".toCharArray(), 0, Arrays.asList(matchStrs)));
-		Assert.assertEquals(1, StringIndex.indexOfMatch("=Str".toCharArray(), 1, Arrays.asList(matchStrs)));
+		Assert.assertEquals(5, StringIndex.indexOfMatch(charAry(""), 0, Arrays.asList(matchStrs)));
+		Assert.assertEquals(4, StringIndex.indexOfMatch(charAry("end"), 0, Arrays.asList(matchStrs)));
+		Assert.assertEquals(1, StringIndex.indexOfMatch(charAry("=Str"), 1, Arrays.asList(matchStrs)));
+
+		Assert.assertEquals(5, StringIndex.indexOfMatch(charAry(""), 0, new LinkedList<>(Arrays.asList(matchStrs))));
+		Assert.assertEquals(4, StringIndex.indexOfMatch(charAry("end"), 0, new LinkedList<>(Arrays.asList(matchStrs))));
+		Assert.assertEquals(1, StringIndex.indexOfMatch(charAry("=Str"), 1, new LinkedList<>(Arrays.asList(matchStrs))));
 	}
 
 
 	@Test
-	public void indexOf_String_Char() {
-		Assert.assertEquals(10, StringIndex.indexOf("Aa Bb Ccc 1".toCharArray(), 3, 8, (int)'1'));
+	public void indexOf_StringOrCharAryOrCharSeq_Char() {
+		Assert.assertEquals(10, StringIndex.indexOf(        "Aa Bb Ccc 1",  3, 8, (int)'1'));
+		Assert.assertEquals(10, StringIndex.indexOf(charSeq("Aa Bb Ccc 1"), 3, 8, (int)'1'));
+		Assert.assertEquals(10, StringIndex.indexOf(charAry("Aa Bb Ccc 1"), 3, 8, (int)'1'));
+
+		Assert.assertEquals(10, StringIndex.indexOf(        "Aa Bb Ccc \u2460",  3, 8, (int)'\u2460'));
+		Assert.assertEquals(10, StringIndex.indexOf(charAry("Aa Bb Ccc \u2460"), 3, 8, (int)'\u2460'));
+		Assert.assertEquals(10, StringIndex.indexOf(charSeq("Aa Bb Ccc \u2460"), 3, 8, (int)'\u2460'));
+
+		Assert.assertEquals(10, StringIndex.indexOf(        fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8),  3, 9, (int)0x1F3B8));
+		Assert.assertEquals(10, StringIndex.indexOf(charAry(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8)), 3, 9, (int)0x1F3B8));
+		Assert.assertEquals(10, StringIndex.indexOf(charSeq(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8)), 3, 9, (int)0x1F3B8));
 	}
 
 
 	@Test
-	public void indexOf_StringOrCharAry_Char() {
-		Assert.assertEquals(10, StringIndex.indexOf("Aa Bb Ccc \u2460", 3, 8, (int)'\u2460'));
-		Assert.assertEquals(10, StringIndex.indexOf(StringTestUtils.fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8), 3, 9, (int)0x1F3B8));
+	public void lastIndexOf_StringOrCharAryOrCharSeq_Char() {
+		Assert.assertEquals(12, StringIndex.lastIndexOf(        "\u2460 Aa Bb Ccc \u2460 \u2460",  3, 10, (int)'\u2460'));
+		Assert.assertEquals(12, StringIndex.lastIndexOf(charAry("\u2460 Aa Bb Ccc \u2460 \u2460"), 3, 10, (int)'\u2460'));
+		Assert.assertEquals(12, StringIndex.lastIndexOf(charSeq("\u2460 Aa Bb Ccc \u2460 \u2460"), 3, 10, (int)'\u2460'));
 
-		Assert.assertEquals(10, StringIndex.indexOf("Aa Bb Ccc \u2460".toCharArray(), 3, 8, (int)'\u2460'));
-		Assert.assertEquals(10, StringIndex.indexOf(StringTestUtils.fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8).toCharArray(), 3, 9, (int)0x1F3B8));
-	}
-
-
-	@Test
-	public void lastIndexOf_StringOrCharAry_Char() {
 		// TODO add support for supplementary lastIndexOf() chars at some point
-		Assert.assertEquals(12, StringIndex.lastIndexOf("\u2460 Aa Bb Ccc \u2460 \u2460", 3, 10, (int)'\u2460'));
-		//Assert.assertEquals(14, StringIndex.lastIndexOf(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8, "-", 0x1F3B8), 6, 9, (int)0x1F3B8));
-
-		Assert.assertEquals(12, StringIndex.lastIndexOf("\u2460 Aa Bb Ccc \u2460 \u2460".toCharArray(), 3, 10, (int)'\u2460'));
-		//Assert.assertEquals(14, StringIndex.lastIndexOf(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8, "-", 0x1F3B8).toCharArray(), 6, 9, (int)0x1F3B8));
+		//Assert.assertEquals(14, StringIndex.lastIndexOf(        fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8, "-", 0x1F3B8),  6, 9, (int)0x1F3B8));
+		//Assert.assertEquals(14, StringIndex.lastIndexOf(charAry(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8, "-", 0x1F3B8)), 6, 9, (int)0x1F3B8));
+		//Assert.assertEquals(14, StringIndex.lastIndexOf(charSeq(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8, "-", 0x1F3B8)), 6, 9, (int)0x1F3B8));
 	}
 
 
 	@Test
 	public void indexOf_CharSeq_CharSeq() {
-		Assert.assertEquals(3, StringIndex.indexOf((CharSequence)"Aa Bb Ccc 1", 3, (CharSequence)"Bb Ccc 2", 0, 7));
+		Assert.assertEquals(3, StringIndex.indexOf(charSeq("Aa Bb Ccc 1"), 3, charSeq("Bb Ccc 2"), 0, 7));
 	}
 
 
 	@Test
 	public void indexOf_StringOrCharAry_StringOrCharAry() {
+		Assert.assertEquals(3, StringIndex.indexOf("Aa Bb Ccc 1", 3, 7, "Bb Ccc 2", 0, 7));
+
 		Assert.assertEquals(3, StringIndex.indexOf("Aa Bb Ccc 1".toCharArray(), 3, 7, "Bb Ccc 2", 0, 7));
 
 		Assert.assertEquals(3, StringIndex.indexOf("Aa Bb Ccc 1", 3, 7, "Bb Ccc 2".toCharArray(), 0, 7));
 
 		Assert.assertEquals(3, StringIndex.indexOf("Aa Bb Ccc 1".toCharArray(), 3, 7, "Bb Ccc 2".toCharArray(), 0, 7));
+	}
+
+
+	@Test
+	public void startsWithIndex() {
+		Assert.assertEquals(2, StringIndex.startsWithIndex(Arrays.asList("", "this", "super", "base"), "sup", 0));
+		Assert.assertEquals(2, StringIndex.startsWithIndex(Arrays.asList("", "this", "super", "base"), "-sup", 1));
+	
+		Assert.assertEquals(-1, StringIndex.startsWithIndex(Arrays.asList(), "sup", 0));
+		Assert.assertEquals(-1, StringIndex.startsWithIndex(Arrays.asList("this", "base"), "sup", 0));
+	}
+
+
+	private static char[] charAry(String str) {
+		return str.toCharArray();
+	}
+
+
+	private static CharSequence charSeq(String str) {
+		return new StringBuilder(str);
 	}
 
 }

@@ -402,13 +402,11 @@ $singleTypes:{type | 	/**
 	 * @return the index of the found sub-string, in the range {@code [0, matchStrs.size()-1]},
 	 * or -1 if the sub-string could not be found
 	 */
-	public static final int indexOfMatchNotPrefixedBy(char[] str, int strOff, List<String> matchStrs,
-			char[] prefix, int prefixOff) {
+	public static final int indexOfMatchNotPrefixedBy(char[] str, int strOff, List<String> matchStrs, char[] prefix, int prefixOff) {
 		int matchStrIndex = -1;
 		if(matchStrs instanceof RandomAccess) {
 			for(int i = 0, size = matchStrs.size(); i < size; i++) {
-				if((matchStrIndex = StringIndex.indexOfNotPrefixedBy(str, strOff,
-						matchStrs.get(i), 0, prefix, prefixOff)) != -1) {
+				if((matchStrIndex = StringIndex.indexOfNotPrefixedBy(str, strOff, matchStrs.get(i), 0, prefix, prefixOff)) != -1) {
 					matchStrIndex = i;
 					break;
 				}
@@ -417,7 +415,7 @@ $singleTypes:{type | 	/**
 		else {
 			int i = 0;
 			for(String matchStr : matchStrs) {
-				if((matchStrIndex = StringIndex.indexOf(str, strOff, matchStr, 0)) != -1) {
+				if((matchStrIndex = StringIndex.indexOfNotPrefixedBy(str, strOff, matchStr, 0, prefix, prefixOff)) != -1) {
 					matchStrIndex = i;
 					break;
 				}
@@ -467,15 +465,15 @@ $singleTypes:{type | 	/**
 	/** Returns the list index of the string that starts with {@code startStr}
 	 * @param strs the list of strings, the start of each is compared to {@code startStr}
 	 * @param startStr the character sequence to compare to the start of each string in {@code strs}
-	 * @param offsetStartStr the offset into the start string's contents at which to start
+	 * @param startStrOffset the offset into the start string's contents at which to start
 	 * comparing characters to strings from {@code strs}
 	 * @return the {@code str} index of the string that starts with the contents of {@code startStr},
 	 * -1 if none of the strings start with {@code startStr}
 	 */
-	public static final int startsWithIndex(List<String> strs, CharSequence startStr, int offsetStartStr) {
-		for(int strI = 0, len = strs.size(); strI < len; strI++) {
-			if(StringCompare.compareStartsWith(strs.get(strI), startStr, offsetStartStr) == 0) {
-				return strI;
+	public static final int startsWithIndex(List<String> strs, CharSequence startStr, int startStrOffset) {
+		for(int i = 0, len = strs.size(); i < len; i++) {
+			if(StringCompare.compareStartsWith(strs.get(i), startStr, startStrOffset) == 0) {
+				return i;
 			}
 		}
 		return -1;

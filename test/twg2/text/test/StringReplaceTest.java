@@ -9,8 +9,8 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
+import twg2.junitassist.checks.CheckTask;
 import twg2.text.stringUtils.StringReplace;
-import checks.CheckTask;
 
 /**
  * @author TeamworkGuy2

@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 import org.junit.Assert;
 import org.junit.Test;
 
+import twg2.junitassist.checks.CheckTask;
 import twg2.text.stringSearch.StringCommonality;
-import checks.CheckTask;
 
 /**
  * @author TeamworkGuy2

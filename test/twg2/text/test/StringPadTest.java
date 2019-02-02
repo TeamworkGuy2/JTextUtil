@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import checks.CheckTask;
+import twg2.junitassist.checks.CheckTask;
 import twg2.text.stringUtils.StringPad;
 
 /**

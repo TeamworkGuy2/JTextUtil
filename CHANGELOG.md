@@ -4,7 +4,23 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.11.4](N/A) - 2017-12-22
+### [0.11.5](N/A) - 2019-02-02
+#### Added
+* `StringCompare.containsAny(String, Iterable)`
+* `StringCompare.containsAll()` to mirror `containsAny()`
+
+#### Changed
+* Widened `StringCompare` `containsIgnoreCase()` and `containsEqualIgnoreCase()` parameter from `Collection` to `Iterable`
+* Additional unit tests
+
+#### Fixed
+* `StringCompare.compareStartsWith()` not handling case when `startStr` is longer then `str`
+* `StringCompare.equal()` error when str2 is shorter than `str2Off + len`, correctly returns false now
+
+
+
+--------
+### [0.11.4](https://github.com/TeamworkGuy2/JTextUtil/commit/06d67ab9b738d78580688270eaf1e09db8fda339) - 2017-12-22
 #### Fixed
 * Correctly upgrade `.classpath` to Java 9
 * Fix some test warnings
