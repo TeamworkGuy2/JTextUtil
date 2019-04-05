@@ -20,17 +20,17 @@ public class StringCheck {
 	private StringCheck() { throw new AssertionError("cannot instantiate static class StringCheck"); }
 
 
-	public static final boolean isNullOrEmpty(String str) {
+	public static boolean isNullOrEmpty(String str) {
 		return str == null || str.length() == 0;
 	}
 
 
-	public static final boolean isNullOrWhitespace(String str) {
+	public static boolean isNullOrWhitespace(String str) {
 		return str == null || isWhitespace(str, 0, str.length());
 	}
 
 
-	public static final boolean isWhitespace(String str) {
+	public static boolean isWhitespace(String str) {
 		return isWhitespace(str, 0, str.length());
 	}
 
@@ -39,7 +39,7 @@ public class StringCheck {
 	 * @param str the string to check
 	 * @return true if the string is entirely composed of whitespace, false if not
 	 */
-	public static final boolean isWhitespace(String str, int off, int len) {
+	public static boolean isWhitespace(String str, int off, int len) {
 		for(int i = 0; i < len; i++) {
 			if(!Character.isWhitespace(str.charAt(off + i))) {
 				return false;
@@ -49,7 +49,7 @@ public class StringCheck {
 	}
 
 
-	public static final boolean isWhitespace(StringBuilder strBldr, int off, int len) {
+	public static boolean isWhitespace(StringBuilder strBldr, int off, int len) {
 		for(int i = 0; i < len; i++) {
 			if(!Character.isWhitespace(strBldr.charAt(off + i))) {
 				return false;
@@ -59,7 +59,7 @@ public class StringCheck {
 	}
 
 
-	public static final boolean isWhitespace(char[] chs, int off, int len) {
+	public static boolean isWhitespace(char[] chs, int off, int len) {
 		for(int i = 0; i < len; i++) {
 			if(!Character.isWhitespace(chs[off + i])) {
 				return false;

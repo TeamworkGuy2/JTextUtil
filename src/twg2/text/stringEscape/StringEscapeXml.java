@@ -77,7 +77,7 @@ public class StringEscapeXml {
 	 * with normal characters
 	 * @see #unescapeXml(String, StringBuilder)
 	 */
-	public static final String unescapeXml(String content) {
+	public static String unescapeXml(String content) {
 		if(content.indexOf("&") == -1) {
 			return content;
 		}

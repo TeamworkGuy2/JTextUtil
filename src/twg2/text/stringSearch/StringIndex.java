@@ -9,7 +9,7 @@ import java.util.RandomAccess;
  * @since 2015-1-2
  */
 @javax.annotation.Generated("StringTemplate")
-public final class StringIndex {
+public class StringIndex {
 
 	private StringIndex() { throw new AssertionError("cannot instantiate static class StringIndex"); }
 
@@ -17,7 +17,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(String, int, int, int)
 	 */
-	public static final int indexOf(String str, int strOff, int matchChar) {
+	public static int indexOf(String str, int strOff, int matchChar) {
 		return indexOf(str, strOff, str.length() - strOff, matchChar);
 	}
 
@@ -30,7 +30,7 @@ public final class StringIndex {
 	 * @param matchChar the character to search for in {@code str}
 	 * @return the index of the found matching character, from index 0, or -1 if the character could not be found
 	 */
-	public static final int indexOf(String str, int strOff, int strLen, int matchChar) {
+	public static int indexOf(String str, int strOff, int strLen, int matchChar) {
 		int strLength = strOff + strLen;
 
 		if(matchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
@@ -56,7 +56,7 @@ public final class StringIndex {
 	 * @param matchChar the character to search for in {@code str}
 	 * @return the index of the found matching character, from index 0, or -1 if the character could not be found
 	 */
-	public static final int lastIndexOf(String str, int strOff, int strLen, int matchChar) {
+	public static int lastIndexOf(String str, int strOff, int strLen, int matchChar) {
 		int strLength = strOff + strLen;
 
 		if(matchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
@@ -83,7 +83,7 @@ public final class StringIndex {
 	 * @param matchChar the supplementary characters to search for
 	 * @return the lower index within the {@code str} array of the matching {@code matchChar}
 	 */
-	private static final int indexOfSupplement(String str, int strOff, int strLen, int matchChar) {
+	private static int indexOfSupplement(String str, int strOff, int strLen, int matchChar) {
 		if(Character.isValidCodePoint(matchChar)) {
 			final char high = Character.highSurrogate(matchChar);
 			final char low = Character.lowSurrogate(matchChar);
@@ -101,7 +101,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(char[], int, int, int)
 	 */
-	public static final int indexOf(char[] str, int strOff, int matchChar) {
+	public static int indexOf(char[] str, int strOff, int matchChar) {
 		return indexOf(str, strOff, str.length - strOff, matchChar);
 	}
 
@@ -114,7 +114,7 @@ public final class StringIndex {
 	 * @param matchChar the character to search for in {@code str}
 	 * @return the index of the found matching character, from index 0, or -1 if the character could not be found
 	 */
-	public static final int indexOf(char[] str, int strOff, int strLen, int matchChar) {
+	public static int indexOf(char[] str, int strOff, int strLen, int matchChar) {
 		int strLength = strOff + strLen;
 
 		if(matchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
@@ -140,7 +140,7 @@ public final class StringIndex {
 	 * @param matchChar the character to search for in {@code str}
 	 * @return the index of the found matching character, from index 0, or -1 if the character could not be found
 	 */
-	public static final int lastIndexOf(char[] str, int strOff, int strLen, int matchChar) {
+	public static int lastIndexOf(char[] str, int strOff, int strLen, int matchChar) {
 		int strLength = strOff + strLen;
 
 		if(matchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
@@ -167,7 +167,7 @@ public final class StringIndex {
 	 * @param matchChar the supplementary characters to search for
 	 * @return the lower index within the {@code str} array of the matching {@code matchChar}
 	 */
-	private static final int indexOfSupplement(char[] str, int strOff, int strLen, int matchChar) {
+	private static int indexOfSupplement(char[] str, int strOff, int strLen, int matchChar) {
 		if(Character.isValidCodePoint(matchChar)) {
 			final char high = Character.highSurrogate(matchChar);
 			final char low = Character.lowSurrogate(matchChar);
@@ -185,7 +185,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(CharSequence, int, int, int)
 	 */
-	public static final int indexOf(CharSequence str, int strOff, int matchChar) {
+	public static int indexOf(CharSequence str, int strOff, int matchChar) {
 		return indexOf(str, strOff, str.length() - strOff, matchChar);
 	}
 
@@ -198,7 +198,7 @@ public final class StringIndex {
 	 * @param matchChar the character to search for in {@code str}
 	 * @return the index of the found matching character, from index 0, or -1 if the character could not be found
 	 */
-	public static final int indexOf(CharSequence str, int strOff, int strLen, int matchChar) {
+	public static int indexOf(CharSequence str, int strOff, int strLen, int matchChar) {
 		int strLength = strOff + strLen;
 
 		if(matchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
@@ -224,7 +224,7 @@ public final class StringIndex {
 	 * @param matchChar the character to search for in {@code str}
 	 * @return the index of the found matching character, from index 0, or -1 if the character could not be found
 	 */
-	public static final int lastIndexOf(CharSequence str, int strOff, int strLen, int matchChar) {
+	public static int lastIndexOf(CharSequence str, int strOff, int strLen, int matchChar) {
 		int strLength = strOff + strLen;
 
 		if(matchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
@@ -251,7 +251,7 @@ public final class StringIndex {
 	 * @param matchChar the supplementary characters to search for
 	 * @return the lower index within the {@code str} array of the matching {@code matchChar}
 	 */
-	private static final int indexOfSupplement(CharSequence str, int strOff, int strLen, int matchChar) {
+	private static int indexOfSupplement(CharSequence str, int strOff, int strLen, int matchChar) {
 		if(Character.isValidCodePoint(matchChar)) {
 			final char high = Character.highSurrogate(matchChar);
 			final char low = Character.lowSurrogate(matchChar);
@@ -269,7 +269,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(String, int, int, String, int, int)
 	 */
-	public static final int indexOf(String str, int strOff, String subStr) {
+	public static int indexOf(String str, int strOff, String subStr) {
 		return indexOf(str, strOff, str.length() - strOff, subStr, 0, subStr.length());
 	}
 
@@ -277,7 +277,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(String, int, int, String, int, int)
 	 */
-	public static final int indexOf(String str, int strOff, String subStr, int subStrOff) {
+	public static int indexOf(String str, int strOff, String subStr, int subStrOff) {
 		return indexOf(str, strOff, str.length() - strOff, subStr, subStrOff, subStr.length() - subStrOff);
 	}
 
@@ -285,7 +285,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(String, int, int, String, int, int)
 	 */
-	public static final int indexOf(String str, int strOff, int strLen, String subStr) {
+	public static int indexOf(String str, int strOff, int strLen, String subStr) {
 		return indexOf(str, strOff, strLen, subStr, 0, subStr.length());
 	}
 
@@ -293,7 +293,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(String, int, int, String, int, int)
 	 */
-	public static final int indexOf(String str, int strOff, int strLen, String subStr, int subStrOff) {
+	public static int indexOf(String str, int strOff, int strLen, String subStr, int subStrOff) {
 		return indexOf(str, strOff, strLen, subStr, subStrOff, subStr.length() - subStrOff);
 	}
 
@@ -308,7 +308,7 @@ public final class StringIndex {
 	 * @param subStrLen the number of chars to search for starting at {@code subStrOff} in {@code subStr}
 	 * @return the index of the found sub string, from index 0, or -1 if the sub string could not be found
 	 */
-	public static final int indexOf(String str, int strOff, int strLen, String subStr, int subStrOff, int subStrLen) {
+	public static int indexOf(String str, int strOff, int strLen, String subStr, int subStrOff, int subStrLen) {
 		// if the sub string has a length of zero, return the offset into the search string, no comparison needed
 		if(subStrLen == 0) { return strOff; }
 
@@ -327,7 +327,7 @@ public final class StringIndex {
 				}
 				// if the entire substring was found
 				if(j == i + subStrLen) {
-					return j-subStrLen;
+					return j - subStrLen;
 				}
 			}
 		}
@@ -338,7 +338,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(String, int, int, char[], int, int)
 	 */
-	public static final int indexOf(String str, int strOff, char[] subStr) {
+	public static int indexOf(String str, int strOff, char[] subStr) {
 		return indexOf(str, strOff, str.length() - strOff, subStr, 0, subStr.length);
 	}
 
@@ -346,7 +346,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(String, int, int, char[], int, int)
 	 */
-	public static final int indexOf(String str, int strOff, char[] subStr, int subStrOff) {
+	public static int indexOf(String str, int strOff, char[] subStr, int subStrOff) {
 		return indexOf(str, strOff, str.length() - strOff, subStr, subStrOff, subStr.length - subStrOff);
 	}
 
@@ -354,7 +354,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(String, int, int, char[], int, int)
 	 */
-	public static final int indexOf(String str, int strOff, int strLen, char[] subStr) {
+	public static int indexOf(String str, int strOff, int strLen, char[] subStr) {
 		return indexOf(str, strOff, strLen, subStr, 0, subStr.length);
 	}
 
@@ -362,7 +362,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(String, int, int, char[], int, int)
 	 */
-	public static final int indexOf(String str, int strOff, int strLen, char[] subStr, int subStrOff) {
+	public static int indexOf(String str, int strOff, int strLen, char[] subStr, int subStrOff) {
 		return indexOf(str, strOff, strLen, subStr, subStrOff, subStr.length - subStrOff);
 	}
 
@@ -377,7 +377,7 @@ public final class StringIndex {
 	 * @param subStrLen the number of chars to search for starting at {@code subStrOff} in {@code subStr}
 	 * @return the index of the found sub string, from index 0, or -1 if the sub string could not be found
 	 */
-	public static final int indexOf(String str, int strOff, int strLen, char[] subStr, int subStrOff, int subStrLen) {
+	public static int indexOf(String str, int strOff, int strLen, char[] subStr, int subStrOff, int subStrLen) {
 		// if the sub string has a length of zero, return the offset into the search string, no comparison needed
 		if(subStrLen == 0) { return strOff; }
 
@@ -396,7 +396,7 @@ public final class StringIndex {
 				}
 				// if the entire substring was found
 				if(j == i + subStrLen) {
-					return j-subStrLen;
+					return j - subStrLen;
 				}
 			}
 		}
@@ -407,7 +407,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(char[], int, int, String, int, int)
 	 */
-	public static final int indexOf(char[] str, int strOff, String subStr) {
+	public static int indexOf(char[] str, int strOff, String subStr) {
 		return indexOf(str, strOff, str.length - strOff, subStr, 0, subStr.length());
 	}
 
@@ -415,7 +415,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(char[], int, int, String, int, int)
 	 */
-	public static final int indexOf(char[] str, int strOff, String subStr, int subStrOff) {
+	public static int indexOf(char[] str, int strOff, String subStr, int subStrOff) {
 		return indexOf(str, strOff, str.length - strOff, subStr, subStrOff, subStr.length() - subStrOff);
 	}
 
@@ -423,7 +423,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(char[], int, int, String, int, int)
 	 */
-	public static final int indexOf(char[] str, int strOff, int strLen, String subStr) {
+	public static int indexOf(char[] str, int strOff, int strLen, String subStr) {
 		return indexOf(str, strOff, strLen, subStr, 0, subStr.length());
 	}
 
@@ -431,7 +431,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(char[], int, int, String, int, int)
 	 */
-	public static final int indexOf(char[] str, int strOff, int strLen, String subStr, int subStrOff) {
+	public static int indexOf(char[] str, int strOff, int strLen, String subStr, int subStrOff) {
 		return indexOf(str, strOff, strLen, subStr, subStrOff, subStr.length() - subStrOff);
 	}
 
@@ -446,7 +446,7 @@ public final class StringIndex {
 	 * @param subStrLen the number of chars to search for starting at {@code subStrOff} in {@code subStr}
 	 * @return the index of the found sub string, from index 0, or -1 if the sub string could not be found
 	 */
-	public static final int indexOf(char[] str, int strOff, int strLen, String subStr, int subStrOff, int subStrLen) {
+	public static int indexOf(char[] str, int strOff, int strLen, String subStr, int subStrOff, int subStrLen) {
 		// if the sub string has a length of zero, return the offset into the search string, no comparison needed
 		if(subStrLen == 0) { return strOff; }
 
@@ -465,7 +465,7 @@ public final class StringIndex {
 				}
 				// if the entire substring was found
 				if(j == i + subStrLen) {
-					return j-subStrLen;
+					return j - subStrLen;
 				}
 			}
 		}
@@ -476,7 +476,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(char[], int, int, char[], int, int)
 	 */
-	public static final int indexOf(char[] str, int strOff, char[] subStr) {
+	public static int indexOf(char[] str, int strOff, char[] subStr) {
 		return indexOf(str, strOff, str.length - strOff, subStr, 0, subStr.length);
 	}
 
@@ -484,7 +484,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(char[], int, int, char[], int, int)
 	 */
-	public static final int indexOf(char[] str, int strOff, char[] subStr, int subStrOff) {
+	public static int indexOf(char[] str, int strOff, char[] subStr, int subStrOff) {
 		return indexOf(str, strOff, str.length - strOff, subStr, subStrOff, subStr.length - subStrOff);
 	}
 
@@ -492,7 +492,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(char[], int, int, char[], int, int)
 	 */
-	public static final int indexOf(char[] str, int strOff, int strLen, char[] subStr) {
+	public static int indexOf(char[] str, int strOff, int strLen, char[] subStr) {
 		return indexOf(str, strOff, strLen, subStr, 0, subStr.length);
 	}
 
@@ -500,7 +500,7 @@ public final class StringIndex {
 	/**
 	 * @see #indexOf(char[], int, int, char[], int, int)
 	 */
-	public static final int indexOf(char[] str, int strOff, int strLen, char[] subStr, int subStrOff) {
+	public static int indexOf(char[] str, int strOff, int strLen, char[] subStr, int subStrOff) {
 		return indexOf(str, strOff, strLen, subStr, subStrOff, subStr.length - subStrOff);
 	}
 
@@ -515,7 +515,7 @@ public final class StringIndex {
 	 * @param subStrLen the number of chars to search for starting at {@code subStrOff} in {@code subStr}
 	 * @return the index of the found sub string, from index 0, or -1 if the sub string could not be found
 	 */
-	public static final int indexOf(char[] str, int strOff, int strLen, char[] subStr, int subStrOff, int subStrLen) {
+	public static int indexOf(char[] str, int strOff, int strLen, char[] subStr, int subStrOff, int subStrLen) {
 		// if the sub string has a length of zero, return the offset into the search string, no comparison needed
 		if(subStrLen == 0) { return strOff; }
 
@@ -534,7 +534,7 @@ public final class StringIndex {
 				}
 				// if the entire substring was found
 				if(j == i + subStrLen) {
-					return j-subStrLen;
+					return j - subStrLen;
 				}
 			}
 		}
@@ -545,7 +545,7 @@ public final class StringIndex {
 	/** Find the {@code n-th} occurrence of a character in a string 
 	 * @see #indexOfOccurrenceN(String, int, int, int, int)
 	 */
-	public static final int indexOfOccurrenceN(String str, int occurenceN, int matchChar) {
+	public static int indexOfOccurrenceN(String str, int occurenceN, int matchChar) {
 		return indexOfOccurrenceN(str, 0, str.length(), occurenceN, matchChar);
 	}
 
@@ -560,7 +560,7 @@ public final class StringIndex {
 	 * @return the index of the {@code n-th} occurrence of {@code matchChar} in {@code str},
 	 * or -1 if the string does not contain {@code n} occurrences
 	 */
-	public static final int indexOfOccurrenceN(String str, int off, int len, int occurrenceN, int matchChar) {
+	public static int indexOfOccurrenceN(String str, int off, int len, int occurrenceN, int matchChar) {
 		int occurI = 0;
 		int loop = 0;
 		int i = off; // incremented past one more occurrence each loop
@@ -595,7 +595,7 @@ public final class StringIndex {
 	/** Find the {@code n-th} occurrence of a substring in a string 
 	 * @see #indexOfOccurrenceN(String, int, int, int, int)
 	 */
-	public static final int indexOfOccurrenceN(String str, int occurenceN, String matchStr) {
+	public static int indexOfOccurrenceN(String str, int occurenceN, String matchStr) {
 		return indexOfOccurrenceN(str, 0, str.length(), occurenceN, matchStr, 0, matchStr.length());
 	}
 
@@ -605,14 +605,16 @@ public final class StringIndex {
 	 * @param off the {@code str} offset
 	 * @param len the number of characters to search
 	 * @param occurrenceN the occurrence to find, 1 finds the first matching occurrence,
-	 * {@code N} finds the n-th occurrence, 0 finds the last occurrence
+	 * {@code N} finds the n-th occurrence, 0 finds the last occurrence matched from the beginning.
+	 * NOTE: this may not produce expected results when search for the last occurrence of repeating characters.
+	 * Example: indexOfOccurrenceN("aaaaa", 0, 5, 0, "aa", 0, 2) returns 2 rather than 3
 	 * @param matchStr the string to search for repeatedly
 	 * @param matchStrOff the {@code matchStr} offset
 	 * @param matchStrLen the number of characters to match
 	 * @return the index of the {@code n-th} occurrence of {@code matchChar} in {@code str},
 	 * or -1 if the string does not contain {@code n} occurrences
 	 */
-	public static final int indexOfOccurrenceN(String str, int off, int len, int occurrenceN, String matchStr, int matchStrOff, int matchStrLen) {
+	public static int indexOfOccurrenceN(String str, int off, int len, int occurrenceN, String matchStr, int matchStrOff, int matchStrLen) {
 		int occurI = 0;
 		int loop = 0;
 		int i = off; // incremented past one more occurrence each loop
@@ -662,14 +664,12 @@ public final class StringIndex {
 	 * @return the index of the start of a matching {@code subStr} within {@code str} that
 	 * is not proceeded by {@code prefix}.
 	 */
-	public static final int indexOfNotPrefixedBy(char[] str, int strOff, String subStr, int subStrOff,
-			char[] prefix, int prefixOff) {
+	public static int indexOfNotPrefixedBy(char[] str, int strOff, String subStr, int subStrOff, char[] prefix, int prefixOff) {
 		int prefixLen = prefix.length - prefixOff;
 		int index = indexOf(str, strOff, subStr, subStrOff);
 		while(index > -1) {
 			if(index-strOff >= prefixLen) {
-				boolean equal = StringCompare.equal(str, index - prefixLen, prefix, prefixOff, prefixLen);
-				if(equal == false) {
+				if(!StringCompare.equal(str, index - prefixLen, prefix, prefixOff, prefixLen)) {
 					return index;
 				}
 			}
@@ -700,14 +700,12 @@ public final class StringIndex {
 	 * @return the index of the start of a matching {@code subStr} within {@code str} that
 	 * is not proceeded by {@code prefix}.
 	 */
-	public static final int indexOfNotPrefixedBy(char[] str, int strOff, char[] subStr, int subStrOff,
-			char[] prefix, int prefixOff) {
+	public static int indexOfNotPrefixedBy(char[] str, int strOff, char[] subStr, int subStrOff, char[] prefix, int prefixOff) {
 		int prefixLen = prefix.length - prefixOff;
 		int index = indexOf(str, strOff, subStr, subStrOff);
 		while(index > -1) {
 			if(index-strOff >= prefixLen) {
-				boolean equal = StringCompare.equal(str, index - prefixLen, prefix, prefixOff, prefixLen);
-				if(equal == false) {
+				if(!StringCompare.equal(str, index - prefixLen, prefix, prefixOff, prefixLen)) {
 					return index;
 				}
 			}
@@ -727,11 +725,12 @@ public final class StringIndex {
 	 * @return the index of the found sub-string, in the range {@code [0, matchStrs.size()-1]},
 	 * or -1 if the sub-string could not be found
 	 */
-	public static final int indexOfMatch(char[] str, int strOff, List<String> matchStrs) {
+	public static int indexOfMatch(char[] str, int strOff, Iterable<String> matchStrs) {
 		int matchStrIndex = -1;
-		if(matchStrs instanceof RandomAccess) {
-			for(int i = 0, size = matchStrs.size(); i < size; i++) {
-				if((matchStrIndex = StringIndex.indexOf(str, strOff, matchStrs.get(i), 0)) != -1) {
+		if(matchStrs instanceof RandomAccess && matchStrs instanceof List) {
+			List<String> strList = (List<String>)matchStrs;
+			for(int i = 0, size = strList.size(); i < size; i++) {
+				if(StringIndex.indexOf(str, strOff, strList.get(i), 0) != -1) {
 					matchStrIndex = i;
 					break;
 				}
@@ -740,7 +739,7 @@ public final class StringIndex {
 		else {
 			int i = 0;
 			for(String matchStr : matchStrs) {
-				if((matchStrIndex = StringIndex.indexOf(str, strOff, matchStr, 0)) != -1) {
+				if(StringIndex.indexOf(str, strOff, matchStr, 0) != -1) {
 					matchStrIndex = i;
 					break;
 				}
@@ -758,10 +757,10 @@ public final class StringIndex {
 	 * @return the index of the found sub-string, in the range {@code [0, matchStrs.size()-1]},
 	 * or -1 if the sub-string could not be found
 	 */
-	public static final int indexOfMatch(char[] str, int strOff, String[] matchStrs) {
+	public static int indexOfMatch(char[] str, int strOff, String[] matchStrs) {
 		int matchStrIndex = -1;
 		for(int i = 0, size = matchStrs.length; i < size; i++) {
-			if((matchStrIndex = StringIndex.indexOf(str, strOff, matchStrs[i], 0)) != -1) {
+			if(StringIndex.indexOf(str, strOff, matchStrs[i], 0) != -1) {
 				matchStrIndex = i;
 				break;
 			}
@@ -777,11 +776,12 @@ public final class StringIndex {
 	 * @return the index of the found sub-string, in the range {@code [0, matchStrs.size()-1]},
 	 * or -1 if the sub-string could not be found
 	 */
-	public static final int indexOfMatchNotPrefixedBy(char[] str, int strOff, List<String> matchStrs, char[] prefix, int prefixOff) {
+	public static int indexOfMatchNotPrefixedBy(char[] str, int strOff, Iterable<String> matchStrs, char[] prefix, int prefixOff) {
 		int matchStrIndex = -1;
-		if(matchStrs instanceof RandomAccess) {
-			for(int i = 0, size = matchStrs.size(); i < size; i++) {
-				if((matchStrIndex = StringIndex.indexOfNotPrefixedBy(str, strOff, matchStrs.get(i), 0, prefix, prefixOff)) != -1) {
+		if(matchStrs instanceof RandomAccess && matchStrs instanceof List) {
+			List<String> strList = (List<String>)matchStrs;
+			for(int i = 0, size = strList.size(); i < size; i++) {
+				if(StringIndex.indexOfNotPrefixedBy(str, strOff, strList.get(i), 0, prefix, prefixOff) != -1) {
 					matchStrIndex = i;
 					break;
 				}
@@ -790,7 +790,7 @@ public final class StringIndex {
 		else {
 			int i = 0;
 			for(String matchStr : matchStrs) {
-				if((matchStrIndex = StringIndex.indexOfNotPrefixedBy(str, strOff, matchStr, 0, prefix, prefixOff)) != -1) {
+				if(StringIndex.indexOfNotPrefixedBy(str, strOff, matchStr, 0, prefix, prefixOff) != -1) {
 					matchStrIndex = i;
 					break;
 				}
@@ -809,7 +809,7 @@ public final class StringIndex {
 	 * @param subStrOff the offset into the sub string array at which to start searching
 	 * @return the index of the found sub string, from index 0, or -1 if the sub string could not be found
 	 */
-	public static final int indexOf(CharSequence str, int strOff, CharSequence subStr, int subStrOff, int len) {
+	public static int indexOf(CharSequence str, int strOff, CharSequence subStr, int subStrOff, int len) {
 		int subStrCount = len; // don't check for subStr bounds, let charAt() throw IOOBE
 		// if the sub string has a length of zero, return the offset into the search string, no comparison needed
 		if(subStrCount == 0) { return strOff; }
@@ -845,7 +845,7 @@ public final class StringIndex {
 	 * @return the {@code str} index of the string that starts with the contents of {@code startStr},
 	 * -1 if none of the strings start with {@code startStr}
 	 */
-	public static final int startsWithIndex(List<String> strs, CharSequence startStr, int startStrOffset) {
+	public static int startsWithIndex(List<String> strs, CharSequence startStr, int startStrOffset) {
 		for(int i = 0, len = strs.size(); i < len; i++) {
 			if(StringCompare.compareStartsWith(strs.get(i), startStr, startStrOffset) == 0) {
 				return i;

@@ -122,13 +122,20 @@ public class StringSplitTest {
 		String str = "something#split into pieces#3rd part#so";
 		List<String> strSplit3 = Arrays.asList("something", "split into pieces", "3rd part#so");
 
+		// test char pattern
+		List<String> dstList = StringSplit.split(null, '#');
+		Assert.assertEquals(0, dstList.size());
+
+		dstList = StringSplit.split(str, '#');
+		Assert.assertEquals(Arrays.asList(str.split("#")), dstList);
+
 		// test char pattern, dst List<String>
-		List<String> dstList = new ArrayList<>();
+		dstList = new ArrayList<>();
 		StringSplit.split(str, '#', dstList);
 		Assert.assertEquals(Arrays.asList(str.split("#")), dstList);
 
 		// test char pattern, dst List<String>, limit
-		dstList.clear();
+		dstList = new ArrayList<>();
 		StringSplit.split(str, '#', 3, dstList);
 		Assert.assertEquals(strSplit3, dstList);
 
@@ -186,46 +193,71 @@ public class StringSplitTest {
 	@Test
 	public void firstMatchTest() {
 		Assert.assertEquals("abc", StringSplit.firstMatch("abc-def-ghi", "-"));
-		Assert.assertEquals("abc", StringSplit.firstMatch("abc--def--ghi", "--"));
+		Assert.assertEquals("abc", StringSplit.firstMatch("abc--2--3", "-"));
 		Assert.assertEquals("", StringSplit.firstMatch("", "-"));
 		Assert.assertEquals("", StringSplit.firstMatch("-a-", "-"));
+		Assert.assertEquals("Aa", StringSplit.firstMatch("Aa--Bb--Cc", "--"));
+
+		Assert.assertEquals("abc", StringSplit.firstMatch("abc-def-ghi", '-'));
+		Assert.assertEquals("abc", StringSplit.firstMatch("abc--2--3", '-'));
+		Assert.assertEquals("", StringSplit.firstMatch("", '-'));
+		Assert.assertEquals("", StringSplit.firstMatch("-a-", '-'));
 	}
 
 
 	@Test
 	public void postFirstMatchTest() {
 		Assert.assertEquals("def-ghi", StringSplit.postFirstMatch("abc-def-ghi", "-"));
-		Assert.assertEquals("def--ghi", StringSplit.postFirstMatch("abc--def--ghi", "--"));
+		Assert.assertEquals("-2--3", StringSplit.postFirstMatch("abc--2--3", "-"));
 		Assert.assertEquals("", StringSplit.postFirstMatch("", "-"));
 		Assert.assertEquals("a-", StringSplit.postFirstMatch("-a-", "-"));
+		Assert.assertEquals("Bb--Cc", StringSplit.postFirstMatch("Aa--Bb--Cc", "--"));
+
+		Assert.assertEquals("def-ghi", StringSplit.postFirstMatch("abc-def-ghi", '-'));
+		Assert.assertEquals("-2--3", StringSplit.postFirstMatch("abc--2--3", '-'));
+		Assert.assertEquals("", StringSplit.postFirstMatch("", '-'));
+		Assert.assertEquals("a-", StringSplit.postFirstMatch("-a-", '-'));
 	}
 
 
 	@Test
 	public void firstMatchPartsTest() {
 		Assert.assertEquals(entry("abc", "def-ghi"), StringSplit.firstMatchParts("abc-def-ghi", "-"));
-		Assert.assertEquals(entry("abc", "def--ghi"), StringSplit.firstMatchParts("abc--def--ghi", "--"));
+		Assert.assertEquals(entry("abc", "-2--3"), StringSplit.firstMatchParts("abc--2--3", "-"));
 		Assert.assertEquals(entry("", ""), StringSplit.firstMatchParts("", "-"));
 		Assert.assertEquals(entry("", "a-"), StringSplit.firstMatchParts("-a-", "-"));
 		Assert.assertEquals(entry("abc", ""), StringSplit.firstMatchParts("abc", "-"));
+		Assert.assertEquals(entry("Aa", "Bb--Cc"), StringSplit.firstMatchParts("Aa--Bb--Cc", "--"));
 	}
 
 
 	@Test
 	public void lastMatchTest() {
 		Assert.assertEquals("ghi", StringSplit.lastMatch("abc-def-ghi", "-"));
-		Assert.assertEquals("ghi", StringSplit.lastMatch("abc--def--ghi", "--"));
+		Assert.assertEquals("3", StringSplit.lastMatch("abc--2--3", "-"));
 		Assert.assertEquals("", StringSplit.lastMatch("", "-"));
 		Assert.assertEquals("", StringSplit.lastMatch("a-", "-"));
+		Assert.assertEquals("Cc", StringSplit.lastMatch("Aa--Bb--Cc", "--"));
+
+		Assert.assertEquals("ghi", StringSplit.lastMatch("abc-def-ghi", '-'));
+		Assert.assertEquals("3", StringSplit.lastMatch("abc--2--3", '-'));
+		Assert.assertEquals("", StringSplit.lastMatch("", '-'));
+		Assert.assertEquals("", StringSplit.lastMatch("a-", '-'));
 	}
 
 
 	@Test
 	public void preLastMatchTest() {
 		Assert.assertEquals("abc-def", StringSplit.preLastMatch("abc-def-ghi", "-"));
-		Assert.assertEquals("abc--def", StringSplit.preLastMatch("abc--def--ghi", "--"));
+		Assert.assertEquals("abc--2-", StringSplit.preLastMatch("abc--2--3", "-"));
 		Assert.assertEquals("", StringSplit.preLastMatch("", "-"));
 		Assert.assertEquals("a", StringSplit.preLastMatch("a-", "-"));
+		Assert.assertEquals("Aa--Bb", StringSplit.preLastMatch("Aa--Bb--Cc", "--"));
+
+		Assert.assertEquals("abc-def", StringSplit.preLastMatch("abc-def-ghi", '-'));
+		Assert.assertEquals("abc--2-", StringSplit.preLastMatch("abc--2--3", '-'));
+		Assert.assertEquals("", StringSplit.preLastMatch("", '-'));
+		Assert.assertEquals("a", StringSplit.preLastMatch("a-", '-'));
 	}
 
 

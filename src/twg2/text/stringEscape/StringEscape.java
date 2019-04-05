@@ -10,7 +10,7 @@ import java.io.UncheckedIOException;
  * @author TeamworkGuy2
  * @since 2014-12-19
  */
-public final class StringEscape {
+public class StringEscape {
 
 	private StringEscape() { throw new AssertionError("cannot instantiate static class StringEscape"); }
 

@@ -10,6 +10,9 @@ import java.util.Map;
  */
 public class StringCommonality {
 
+	private StringCommonality() { throw new AssertionError("cannot instantiate static class StringCommonality"); }
+
+
 	// TODO prefixes and suffixes can be iterated over in one loop by taking the common starting/ending
 	// portions between the first and second string, second and third string, etc.
 

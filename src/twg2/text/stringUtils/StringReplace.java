@@ -16,7 +16,7 @@ import twg2.text.stringSearch.StringIndex;
  * @author TeamworkGuy2
  * @since 2014-10-18
  */
-public final class StringReplace {
+public class StringReplace {
 	public static final String escapeStartStr = "\\";
 	/** the valid escape characters that can come after a '\', other than unicode escape sequences */
 	public static char[] escapeIdentifiers = new char[] {'t', 'b', 'n', 'r', 'f', '\'', '\"', '\\'};
@@ -34,7 +34,7 @@ public final class StringReplace {
 	 * @return the result of replacing escape literals in {@code str} with the
 	 * escape literals values, for example "\n" is replaced with a single newline character
 	 */
-	public static final String replaceEscapeLiterals(String str) {
+	public static String replaceEscapeLiterals(String str) {
 		StringBuilder converted = new StringBuilder(str);
 		int index = converted.indexOf(escapeStartStr, 0);
 		int escapeIdIndex = -1;
@@ -386,7 +386,6 @@ public final class StringReplace {
 	}
 
 
-
 	/**
 	 * @see #replaceStrings(char[], int, Collection, Collection, StringBuilder)
 	 */
@@ -420,7 +419,7 @@ public final class StringReplace {
 	 * @param isSorted true if the {@code tokens} entry array is sorted, false if it is not
 	 * @return the resulting string with matching tokens replaced
 	 */
-	public static final String replaceTokens(String str, Map.Entry<String, String>[] tokens, boolean isSorted) {
+	public static String replaceTokens(String str, Map.Entry<String, String>[] tokens, boolean isSorted) {
 		StringBuilder sb = new StringBuilder(str);
 		replaceTokens(null, tokens, isSorted, true, sb);
 		return sb.toString();
@@ -442,15 +441,14 @@ public final class StringReplace {
 	 * by natural string order
 	 * @return the resulting string with matching tokens replaced
 	 */
-	public static final String replaceTokens(String str, Map.Entry<String, String>[] tokens,
-			boolean isSorted, boolean preserveOrder) {
+	public static String replaceTokens(String str, Map.Entry<String, String>[] tokens, boolean isSorted, boolean preserveOrder) {
 		StringBuilder sb = new StringBuilder(str);
 		replaceTokens(null, tokens, isSorted, preserveOrder, sb);
 		return sb.toString();
 	}
 
 
-	public static final StringBuilder replaceTokens(Map.Entry<String, String>[] tokens,
+	public static StringBuilder replaceTokens(Map.Entry<String, String>[] tokens,
 			boolean isSorted, boolean preserveOrder, StringBuilder srcAndDst) {
 		return replaceTokens((a, b) -> a.getKey().compareTo(b.getKey()), tokens, isSorted, preserveOrder, srcAndDst);
 	}
@@ -474,7 +472,7 @@ public final class StringReplace {
 	 * @param srcAndDst the source to search and replace tokens in, sub-strings are directly replaced in this builder
 	 * @return the {@code srcAndDst} builder
 	 */
-	public static final StringBuilder replaceTokens(Comparator<Map.Entry<String, String>> comparator,
+	public static StringBuilder replaceTokens(Comparator<Map.Entry<String, String>> comparator,
 			Map.Entry<String, String>[] tokens, boolean isSorted, boolean preserveOrder, StringBuilder srcAndDst) {
 		if(!isSorted && !preserveOrder) {
 			isSorted = true;

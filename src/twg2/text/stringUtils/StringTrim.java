@@ -10,11 +10,10 @@ import java.util.Map;
  */
 public class StringTrim {
 
-
 	private StringTrim() { throw new AssertionError("cannot instantiate static class StringTrim"); }
 
 
-	public static final void trim(List<String> strs, char ch) {
+	public static void trim(List<String> strs, char ch) {
 		for(int i = 0, size = strs.size(); i < size; i++) {
 			String str = strs.get(i);
 			if(str.length() > 0) {
@@ -39,7 +38,7 @@ public class StringTrim {
 	}
 
 
-	public static final void trim(List<String> strs, String trimStr) {
+	public static void trim(List<String> strs, String trimStr) {
 		int trimStrLen = trimStr.length();
 		for(int i = 0, size = strs.size(); i < size; i++) {
 			String str = strs.get(i);
@@ -70,12 +69,12 @@ public class StringTrim {
 	 * modified strings are replaced in the list by their trimmed versions.
 	 * This list must be modifiable, its size will not be changed.
 	 */
-	public static final void trimQuotes(List<String> strs) {
+	public static void trimQuotes(List<String> strs) {
 		trimIfSurrounding(strs, '"');
 	}
 
 
-	public static final void trimIfSurrounding(List<String> strs, char ch) {
+	public static void trimIfSurrounding(List<String> strs, char ch) {
 		for(int i = 0, size = strs.size(); i < size; i++) {
 			String str = strs.get(i);
 			if(str.length() > 1 && str.charAt(0) == ch && str.charAt(str.length() - 1) == ch) {
@@ -85,7 +84,7 @@ public class StringTrim {
 	}
 
 
-	public static final void trimIfSurrounding(List<String> strs, String trimStr) {
+	public static void trimIfSurrounding(List<String> strs, String trimStr) {
 		int trimStrLen = trimStr.length();
 		for(int i = 0, size = strs.size(); i < size; i++) {
 			String str = strs.get(i);
@@ -96,7 +95,7 @@ public class StringTrim {
 	}
 
 
-	public static final String trim(String str, char ch) {
+	public static String trim(String str, char ch) {
 		if(str.length() > 0) {
 			boolean first = str.charAt(0) == ch;
 			boolean last = str.charAt(str.length() - 1) == ch;
@@ -116,7 +115,7 @@ public class StringTrim {
 	}
 
 
-	public static final String trim(String str, String trimStr) {
+	public static String trim(String str, String trimStr) {
 		int trimStrLen = trimStr.length();
 		if(str.length() >= trimStrLen) {
 			boolean first = str.startsWith(trimStr);
@@ -143,12 +142,12 @@ public class StringTrim {
 	 * replaced in the list by their trimmed versions.  This list must be
 	 * modifiable, its size will not be changed.
 	 */
-	public static final String trimQuotes(String str) {
+	public static String trimQuotes(String str) {
 		return trimIfSurrounding(str, '"');
 	}
 
 
-	public static final String trimIfSurrounding(String str, char ch) {
+	public static String trimIfSurrounding(String str, char ch) {
 		if(str.length() > 1 && str.charAt(0) == ch && str.charAt(str.length() - 1) == ch) {
 			return str.substring(1, str.length() - 1);
 		}
@@ -156,7 +155,7 @@ public class StringTrim {
 	}
 
 
-	public static final String trimIfSurrounding(String str, String trimStr) {
+	public static String trimIfSurrounding(String str, String trimStr) {
 		int trimStrLen = trimStr.length();
 		if(str.length() >= trimStrLen * 2 && str.startsWith(trimStr) && str.endsWith(trimStr)) {
 			return str.substring(trimStrLen, str.length() - trimStrLen);
@@ -166,12 +165,12 @@ public class StringTrim {
 
 
 	// ==== trim char ====
-	public static final String trimLeading(String str, char leadingChar) {
+	public static String trimLeading(String str, char leadingChar) {
 		return trimLeading(str, leadingChar, false);
 	}
 
 
-	public static final String trimLeading(String str, char leadingChar, boolean trimRepeats) {
+	public static String trimLeading(String str, char leadingChar, boolean trimRepeats) {
 		int strLen = str.length();
 		if(trimRepeats) {
 			while(strLen > 0 && str.charAt(0) == leadingChar) {
@@ -185,12 +184,12 @@ public class StringTrim {
 	}
 
 
-	public static final String trimTrailing(String str, char trailingChar) {
+	public static String trimTrailing(String str, char trailingChar) {
 		return trimTrailing(str, trailingChar, false);
 	}
 
 
-	public static final String trimTrailing(String str, char trailingChar, boolean trimRepeats) {
+	public static String trimTrailing(String str, char trailingChar, boolean trimRepeats) {
 		int strLen = str.length();
 		if(trimRepeats) {
 			while(strLen > 0 && str.charAt(str.length() - 1) == trailingChar) {
@@ -205,12 +204,12 @@ public class StringTrim {
 
 
 	// ==== trim String ====
-	public static final String trimLeading(String str, String leadingStr) {
+	public static String trimLeading(String str, String leadingStr) {
 		return trimLeading(str, leadingStr, false);
 	}
 
 
-	public static final String trimLeading(String str, String leadingStr, boolean trimRepeats) {
+	public static String trimLeading(String str, String leadingStr, boolean trimRepeats) {
 		int strLen = str.length();
 		int leadingStrLen = leadingStr.length();
 		if(trimRepeats) {
@@ -225,12 +224,12 @@ public class StringTrim {
 	}
 
 
-	public static final String trimTrailing(String str, String trailingStr) {
+	public static String trimTrailing(String str, String trailingStr) {
 		return trimTrailing(str, trailingStr, false);
 	}
 
 
-	public static final String trimTrailing(String str, String trailingStr, boolean trimRepeats) {
+	public static String trimTrailing(String str, String trailingStr, boolean trimRepeats) {
 		int strLen = str.length();
 		int trailingStrLen = trailingStr.length();
 		if(trimRepeats) {
@@ -246,12 +245,12 @@ public class StringTrim {
 
 
 	// ==== count and trim char ====
-	public static final Map.Entry<Integer, String> countAndTrimLeading(String str, char ch) {
+	public static Map.Entry<Integer, String> countAndTrimLeading(String str, char ch) {
 		return countAndTrimLeading(str, ch, false);
 	}
 
 
-	public static final Map.Entry<Integer, String> countAndTrimLeading(String str, char ch, boolean trimRepeats) {
+	public static Map.Entry<Integer, String> countAndTrimLeading(String str, char ch, boolean trimRepeats) {
 		int strLen = str.length();
 		int replacementCount = 0;
 		if(trimRepeats) {
@@ -272,12 +271,12 @@ public class StringTrim {
 	}
 
 
-	public static final Map.Entry<Integer, String> countAndTrimTrailing(String str, char ch) {
+	public static Map.Entry<Integer, String> countAndTrimTrailing(String str, char ch) {
 		return countAndTrimTrailing(str, ch, false);
 	}
 
 
-	public static final Map.Entry<Integer, String> countAndTrimTrailing(String str, char ch, boolean trimRepeats) {
+	public static Map.Entry<Integer, String> countAndTrimTrailing(String str, char ch, boolean trimRepeats) {
 		int strLen = str.length();
 		int replacementCount = 0;
 		if(trimRepeats) {
@@ -299,12 +298,12 @@ public class StringTrim {
 
 
 	// ==== count and trim String ====
-	public static final Map.Entry<Integer, String> countAndTrimLeading(String str, String leadingStr) {
+	public static Map.Entry<Integer, String> countAndTrimLeading(String str, String leadingStr) {
 		return countAndTrimLeading(str, leadingStr, false);
 	}
 
 
-	public static final Map.Entry<Integer, String> countAndTrimLeading(String str, String leadingStr, boolean trimRepeats) {
+	public static Map.Entry<Integer, String> countAndTrimLeading(String str, String leadingStr, boolean trimRepeats) {
 		int strLen = str.length();
 		int leadingStrLen = leadingStr.length();
 		int replacementCount = 0;
@@ -327,12 +326,12 @@ public class StringTrim {
 	}
 
 
-	public static final Map.Entry<Integer, String> countAndTrimTrailing(String str, String trailingStr) {
+	public static Map.Entry<Integer, String> countAndTrimTrailing(String str, String trailingStr) {
 		return countAndTrimTrailing(str, trailingStr, false);
 	}
 
 
-	public static final Map.Entry<Integer, String> countAndTrimTrailing(String str, String trailingStr, boolean trimRepeats) {
+	public static Map.Entry<Integer, String> countAndTrimTrailing(String str, String trailingStr, boolean trimRepeats) {
 		int strLen = str.length();
 		int trailingStrLen = trailingStr.length();
 		int replacementCount = 0;

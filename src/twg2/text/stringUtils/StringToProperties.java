@@ -12,7 +12,7 @@ import java.util.Properties;
  * @author TeamworkGuy2
  * @since 2014-12-0
  */
-public final class StringToProperties {
+public class StringToProperties {
 
 	private StringToProperties() { throw new AssertionError("cannot instantiate static class StringToProperties"); }
 
@@ -30,7 +30,7 @@ public final class StringToProperties {
 	 * This parameter may be the same object as {@code keyValueStrings}
 	 * @see java.util.Properties#saveConvert()
 	 */
-	public static final void _saveKeyValueStrings(Collection<? extends Entry<String, String>> keyValueStrings, Collection<? super Entry<String, String>> dst) {
+	public static void _saveKeyValueStrings(Collection<? extends Entry<String, String>> keyValueStrings, Collection<? super Entry<String, String>> dst) {
 		StringBuilder buf = new StringBuilder();
 		for(Entry<String, String> keyValuePair : keyValueStrings) {
 			String key = saveKeyValueString(keyValuePair.getKey(), true, false, buf).toString();
@@ -44,7 +44,7 @@ public final class StringToProperties {
 	}
 
 
-	private static final <T extends Appendable> T saveKeyValueString(String str, boolean escapeSpaces, boolean escapeUnicode, T dst) {
+	private static <T extends Appendable> T saveKeyValueString(String str, boolean escapeSpaces, boolean escapeUnicode, T dst) {
 		int len = str.length();
 		try {
 			for(int x = 0; x < len; x++) {
@@ -108,7 +108,7 @@ public final class StringToProperties {
 	 * key-value string pairs
 	 * @see java.util.Properties#load0()
 	 */
-	public static final void loadKeyValueStrings(List<String> strs, Collection<? super Entry<String, String>> dst, Collection<String> dstComments) {
+	public static void loadKeyValueStrings(List<String> strs, Collection<? super Entry<String, String>> dst, Collection<String> dstComments) {
 		StringBuilder sb = new StringBuilder();
 		boolean hasSeparator = false;
 		boolean precedingBackslash = false;
@@ -169,7 +169,7 @@ public final class StringToProperties {
 	}
 
 
-	private static final void loadKeyValueString(String str, int off, int len, StringBuilder dst) {
+	private static void loadKeyValueString(String str, int off, int len, StringBuilder dst) {
 		try {
 			loadKeyValueString(str, off, len, (Appendable)dst);
 		} catch (IOException ioe) {
@@ -178,7 +178,7 @@ public final class StringToProperties {
 	}
 
 
-	private static final void loadKeyValueString(String str, int off, int len, Appendable dst) throws IOException {
+	private static void loadKeyValueString(String str, int off, int len, Appendable dst) throws IOException {
 		int end = off + len;
 		while(off < end) {
 			char a = str.charAt(off++);

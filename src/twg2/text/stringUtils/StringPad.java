@@ -8,7 +8,10 @@ import java.util.Arrays;
  */
 public class StringPad {
 
-	public static final String padLeft(String str, int maxLen, char padding) {
+	private StringPad() { throw new AssertionError("cannot instantiate static class StringPad"); }
+
+
+	public static String padLeft(String str, int maxLen, char padding) {
 		int len = str.length();
 		if(len >= maxLen) { return str; }
 
@@ -21,7 +24,7 @@ public class StringPad {
 	}
 
 
-	public static final String padRight(String str, int maxLen, char padding) {
+	public static String padRight(String str, int maxLen, char padding) {
 		int len = str.length();
 		if(len >= maxLen) { return str; }
 

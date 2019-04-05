@@ -6,7 +6,7 @@ package twg2.text.stringUtils;
  * @author TeamworkGuy2
  * @since 2014-12-10
  */
-public final class StringCase {
+public class StringCase {
 	private static final char underscore = '_';
 	private static final char dash = '-';
 
@@ -18,7 +18,7 @@ public final class StringCase {
 	 * @param str the string to check
 	 * @return true if the string is camelCase, false otherwise
 	 */
-	public static final boolean isCamelCase(final String str) {
+	public static boolean isCamelCase(final String str) {
 		return str.length() > 0 && Character.isLowerCase(str.charAt(0)) && str.indexOf(underscore, 0) == -1 && str.indexOf(dash, 0) == -1;
 	}
 
@@ -27,7 +27,7 @@ public final class StringCase {
 	 * @param str the string to check
 	 * @return true if the string is TitleCase, false otherwise
 	 */
-	public static final boolean isTitleCase(final String str) {
+	public static boolean isTitleCase(final String str) {
 		return str.length() > 0 && Character.isUpperCase(str.charAt(0)) && str.indexOf(underscore, 0) == -1 && str.indexOf(dash, 0) == -1;
 	}
 
@@ -36,7 +36,7 @@ public final class StringCase {
 	 * @param str the string to check
 	 * @return true if the string is dash-css-case, false otherwise
 	 */
-	public static final boolean isDashCase(final String str) {
+	public static boolean isDashCase(final String str) {
 		if(str.length() == 0) {
 			return false;
 		}
@@ -55,7 +55,7 @@ public final class StringCase {
 	 * @param str the string to check
 	 * @return true if the string is under_score_lower_case, false otherwise
 	 */
-	public static final boolean isUnderscoreLowerCase(final String str) {
+	public static boolean isUnderscoreLowerCase(final String str) {
 		if(str.length() == 0) {
 			return false;
 		}
@@ -74,7 +74,7 @@ public final class StringCase {
 	 * @param str the string to check
 	 * @return true if the string is Under_Score_Title_Case, false otherwise
 	 */
-	public static final boolean isUnderscoreTitleCase(final String str) {
+	public static boolean isUnderscoreTitleCase(final String str) {
 		char prevCh;
 		if(str.length() == 0 || Character.isLowerCase(prevCh = str.charAt(0))) {
 			return false;
@@ -96,7 +96,7 @@ public final class StringCase {
 	 * @param str the string to convert
 	 * @return the camelCase version of the string
 	 */
-	public static final String toCamelCase(final String str) {
+	public static String toCamelCase(final String str) {
 		if(isCamelCase(str)) {
 			return str;
 		}
@@ -126,7 +126,7 @@ public final class StringCase {
 	 * @param str the string to convert
 	 * @return the TitleCase version of the string
 	 */
-	public static final String toTitleCase(final String str) {
+	public static String toTitleCase(final String str) {
 		if(isCamelCase(str)) {
 			StringBuilder sb = new StringBuilder(str.length()).append(str);
 			sb.setCharAt(0, Character.toUpperCase(str.charAt(0)));
@@ -154,7 +154,7 @@ public final class StringCase {
 	 * @param str the string to convert
 	 * @return the dash-css-case version of the string
 	 */
-	public static final String toDashCase(final String str) {
+	public static String toDashCase(final String str) {
 		if(isCamelCase(str)) {
 			StringBuilder sb = new StringBuilder();
 			for(int i = 0, size = str.length(); i < size; i++) {
@@ -210,7 +210,7 @@ public final class StringCase {
 	 * @param str the string to convert
 	 * @return the under_score_lower_case version of the string
 	 */
-	public static final String toUnderscoreLowerCase(final String str) {
+	public static String toUnderscoreLowerCase(final String str) {
 		if(isCamelCase(str)) {
 			StringBuilder sb = new StringBuilder();
 			for(int i = 0, size = str.length(); i < size; i++) {
@@ -266,7 +266,7 @@ public final class StringCase {
 	 * @param str the string to convert
 	 * @return the Under_Score_Title_Case version of the string
 	 */
-	public static final String toUnderscoreTitleCase(final String str) {
+	public static String toUnderscoreTitleCase(final String str) {
 		if(isCamelCase(str)) {
 			StringBuilder sb = new StringBuilder();
 			sb.append(Character.toUpperCase(str.charAt(0)));
@@ -306,7 +306,7 @@ public final class StringCase {
 	}
 
 
-	private static final String tokenSeparatedToCamelCase(final String str, final char separator) {
+	private static String tokenSeparatedToCamelCase(final String str, final char separator) {
 		StringBuilder sb = new StringBuilder();
 		char prevCh = str.charAt(0);
 		sb.append(prevCh);
@@ -329,7 +329,7 @@ public final class StringCase {
 	}
 
 
-	private static final String tokenSeparatedToTitleCase(final String str, final char separator) {
+	private static String tokenSeparatedToTitleCase(final String str, final char separator) {
 		StringBuilder sb = new StringBuilder();
 		char prevCh = str.charAt(0);
 		sb.append(Character.toUpperCase(prevCh));
@@ -352,7 +352,7 @@ public final class StringCase {
 	}
 
 
-	private static final String tokenSeparatedToUnderscoreTitleCase(final String str, final char separator) {
+	private static String tokenSeparatedToUnderscoreTitleCase(final String str, final char separator) {
 		StringBuilder sb = new StringBuilder();
 		char prevCh = str.charAt(0);
 		sb.append(prevCh == separator ? underscore : Character.toUpperCase(prevCh));

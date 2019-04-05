@@ -1,6 +1,7 @@
 package twg2.text.stringSearch;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.RandomAccess;
 
@@ -15,7 +16,7 @@ import java.util.RandomAccess;
  * @author TeamworkGuy2
  * @since 2014-11-3
  */
-public final class StringCompare {
+public class StringCompare {
 
 	private StringCompare() { throw new AssertionError("cannot instantiate static class StringCompare"); }
 
@@ -25,7 +26,7 @@ public final class StringCompare {
 	 * @param prefixes the set of prefixes to compare to the beginning of {@code str}
 	 * @return true if {@code str} starts with any one of the {@code prefixes}
 	 */
-	public static final boolean startsWithAny(String str, final String... prefixes) {
+	public static boolean startsWithAny(String str, final String... prefixes) {
 		if(prefixes != null) {
 			for(String prefix : prefixes) {
 				if(prefix != null && str.startsWith(prefix)) {
@@ -42,7 +43,7 @@ public final class StringCompare {
 	 * @param suffixes the set of suffixes to compare to the end of {@code str}
 	 * @return true if {@code str} ends with any one of the {@code suffixes}
 	 */
-	public static final boolean endsWithAny(String str, final String... suffixes) {
+	public static boolean endsWithAny(String str, final String... suffixes) {
 		if(suffixes != null) {
 			for(String suffix : suffixes) {
 				if(suffix != null && str.endsWith(suffix)) {
@@ -61,7 +62,7 @@ public final class StringCompare {
 	 * @param subStrOff the offset into {@code subStr} at which to start comparing characters
 	 * @return true if {@code str} starts with {@code subStr}, false otherwise
 	 */
-	public static final boolean startsWith(final char[] str, int strOff, final char[] subStr, int subStrOff) {
+	public static boolean startsWith(final char[] str, int strOff, final char[] subStr, int subStrOff) {
 		int i = strOff + (subStr.length - subStrOff) - 1;
 		int k = subStr.length - 1;
 		if(i >= str.length) {
@@ -84,7 +85,7 @@ public final class StringCompare {
 	 * @return true if any of the strings in {@code strs} starts with the contents of {@code startStr},
 	 * false if none of the strings start with {@code startStr}
 	 */
-	public static final boolean anyStartWith(final List<String> strs, final CharSequence startStr) {
+	public static boolean anyStartWith(List<String> strs, CharSequence startStr) {
 		for(int i = 0, len = strs.size(); i < len; i++) {
 			if(compareStartsWith(strs.get(i), startStr, 0) == 0) {
 				return true;
@@ -101,7 +102,7 @@ public final class StringCompare {
 	 * @return true if any of the strings in {@code strs} starts with the contents of {@code startStr},
 	 * false if none of the strings start with {@code startStr}
 	 */
-	public static final boolean anyStartWith(final List<String> strs, final CharSequence startStr, int startStrOffset) {
+	public static boolean anyStartWith(List<String> strs, CharSequence startStr, int startStrOffset) {
 		for(int i = 0, len = strs.size(); i < len; i++) {
 			if(compareStartsWith(strs.get(i), startStr, startStrOffset) == 0) {
 				return true;
@@ -126,7 +127,7 @@ public final class StringCompare {
 	 * @return 0 if {@code str} starts with {@code startStr}, greater than 0 if {@code str}
 	 * is greater than {@code startStr}, less than 0 if {@code str} is less than {@code startStr}
 	 */
-	public static final int compareStartsWith(String str, final CharSequence startStr, int startStrOffset) {
+	public static int compareStartsWith(String str, CharSequence startStr, int startStrOffset) {
 		int strLen = str.length();
 		int ssRemLen = startStr.length() - startStrOffset;
 		int len = strLen > ssRemLen ? ssRemLen : strLen;
@@ -151,7 +152,7 @@ public final class StringCompare {
 	 * @param charSeq the char sequence to compare
 	 * @return true if the string and char sequence are equal, false otherwise
 	 */
-	public static final boolean equal(String str, final CharSequence charSeq) {
+	public static boolean equal(String str, CharSequence charSeq) {
 		if(str.length() != charSeq.length()) { return false; }
 
 		for(int i = str.length() - 1; i > -1; i--) {
@@ -164,7 +165,7 @@ public final class StringCompare {
 	/** Check if portions of two strings are equal
 	 * @see #equal(char[], int, char[], int, int)
 	 */
-	public static final boolean equal(String str1, int str1Off, String str2, int str2Off, int len) {
+	public static boolean equal(String str1, int str1Off, String str2, int str2Off, int len) {
 		if(str1Off + len > str1.length() || str2Off + len > str2.length()) {
 			return false;
 		}
@@ -185,7 +186,7 @@ public final class StringCompare {
 	 * @param len the number of characters to compare
 	 * @return  true if the sub-portions of {@code str1} and {@code str2} match
 	 */
-	public static final boolean equal(char[] str1, int str1Off, final char[] str2, int str2Off, int len) {
+	public static boolean equal(char[] str1, int str1Off, final char[] str2, int str2Off, int len) {
 		if(str1Off + len > str1.length) {
 			return false;
 		}
@@ -198,9 +199,11 @@ public final class StringCompare {
 	}
 
 
-	public static final boolean containsAll(String src, final String[] subStrs) {
+	/** Check if {@code src} contains all {@code subStrs}
+	 */
+	public static boolean containsAll(String src, final String[] subStrs) {
 		for(String subStr : subStrs) {
-			if(src.indexOf(subStr, 0) == -1) {
+			if(src.indexOf(subStr) == -1) {
 				return false;
 			}
 		}
@@ -208,21 +211,79 @@ public final class StringCompare {
 	}
 
 
-	public static final boolean containsAll(String src, Iterable<String> subStrs) {
+	/** Check if {@code src} contains all {@code subStrs}
+	 */
+	public static boolean containsAll(String src, Iterable<String> subStrs) {
 		boolean any = false;
-		for(String subStr : subStrs) {
-			any = true;
-			if(src.indexOf(subStr, 0) == -1) {
-				return false;
+		if(subStrs instanceof RandomAccess && subStrs instanceof List) {
+			List<String> strsList = (List<String>)subStrs;
+			for(int i = 0, size = strsList.size(); i < size; i++) {
+				String s = strsList.get(i);
+				any = true;
+				if(src.indexOf(s) == -1) {
+					return false;
+				}
+			}
+		}
+		else {
+			for(String subStr : subStrs) {
+				any = true;
+				if(src.indexOf(subStr) == -1) {
+					return false;
+				}
 			}
 		}
 		return any;
 	}
 
 
-	public static final boolean containsAny(String src, final String[] subStrs) {
+	/** Check if {@code src} contains all {@code subStrs} ignore case
+	 */
+	public static boolean containsAllIgnoreCase(String src, final String[] subStrs) {
+		Locale locale = Locale.getDefault(); // cached for performance
+		String srcUpper = src.toUpperCase(locale);
 		for(String subStr : subStrs) {
-			if(src.indexOf(subStr, 0) > -1) {
+			if(srcUpper.indexOf(subStr.toUpperCase(locale)) == -1) {
+				return false;
+			}
+		}
+		return subStrs.length > 0;
+	}
+
+
+	/** Check if {@code src} contains all {@code subStrs} ignore case
+	 */
+	public static boolean containsAllIgnoreCase(String src, Iterable<String> subStrs) {
+		Locale locale = Locale.getDefault(); // cached for performance
+		String srcUpper = src.toUpperCase(locale);
+		boolean any = false;
+		if(subStrs instanceof RandomAccess && subStrs instanceof List) {
+			List<String> strsList = (List<String>)subStrs;
+			for(int i = 0, size = strsList.size(); i < size; i++) {
+				String s = strsList.get(i);
+				any = true;
+				if(srcUpper.indexOf(s.toUpperCase(locale)) == -1) {
+					return false;
+				}
+			}
+		}
+		else {
+			for(String subStr : subStrs) {
+				any = true;
+				if(srcUpper.indexOf(subStr.toUpperCase(locale)) == -1) {
+					return false;
+				}
+			}
+		}
+		return any;
+	}
+
+
+	/** Check if {@code src} contains any {@code subStrs}
+	 */
+	public static boolean containsAny(String src, final String[] subStrs) {
+		for(String subStr : subStrs) {
+			if(src.indexOf(subStr) > -1) {
 				return true;
 			}
 		}
@@ -230,9 +291,36 @@ public final class StringCompare {
 	}
 
 
-	public static final boolean containsAny(String src, Iterable<String> subStrs) {
+	/** Check if {@code src} contains any {@code subStrs}
+	 */
+	public static boolean containsAny(String src, Iterable<String> subStrs) {
+		if(subStrs instanceof RandomAccess && subStrs instanceof List) {
+			List<String> strsList = (List<String>)subStrs;
+			for(int i = 0, size = strsList.size(); i < size; i++) {
+				String s = strsList.get(i);
+				if(src.indexOf(s) > -1) {
+					return true;
+				}
+			}
+		}
+		else {
+			for(String subStr : subStrs) {
+				if(src.indexOf(subStr) > -1) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+
+	/** Check if {@code src} contains any {@code subStrs} ignore case
+	 */
+	public static boolean containsAnyIgnoreCase(String src, final String[] subStrs) {
+		Locale locale = Locale.getDefault(); // cached for performance
+		String srcUpper = src.toUpperCase(locale);
 		for(String subStr : subStrs) {
-			if(src.indexOf(subStr, 0) > -1) {
+			if(srcUpper.indexOf(subStr.toUpperCase(locale)) > -1) {
 				return true;
 			}
 		}
@@ -240,14 +328,122 @@ public final class StringCompare {
 	}
 
 
-	public static final boolean containsIgnoreCase(String str, String searchStr) {
+	/** Check if {@code src} contains any {@code subStrs} ignore case
+	 */
+	public static boolean containsAnyIgnoreCase(String src, Iterable<String> subStrs) {
+		Locale locale = Locale.getDefault(); // cached for performance
+		String srcUpper = src.toUpperCase(locale);
+
+		if(subStrs instanceof RandomAccess && subStrs instanceof List) {
+			List<String> strsList = (List<String>)subStrs;
+			for(int i = 0, size = strsList.size(); i < size; i++) {
+				String s = strsList.get(i);
+				if(srcUpper.indexOf(s.toUpperCase(locale)) > -1) {
+					return true;
+				}
+			}
+		}
+		else {
+			for(String subStr : subStrs) {
+				if(srcUpper.indexOf(subStr.toUpperCase(locale)) > -1) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+
+	/** Count {@code subStrs} contained in {@code src}
+	 */
+	public static int containsCount(String src, final String[] subStrs) {
+		int cnt = 0;
+		for(String subStr : subStrs) {
+			if(src.indexOf(subStr) > -1) {
+				cnt++;
+			}
+		}
+		return cnt;
+	}
+
+
+	/** Count {@code subStrs} contained in {@code src}
+	 */
+	public static int containsCount(String src, Iterable<String> subStrs) {
+		int cnt = 0;
+		if(subStrs instanceof RandomAccess && subStrs instanceof List) {
+			List<String> strsList = (List<String>)subStrs;
+			for(int i = 0, size = strsList.size(); i < size; i++) {
+				String s = strsList.get(i);
+				if(src.indexOf(s) > -1) {
+					cnt++;
+				}
+			}
+		}
+		else {
+			for(String subStr : subStrs) {
+				if(src.indexOf(subStr) > -1) {
+					cnt++;
+				}
+			}
+		}
+		return cnt;
+	}
+
+
+	/** Count {@code subStrs} contained in {@code src} ignore case
+	 */
+	public static int containsIgnoreCaseCount(String src, final String[] subStrs) {
+		Locale locale = Locale.getDefault(); // cached for performance
+		String srcUpper = src.toUpperCase(locale);
+		int cnt = 0;
+		for(String subStr : subStrs) {
+			if(srcUpper.indexOf(subStr.toUpperCase(locale)) > -1) {
+				cnt++;
+			}
+		}
+		return cnt;
+	}
+
+
+	/** Count {@code subStrs} contained in {@code src} ignore case
+	 */
+	public static int containsIgnoreCaseCount(String src, Iterable<String> subStrs) {
+		Locale locale = Locale.getDefault(); // cached for performance
+		String srcUpper = src.toUpperCase(locale);
+		int cnt = 0;
+		if(subStrs instanceof RandomAccess && subStrs instanceof List) {
+			List<String> strsList = (List<String>)subStrs;
+			for(int i = 0, size = strsList.size(); i < size; i++) {
+				String s = strsList.get(i);
+				if(srcUpper.indexOf(s.toUpperCase(locale)) > -1) {
+					cnt++;
+				}
+			}
+		}
+		else {
+			for(String subStr : subStrs) {
+				if(srcUpper.indexOf(subStr.toUpperCase(locale)) > -1) {
+					cnt++;
+				}
+			}
+		}
+		return cnt;
+	}
+
+
+	/** Check if {@code str} contains {@code searchStr} ignore case
+	 */
+	public static boolean containsIgnoreCase(String str, String searchStr) {
 		return indexOfIgnoreCase(str, 0, str.length(), searchStr, 0, searchStr.length(), 0) > -1;
 	}
 
 
-	public static final boolean containsEqualIgnoreCase(final String[] strs, String str) {
+	/** Check if any {@code strs} equal {@code searchStr} ignore case
+	 */
+	public static boolean containsEqualIgnoreCase(final String[] strs, String searchStr) {
 		for(int i = 0, size = strs.length; i < size; i++) {
-			if(strs[i] != null && strs[i].equalsIgnoreCase(str)) {
+			if(strs[i] != null && strs[i].equalsIgnoreCase(searchStr)) {
 				return true;
 			}
 		}
@@ -255,10 +451,36 @@ public final class StringCompare {
 	}
 
 
-	public static final boolean containsIgnoreCase(final String[] strs, String str) {
-		String strUpper = str.toUpperCase();
+	/** Check if any {@code strs} equal {@code searchStr} ignore case
+	 */
+	public static boolean containsEqualIgnoreCase(Iterable<String> strs, String searchStr) {
+		if(strs instanceof RandomAccess && strs instanceof List) {
+			List<String> strList = (List<String>)strs;
+			for(int i = 0, size = strList.size(); i < size; i++) {
+				String s = strList.get(i);
+				if(s != null && s.equalsIgnoreCase(searchStr)) {
+					return true;
+				}
+			}
+		}
+		else {
+			for(String s : strs) {
+				if(s != null && s.equalsIgnoreCase(searchStr)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+
+	/** Check if any {@code strs} contain {@code searchStr} ignore case
+	 */
+	public static boolean containsIgnoreCase(final String[] strs, String searchStr) {
+		Locale locale = Locale.getDefault(); // cached for performance
+		String searchStrUpper = searchStr.toUpperCase(locale);
 		for(int i = 0, size = strs.length; i < size; i++) {
-			if(strs[i] != null && strs[i].toUpperCase().contains(strUpper)) {
+			if(strs[i] != null && strs[i].toUpperCase(locale).indexOf(searchStrUpper) > -1) {
 				return true;
 			}
 		}
@@ -266,51 +488,23 @@ public final class StringCompare {
 	}
 
 
-	/** Check if a collection of strings contains one or more strings equal to {@code str}
-	 * @param strs
-	 * @param str
-	 * @return true if the {@code strs} collection contains {@code str}, ignoring case, false if not
+	/** Check if any {@code strs} contain {@code searchStr} ignore case
 	 */
-	public static final boolean containsEqualIgnoreCase(final Iterable<String> strs, String str) {
+	public static boolean containsIgnoreCase(Iterable<String> strs, String searchStr) {
+		Locale locale = Locale.getDefault(); // cached for performance
+		String searchStrUpper = searchStr.toUpperCase(locale);
 		if(strs instanceof RandomAccess && strs instanceof List) {
 			List<String> strList = (List<String>)strs;
 			for(int i = 0, size = strList.size(); i < size; i++) {
 				String s = strList.get(i);
-				if(s != null && s.equalsIgnoreCase(str)) {
+				if(s != null && s.toUpperCase(locale).indexOf(searchStrUpper) > -1) {
 					return true;
 				}
 			}
 		}
 		else {
 			for(String s : strs) {
-				if(s != null && s.equalsIgnoreCase(str)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-
-	/** Check if a collection of strings contains one or more strings which contain {@code str}
-	 * @param strs
-	 * @param str
-	 * @return true if {@code strs} collection contains {@code str} ignoring case, false if not
-	 */
-	public static final boolean containsIgnoreCase(final Iterable<String> strs, String str) {
-		String strUpper = str.toUpperCase();
-		if(strs instanceof RandomAccess && strs instanceof List) {
-			List<String> strList = (List<String>)strs;
-			for(int i = 0, size = strList.size(); i < size; i++) {
-				String s = strList.get(i);
-				if(s != null && s.toUpperCase().contains(strUpper)) {
-					return true;
-				}
-			}
-		}
-		else {
-			for(String s : strs) {
-				if(s != null && s.toUpperCase().contains(strUpper)) {
+				if(s != null && s.toUpperCase(locale).indexOf(searchStrUpper) > -1) {
 					return true;
 				}
 			}
@@ -409,7 +603,7 @@ public final class StringCompare {
 	 * @param str2 the second char sequence
 	 * @return the number of characters equal between the two char sequences
 	 */
-	public static final int compareEqualCount(CharSequence str1, CharSequence str2) {
+	public static int compareEqualCount(CharSequence str1, CharSequence str2) {
 		int size = str1.length() > str2.length() ? str2.length() : str1.length();
 		for(int i = 0; i < size; i++) {
 			if(str1.charAt(i) != str2.charAt(i)) { return i; }
@@ -428,7 +622,7 @@ public final class StringCompare {
 	 * comparing characters
 	 * @return the number of characters equal between the two char sequences
 	 */
-	public static final int compareEqualCount(CharSequence str1, int offset1, CharSequence str2, int offset2) {
+	public static int compareEqualCount(CharSequence str1, int offset1, CharSequence str2, int offset2) {
 		return compareEqualCount(str1, offset1, str2, offset2,
 				Math.min(str1.length() - offset1, str2.length() - offset2));
 	}
@@ -445,7 +639,7 @@ public final class StringCompare {
 	 * @param length the number of characters to compare between the two char sequences
 	 * @return the number of characters equal between the two char sequences
 	 */
-	public static final int compareEqualCount(CharSequence str1, int offset1, CharSequence str2, int offset2, int length) {
+	public static int compareEqualCount(CharSequence str1, int offset1, CharSequence str2, int offset2, int length) {
 		int str1OffLen = str1.length() - offset1;
 		int str2OffLen = str2.length() - offset2;
 		int minOffLen = str1OffLen > str2OffLen ? str2OffLen : str1OffLen;
@@ -473,20 +667,20 @@ public final class StringCompare {
 			return fromIndex;
 		}
 
-		char first = Character.toUpperCase(target.charAt(targetOffset));
+		int first = Character.toUpperCase((int)target.charAt(targetOffset));
 		int max = sourceOffset + (sourceCount - targetCount);
 
 		for (int i = sourceOffset + fromIndex; i <= max; i++) {
 			/* Look for first character. */
-			if (Character.toUpperCase(source.charAt(i)) != first) {
-				while (++i <= max && Character.toUpperCase(source.charAt(i)) != first);
+			if (Character.toUpperCase((int)source.charAt(i)) != first) {
+				while (++i <= max && Character.toUpperCase((int)source.charAt(i)) != first);
 			}
 
 			/* Found first character, now look at the rest of v2 */
 			if (i <= max) {
 				int j = i + 1;
 				int end = j + targetCount - 1;
-				for (int k = targetOffset + 1; j < end && Character.toUpperCase(source.charAt(j)) == Character.toUpperCase(target.charAt(k)); j++, k++);
+				for (int k = targetOffset + 1; j < end && Character.toUpperCase((int)source.charAt(j)) == Character.toUpperCase((int)target.charAt(k)); j++, k++);
 
 				if (j == end) {
 					/* Found whole string. */

@@ -21,7 +21,7 @@ public class StringSplit {
 	private static final int MAX_SPLIT_SIZE = 100;
 
 
-	private StringSplit() { throw new AssertionError("cannot instantiate static class StringSplit"); }
+	private StringSplit() { throw new AssertionError("cannot instantiate cannot instantiate static class StringSplit"); }
 
 
 	/** A slightly faster version of {@link String#split(String)} that does not
@@ -34,7 +34,7 @@ public class StringSplit {
 	 * @return an array of strings containing the resulting stings after
 	 * splitting the input string
 	 */
-	public static final String[] split(String input, String pattern, int limit) {
+	public static String[] split(String input, String pattern, int limit) {
 		List<String> strs = split(input, pattern, limit, null);
 		return strs.toArray(new String[strs.size()]);
 	}
@@ -43,7 +43,7 @@ public class StringSplit {
 	/**
 	 * @see #split(String, String, int, List)
 	 */
-	public static final List<String> split(String input, String pattern, List<String> dst) {
+	public static List<String> split(String input, String pattern, List<String> dst) {
 		return split(input, pattern, 0, dst);
 	}
 
@@ -58,7 +58,7 @@ public class StringSplit {
 	 * @param dst the destination list to add the split strings to
 	 * @return the {@code dst} list with the split strings added to it
 	 */
-	public static final List<String> split(String input, String pattern, int limit, List<String> dst) {
+	public static List<String> split(String input, String pattern, int limit, List<String> dst) {
 		if(input == null || pattern == null) {
 			return dst;
 		}
@@ -118,7 +118,7 @@ public class StringSplit {
 	 * @param dst an array of strings equal in length to the number of strings to split the {@code input} string into
 	 * @return the {@code results} array of strings passed into the method
 	 */
-	public static final String[] split(String input, String pattern, String[] dst) {
+	public static String[] split(String input, String pattern, String[] dst) {
 		if(input == null || pattern == null) {
 			return new String[] {input};
 		}
@@ -166,7 +166,7 @@ public class StringSplit {
 	/**
 	 * @see #split(String, char, int, List)
 	 */
-	public static final List<String> split(String input, char splitAt) {
+	public static List<String> split(String input, char splitAt) {
 		List<String> dst = new ArrayList<>();
 		return split(input, splitAt, 0, dst);
 	}
@@ -175,7 +175,7 @@ public class StringSplit {
 	/**
 	 * @see #split(String, char, int, List)
 	 */
-	public static final List<String> split(String input, char splitAt, List<String> dst) {
+	public static List<String> split(String input, char splitAt, List<String> dst) {
 		return split(input, splitAt, 0, dst);
 	}
 
@@ -189,7 +189,7 @@ public class StringSplit {
 	 * @param dst the destination list to add the split strings to
 	 * @return the {@code dst} list with the split strings added to it
 	 */
-	public static final List<String> split(String input, char splitAt, int limit, List<String> dst) {
+	public static List<String> split(String input, char splitAt, int limit, List<String> dst) {
 		if(input == null) {
 			return dst;
 		}
@@ -248,7 +248,7 @@ public class StringSplit {
 	 * @param dst an array of strings equal in length to the number of strings to split the {@code input} string into
 	 * @return the {@code results} array of strings passed into the method
 	 */
-	public static final String[] split(String input, char splitAt, String[] dst) {
+	public static String[] split(String input, char splitAt, String[] dst) {
 		if(input == null) {
 			return new String[] {input};
 		}
@@ -303,7 +303,7 @@ public class StringSplit {
 	 * @param expectedCount the expected number of string when the string is split using the pattern, 0 if the expected count is not know
 	 * @return the n-th matching split string
 	 */
-	public static final String findNthMatch(String input, String pattern, int childI, int expectedCount) {
+	public static String findNthMatch(String input, String pattern, int childI, int expectedCount) {
 		if(input == null || pattern == null) {
 			return null;
 		}
@@ -366,7 +366,7 @@ public class StringSplit {
 	}
 
 
-	public static final int countMatches(String src, String pattern) {
+	public static int countMatches(String src, String pattern) {
 		if(src == null || pattern == null) {
 			return 0;
 		}
@@ -401,7 +401,7 @@ public class StringSplit {
 	}
 
 
-	public static final int countMatches(char[] src, int srcOff, int srcLen, char[] pattern, int patternOff, int patternLen) {
+	public static int countMatches(char[] src, int srcOff, int srcLen, char[] pattern, int patternOff, int patternLen) {
 		if(src == null || pattern == null) {
 			return 0;
 		}
@@ -438,34 +438,34 @@ public class StringSplit {
 
 	/** Get the sub string preceding the first index of 'patternChar'
 	 */
-	public static final String firstMatch(String src, char patternChar) {
+	public static String firstMatch(String src, char patternChar) {
 		return _firstMatch(src, src.indexOf(patternChar));
 	}
 
 	/** Get the sub string preceding the first index of 'pattern'
 	 */
-	public static final String firstMatch(String src, String pattern) {
+	public static String firstMatch(String src, String pattern) {
 		return _firstMatch(src, src.indexOf(pattern));
 	}
 
-	private static final String _firstMatch(String src, int idx) {
+	private static String _firstMatch(String src, int idx) {
 		return src.substring(0, idx >= src.length() ? src.length() : (idx < 0 ? 0 : idx));
 	}
 
 
 	/** Get the sub string following the first index of 'patternChar'
 	 */
-	public static final String postFirstMatch(String src, char patternChar) {
+	public static String postFirstMatch(String src, char patternChar) {
 		return _postFirstMatch(src, src.indexOf(patternChar), 1);
 	}
 
 	/** Get the sub string following the first index of 'pattern'
 	 */
-	public static final String postFirstMatch(String src, String pattern) {
+	public static String postFirstMatch(String src, String pattern) {
 		return _postFirstMatch(src, src.indexOf(pattern), pattern.length());
 	}
 
-	public static final String _postFirstMatch(String src, int idx, int patternLen) {
+	public static String _postFirstMatch(String src, int idx, int patternLen) {
 		return src.substring(idx > -1 && idx + patternLen >= src.length() ? src.length() : (idx < 0 ? 0 : idx + patternLen));
 	}
 
@@ -477,7 +477,7 @@ public class StringSplit {
 	 * @return an entry where the key is the portion of {@code src} before the first matching sub-string
 	 * and the value is the portion of {@code src} after the first matching sub-string
 	 */
-	public static final Map.Entry<String, String> firstMatchParts(String src, String pattern) {
+	public static Map.Entry<String, String> firstMatchParts(String src, String pattern) {
 		int idxPre = src.indexOf(pattern);
 		String pre = src.substring(0, (idxPre < 0 ? src.length() : idxPre));
 
@@ -490,34 +490,34 @@ public class StringSplit {
 
 	/** Get the sub string following the last index of 'patternChar'
 	 */
-	public static final String lastMatch(String src, char patternChar) {
+	public static String lastMatch(String src, char patternChar) {
 		return _lastMatch(src, src.lastIndexOf(patternChar), 1);
 	}
 
 	/** Get the sub string following the last index of 'pattern'
 	 */
-	public static final String lastMatch(String src, String pattern) {
+	public static String lastMatch(String src, String pattern) {
 		return _lastMatch(src, src.lastIndexOf(pattern), pattern.length());
 	}
 
-	public static final String _lastMatch(String src, int idx, int patternLen) {
+	public static String _lastMatch(String src, int idx, int patternLen) {
 		return src.substring(idx > -1 && idx + patternLen >= src.length() ? src.length() : (idx < 0 ? 0 : idx + patternLen));
 	}
 
 
 	/** Get the sub string preceding the last index of 'patternChar'
 	 */
-	public static final String preLastMatch(String src, char patternChar) {
+	public static String preLastMatch(String src, char patternChar) {
 		return _preLastMatch(src, src.lastIndexOf(patternChar));
 	}
 
 	/** Get the sub string preceding the last index of 'pattern'
 	 */
-	public static final String preLastMatch(String src, String pattern) {
+	public static String preLastMatch(String src, String pattern) {
 		return _preLastMatch(src, src.lastIndexOf(pattern));
 	}
 
-	public static final String _preLastMatch(String src, int idx) {
+	public static String _preLastMatch(String src, int idx) {
 		return src.substring(0, idx >= src.length() ? src.length() : (idx < 0 ? 0 : idx));
 	}
 
@@ -529,7 +529,7 @@ public class StringSplit {
 	 * @return an entry where the key is the portion of {@code src} before the last matching sub-string
 	 * and the value is the portion of {@code src} after the last matching sub-string
 	 */
-	public static final Map.Entry<String, String> lastMatchParts(String src, String pattern) {
+	public static Map.Entry<String, String> lastMatchParts(String src, String pattern) {
 		int idxPre = src.lastIndexOf(pattern);
 		String pre = src.substring(0, (idxPre < 0 ? src.length() : idxPre));
 

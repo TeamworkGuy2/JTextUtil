@@ -4,7 +4,19 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.11.5](N/A) - 2019-02-02
+### [0.12.0](N/A) - 2019-04-04
+#### Added
+* `StringCompare.containsCount()`, `containsIgnoreCaseCount()` and overloads
+
+#### Changed
+* Renamed `StringSearchOpt.EXACT` -> `EQUALS`
+* Removed `final` modifier from classes and static methods
+* Ensured all classes containing only static methods, have a private default constructor which throws `AssertionError`
+* Additional unit tests
+
+
+--------
+### [0.11.5](https://github.com/TeamworkGuy2/JTextUtil/commit/0e025e4ac7fcb5cff0dae9c282281b99293c1aec) - 2019-02-02
 #### Added
 * `StringCompare.containsAny(String, Iterable)`
 * `StringCompare.containsAll()` to mirror `containsAny()`
@@ -16,7 +28,6 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 #### Fixed
 * `StringCompare.compareStartsWith()` not handling case when `startStr` is longer then `str`
 * `StringCompare.equal()` error when str2 is shorter than `str2Off + len`, correctly returns false now
-
 
 
 --------

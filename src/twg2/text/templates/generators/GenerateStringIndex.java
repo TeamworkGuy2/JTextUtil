@@ -44,7 +44,6 @@ public class GenerateStringIndex {
 
 		MultiTypeInfo<RandomAccessTypeInfo> info = new MultiTypeInfo<>();
 		info.className = "StringIndex";
-		info.importStatements = Arrays.asList("java.util.List", "java.util.RandomAccess");
 		info.packageName = pkgName;
 
 		info.types.add(new MultiTypeInfo.MultiType<>(stringType, stringType));

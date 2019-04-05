@@ -11,7 +11,7 @@ import java.io.UncheckedIOException;
  * @author TeamworkGuy2
  * @since 2013-12-21
  */
-public final class StringHex {
+public class StringHex {
 	public static final char escapeStart = '\\';
 
 	static final char[] hex = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
@@ -25,7 +25,7 @@ public final class StringHex {
 
 
 	/*
-	public static final String toHexString(byte[] bytes, int offset, int length) {
+	public static String toHexString(byte[] bytes, int offset, int length) {
 		char[] ch = new char[length << 1];
 
 		for(int i = 0, dstI = 0; i < length; i++, dstI += 2) {
@@ -45,8 +45,7 @@ public final class StringHex {
 	 * @param length the number of bytes to convert, starting at the offset index in the array
 	 * @param output the {@link Appendable} output to write the hexadecimal digits to
 	 */
-	public static final void writeHexString(final byte[] hexBytes, final int offset, final int length,
-			final StringBuilder output) {
+	public static void writeHexString(final byte[] hexBytes, final int offset, final int length, final StringBuilder output) {
 		try {
 			writeHexString(hexBytes, offset, length, (Appendable)output);
 		} catch(IOException ioe) {
@@ -63,8 +62,7 @@ public final class StringHex {
 	 * @param output the {@link Appendable} output to write the hexadecimal digits to
 	 * @throws IOException if there is an error writing to the output stream
 	 */
-	public static final void writeHexString(final byte[] hexBytes, final int offset, final int length,
-			final Appendable output) throws IOException {
+	public static void writeHexString(final byte[] hexBytes, final int offset, final int length, final Appendable output) throws IOException {
 		final int size = offset + length;
 		for(int i = offset; i < size; i++) {
 			byte b = hexBytes[i];
@@ -82,7 +80,7 @@ public final class StringHex {
 	 * @param hexBytes the array of bytes to convert to a hexadecimal string
 	 * @return a string containing the hexadecimal value of the input byte array
 	 */
-	public static final String toHexString(final byte[] hexBytes) {
+	public static String toHexString(final byte[] hexBytes) {
 		return toHexString(hexBytes, 0, hexBytes.length);
 	}
 
@@ -93,7 +91,7 @@ public final class StringHex {
 	 * @param length the number of bytes to convert, starting at the offset index in the array
 	 * @return a char array containing the hexadecimal value of the input byte array
 	 */
-	public static final char[] toHexChars(final byte[] hexBytes, final int offset, final int length) {
+	public static char[] toHexChars(final byte[] hexBytes, final int offset, final int length) {
 		char[] c = new char[(length << 1)];
 		for(int i = offset, a = 0, size = offset + length; i < size; i++, a+=2) {
 			byte b = hexBytes[i];
@@ -108,7 +106,7 @@ public final class StringHex {
 	}
 
 
-	public static final String toHexString(final byte[] hexBytes, final int offset, final int length) {
+	public static String toHexString(final byte[] hexBytes, final int offset, final int length) {
 		return new String(toHexChars(hexBytes, offset, length));
 	}
 
@@ -116,7 +114,7 @@ public final class StringHex {
 	/**
 	 * @see #decodeHexString(String, int, int)
 	 */
-	public static final byte[] decodeHexString(final String input) {
+	public static byte[] decodeHexString(final String input) {
 		return decodeHexString(input, 0, input.length());
 	}
 
@@ -131,7 +129,7 @@ public final class StringHex {
 	 * @param len the number of characters to decode
 	 * @return an array of bytes containing the interpreted byte values of the hexadecimal string
 	 */
-	public static final byte[] decodeHexString(final String input, final int off, final int len) {
+	public static byte[] decodeHexString(final String input, final int off, final int len) {
 		// Note whether the string length is odd
 		boolean oddCount = (len & 0x1) == 1;
 		int hexLen = len / 2;
@@ -165,7 +163,7 @@ public final class StringHex {
 	 * @return an array of bytes containing the interpreted byte values of the hexadecimal stream
 	 * @throws IOException if there is an error reading from the input reader
 	 */
-	public static final byte[] decodeHexStream(final Reader input) throws IOException {
+	public static byte[] decodeHexStream(final Reader input) throws IOException {
 		return decodeHexStream(input, 8192);
 	}
 
@@ -177,7 +175,7 @@ public final class StringHex {
 	 * @see #decodeHexStream(Reader)
 	 * @throws IOException if there is an error reading from the input reader
 	 */
-	public static final byte[] decodeHexStream(final Reader input, final int size) throws IOException {
+	public static byte[] decodeHexStream(final Reader input, final int size) throws IOException {
 		if(Integer.bitCount(size) != 1) { throw new IllegalArgumentException("'size' must be a power of 2"); }
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream(size);
@@ -185,7 +183,7 @@ public final class StringHex {
 		boolean lastReadOdd = false;
 		byte lastByte = 0;
 		int read = -1;
-		// Read blocks of the stream and convert to hex, two chararacters at a time
+		// Read blocks of the stream and convert to hex, two characters at a time
 		while((read = input.read(cbuf)) != -1) {
 			int offset = 0;
 			// If the last block was an odd length, combine it's last character and this block's first character
@@ -234,7 +232,7 @@ public final class StringHex {
 	 * @param b the value to convert to a hex character, only the lowest four bits are used to calculate the hex value
 	 * @return the hex character of the four lowest bits of the value
 	 */
-	public static final char toHex(int b) {
+	public static char toHex(int b) {
 		return (char)((b = (b & 0xF)) < 10 ? (b+48) : (b+55));
 	}
 
@@ -243,7 +241,7 @@ public final class StringHex {
 	 * @param c the character, one of: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F, to convert to a integer value
 	 * @return the value of the hex digit, or 0 if the digit is not a valid hex digit
 	 */
-	public static final byte hexToByte(char c) {
+	public static byte hexToByte(char c) {
 		return (byte)((c > 47 && c < 58) ? (c-48) : (c > 64 && c < 71) ? (c-55) : 0);
 	}
 

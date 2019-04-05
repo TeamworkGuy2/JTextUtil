@@ -17,35 +17,35 @@ public class StringEscapePartial {
 	// ==== String ====
 	/** @see #unescapePartialQuoted(String, int, int, char, char, char, char, boolean, Appendable)
 	 */
-	public static final int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, StringBuilder dst) {
+	public static int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, StringBuilder dst) {
 		return unescapePartialQuoted(src, offset, src.length() - offset, escapeChar, quote, endCh1, endCh1, false, dst);
 	}
 
 
 	/** @see #unescapePartialQuoted(String, int, int, char, char, char, char, boolean, Appendable)
 	 */
-	public static final int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, Appendable dst) throws IOException {
+	public static int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, Appendable dst) throws IOException {
 		return unescapePartialQuoted(src, offset, src.length() - offset, escapeChar, quote, endCh1, endCh1, false, dst);
 	}
 
 
 	/** @see #unescapePartialQuoted(String, int, int, char, char, char, char, boolean, Appendable)
 	 */
-	public static final int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, char endCh2, StringBuilder dst) {
+	public static int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, char endCh2, StringBuilder dst) {
 		return unescapePartialQuoted(src, offset, src.length() - offset, escapeChar, quote, endCh1, endCh2, false, dst);
 	}
 
 
 	/** @see #unescapePartialQuoted(String, int, int, char, char, char, char, boolean, Appendable)
 	 */
-	public static final int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, char endCh2, Appendable dst) throws IOException {
+	public static int unescapePartialQuoted(String src, int offset, char escapeChar, char quote, char endCh1, char endCh2, Appendable dst) throws IOException {
 		return unescapePartialQuoted(src, offset, src.length() - offset, escapeChar, quote, endCh1, endCh2, false, dst);
 	}
 
 
 	/** @see #unescapePartialQuoted(String, int, int, char, char, char, char, boolean, Appendable)
 	 */
-	public static final int unescapePartialQuoted(String src, int offset, int length, char escapeChar, char quote,
+	public static int unescapePartialQuoted(String src, int offset, int length, char escapeChar, char quote,
 			char endCh1, char endCh2, boolean throwIfNoEndChar, StringBuilder dst) {
 		try {
 			return unescapePartialQuoted(src, offset, length, escapeChar, quote, endCh1, endCh2, throwIfNoEndChar, (Appendable)dst);
@@ -75,7 +75,7 @@ public class StringEscapePartial {
 	 * @return the index of the {@code endCh1/endCh2} that parsing stopped at, or the length
 	 * of the {@code src} string if no {@code endCh1/endCh2} character was encountered 
 	 */
-	public static final int unescapePartialQuoted(String src, int offset, int length, char escapeChar, char quote,
+	public static int unescapePartialQuoted(String src, int offset, int length, char escapeChar, char quote,
 			char endCh1, char endCh2, boolean throwIfNoEndChar, Appendable dst) throws IOException {
 		final int offLen = offset + length;
 		boolean added = false;

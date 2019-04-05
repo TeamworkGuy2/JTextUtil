@@ -5,7 +5,7 @@ package twg2.text.stringSearch;
  * @since 2016-08-07
  */
 public enum StringSearchOp {
-	EXACT() {
+	EQUALS() {
 		@Override
 		public boolean test(String a, String b) { return a != null ? a.equals(b) : b == null; }
 	},
