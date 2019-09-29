@@ -4,7 +4,20 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.12.0](N/A) - 2019-04-04
+### [0.13.0](N/A) - 2019-09-29
+#### Added
+* `StringSplit.lastMatchParts(String, char)`
+* Additional unit tests
+
+#### Changed
+* Change methods to `private`:
+  * `StringSplit._postFirstMatch()`
+  * `StringSplit._lastMatch()`
+  * `StringSplit._preLastMatch()`
+
+
+--------
+### [0.12.0](https://github.com/TeamworkGuy2/JTextUtil/commit/1aaa95edd8e0ef41bb5f0cced94045ce54d95780) - 2019-04-04
 #### Added
 * `StringCompare.containsCount()`, `containsIgnoreCaseCount()` and overloads
 

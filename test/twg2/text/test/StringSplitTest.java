@@ -228,6 +228,12 @@ public class StringSplitTest {
 		Assert.assertEquals(entry("", "a-"), StringSplit.firstMatchParts("-a-", "-"));
 		Assert.assertEquals(entry("abc", ""), StringSplit.firstMatchParts("abc", "-"));
 		Assert.assertEquals(entry("Aa", "Bb--Cc"), StringSplit.firstMatchParts("Aa--Bb--Cc", "--"));
+
+		Assert.assertEquals(entry("abc", "def-ghi"), StringSplit.firstMatchParts("abc-def-ghi", '-'));
+		Assert.assertEquals(entry("abc", "-2--3"), StringSplit.firstMatchParts("abc--2--3", '-'));
+		Assert.assertEquals(entry("", ""), StringSplit.firstMatchParts("", '-'));
+		Assert.assertEquals(entry("", "a-"), StringSplit.firstMatchParts("-a-", '-'));
+		Assert.assertEquals(entry("abc", ""), StringSplit.firstMatchParts("abc", '-'));
 	}
 
 
@@ -285,6 +291,32 @@ public class StringSplitTest {
 
 
 	@Test
+	public void substringNullCharTest() {
+		Assert.assertEquals("", StringSplit.substringNull("-[][]", '[', ']')); // empty result string
+		Assert.assertEquals("a", StringSplit.substringNull("[a]-[b]", '[', ']')); // multi-simple
+		Assert.assertEquals(null, StringSplit.substringNull("a]-", '[', ']')); // no start
+		Assert.assertEquals(null, StringSplit.substringNull("a[b", '[', ']')); // no end
+		Assert.assertEquals(null, StringSplit.substringNull("ab", '[', ']')); // no start AND no end
+		Assert.assertEquals(null, StringSplit.substringNull("", '[', ']')); // empty string
+		Assert.assertEquals(null, StringSplit.substringNull("-a]-b]-", '[', ']')); // no start multi
+		Assert.assertEquals(null, StringSplit.substringNull("a[b[c", '[', ']')); // no end multi
+	}
+
+
+	@Test
+	public void substringThrowsCharTest() {
+		Assert.assertEquals("", StringSplit.substringThrows("-[][]", '[', ']')); // empty result string
+		Assert.assertEquals("a", StringSplit.substringThrows("[a]-[b]", '[', ']')); // multi-simple
+		CheckTask.assertException(() -> StringSplit.substringThrows("a]-", '[', ']')); // no start
+		CheckTask.assertException(() -> StringSplit.substringThrows("a[b", '[', ']')); // no end
+		CheckTask.assertException(() -> StringSplit.substringThrows("ab", '[', ']')); // no start AND no end
+		CheckTask.assertException(() -> StringSplit.substringThrows("", '[', ']')); // empty string
+		CheckTask.assertException(() -> StringSplit.substringThrows("-a]-b]-", '[', ']')); // no start multi
+		CheckTask.assertException(() -> StringSplit.substringThrows("a[b[c", '[', ']')); // no end multi
+	}
+
+
+	@Test
 	public void lastSubstringCharTest() {
 		Assert.assertEquals("", StringSplit.lastSubstring("-[][]", '[', ']')); // empty result string
 		Assert.assertEquals("b", StringSplit.lastSubstring("[a]-[b]", '[', ']')); // multi-simple
@@ -294,6 +326,32 @@ public class StringSplitTest {
 		Assert.assertEquals("", StringSplit.lastSubstring("", '[', ']')); // empty string
 		Assert.assertEquals("-a", StringSplit.lastSubstring("-a]-b]-", '[', ']')); // no start multi
 		Assert.assertEquals("c", StringSplit.lastSubstring("a[b[c", '[', ']')); // no end multi
+	}
+
+
+	@Test
+	public void lastSubstringNullCharTest() {
+		Assert.assertEquals("", StringSplit.lastSubstringNull("-[][]", '[', ']')); // empty result string
+		Assert.assertEquals("b", StringSplit.lastSubstringNull("[a]-[b]", '[', ']')); // multi-simple
+		Assert.assertEquals(null, StringSplit.lastSubstringNull("a]-", '[', ']')); // no start
+		Assert.assertEquals(null, StringSplit.lastSubstringNull("a[b", '[', ']')); // no end
+		Assert.assertEquals(null, StringSplit.lastSubstringNull("ab", '[', ']')); // no start AND no end
+		Assert.assertEquals(null, StringSplit.lastSubstringNull("", '[', ']')); // empty string
+		Assert.assertEquals(null, StringSplit.lastSubstringNull("-a]-b]-", '[', ']')); // no start multi
+		Assert.assertEquals(null, StringSplit.lastSubstringNull("a[b[c", '[', ']')); // no end multi
+	}
+
+
+	@Test
+	public void lastSubstringThrowsCharTest() {
+		Assert.assertEquals("", StringSplit.lastSubstringThrows("-[][]", '[', ']')); // empty result string
+		Assert.assertEquals("b", StringSplit.lastSubstringThrows("[a]-[b]", '[', ']')); // multi-simple
+		CheckTask.assertException(() -> StringSplit.lastSubstringThrows("a]-", '[', ']')); // no start
+		CheckTask.assertException(() -> StringSplit.lastSubstringThrows("a[b", '[', ']')); // no end
+		CheckTask.assertException(() -> StringSplit.lastSubstringThrows("ab", '[', ']')); // no start AND no end
+		CheckTask.assertException(() -> StringSplit.lastSubstringThrows("", '[', ']')); // empty string
+		CheckTask.assertException(() -> StringSplit.lastSubstringThrows("-a]-b]-", '[', ']')); // no start multi
+		CheckTask.assertException(() -> StringSplit.lastSubstringThrows("a[b[c", '[', ']')); // no end multi
 	}
 
 
@@ -311,6 +369,32 @@ public class StringSplitTest {
 
 
 	@Test
+	public void substringNullStrTest() {
+		Assert.assertEquals("", StringSplit.substringNull("-<[]><[]>", "<[", "]>")); // empty result string
+		Assert.assertEquals("a", StringSplit.substringNull("<[a]>-<[b]>", "<[", "]>")); // multi-simple
+		Assert.assertEquals(null, StringSplit.substringNull("a]>-", "<[", "]>")); // no start
+		Assert.assertEquals(null, StringSplit.substringNull("a<[b", "<[", "]>")); // no end
+		Assert.assertEquals(null, StringSplit.substringNull("ab", "<[", "]>")); // no start AND no end
+		Assert.assertEquals(null, StringSplit.substringNull("", "<[", "]>")); // empty string
+		Assert.assertEquals(null, StringSplit.substringNull("-a]>-b]>-", "<[", "]>")); // no start multi
+		Assert.assertEquals(null, StringSplit.substringNull("a<[b<[c", "<[", "]>")); // no end multi
+	}
+
+
+	@Test
+	public void substringThrowsStrTest() {
+		Assert.assertEquals("", StringSplit.substringThrows("-<[]><[]>", "<[", "]>")); // empty result string
+		Assert.assertEquals("a", StringSplit.substringThrows("<[a]>-<[b]>", "<[", "]>")); // multi-simple
+		CheckTask.assertException(() -> StringSplit.substringThrows("a]>-", "<[", "]>")); // no start
+		CheckTask.assertException(() -> StringSplit.substringThrows("a<[b", "<[", "]>")); // no end
+		CheckTask.assertException(() -> StringSplit.substringThrows("ab", "<[", "]>")); // no start AND no end
+		CheckTask.assertException(() -> StringSplit.substringThrows("", "<[", "]>")); // empty string
+		CheckTask.assertException(() -> StringSplit.substringThrows("-a]>-b]>-", "<[", "]>")); // no start multi
+		CheckTask.assertException(() -> StringSplit.substringThrows("a<[b<[c", "<[", "]>")); // no end multi
+	}
+
+
+	@Test
 	public void lastSubstringStrTest() {
 		Assert.assertEquals("", StringSplit.lastSubstring("-<[]><[]>", "<[", "]>")); // empty result string
 		Assert.assertEquals("b", StringSplit.lastSubstring("<[a]>-<[b]>", "<[", "]>")); // multi-simple
@@ -320,6 +404,32 @@ public class StringSplitTest {
 		Assert.assertEquals("", StringSplit.lastSubstring("", "<[", "]>")); // empty string
 		Assert.assertEquals("-a", StringSplit.lastSubstring("-a]>-b]>-", "<[", "]>")); // no start multi
 		Assert.assertEquals("c", StringSplit.lastSubstring("a<[b<[c", "<[", "]>")); // no end multi
+	}
+
+
+	@Test
+	public void lastSubstringNullStrTest() {
+		Assert.assertEquals("", StringSplit.lastSubstring("-<[]><[]>", "<[", "]>")); // empty result string
+		Assert.assertEquals("b", StringSplit.lastSubstring("<[a]>-<[b]>", "<[", "]>")); // multi-simple
+		Assert.assertEquals(null, StringSplit.lastSubstringNull("a]>-", "<[", "]>")); // no start
+		Assert.assertEquals(null, StringSplit.lastSubstringNull("a<[b", "<[", "]>")); // no end
+		Assert.assertEquals(null, StringSplit.lastSubstringNull("ab", "<[", "]>")); // no start AND no end
+		Assert.assertEquals(null, StringSplit.lastSubstringNull("", "<[", "]>")); // empty string
+		Assert.assertEquals(null, StringSplit.lastSubstringNull("-a]>-b]>-", "<[", "]>")); // no start multi
+		Assert.assertEquals(null, StringSplit.lastSubstringNull("a<[b<[c", "<[", "]>")); // no end multi
+	}
+
+
+	@Test
+	public void lastSubstringThrowsStrTest() {
+		Assert.assertEquals("", StringSplit.lastSubstringThrows("-<[]><[]>", "<[", "]>")); // empty result string
+		Assert.assertEquals("b", StringSplit.lastSubstringThrows("<[a]>-<[b]>", "<[", "]>")); // multi-simple
+		CheckTask.assertException(() -> StringSplit.lastSubstringThrows("a]>-", "<[", "]>")); // no start
+		CheckTask.assertException(() -> StringSplit.lastSubstringThrows("a<[b", "<[", "]>")); // no end
+		CheckTask.assertException(() -> StringSplit.lastSubstringThrows("ab", "<[", "]>")); // no start AND no end
+		CheckTask.assertException(() -> StringSplit.lastSubstringThrows("", "<[", "]>")); // empty string
+		CheckTask.assertException(() -> StringSplit.lastSubstringThrows("-a]>-b]>-", "<[", "]>")); // no start multi
+		CheckTask.assertException(() -> StringSplit.lastSubstringThrows("a<[b<[c", "<[", "]>")); // no end multi
 	}
 
 

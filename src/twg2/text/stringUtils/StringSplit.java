@@ -16,12 +16,12 @@ public class StringSplit {
 	/** The default size of a contain to hold a split string if the maximum number of splits
 	 * is undefined or greater than MAX_SPLIT_SIZE */
 	private static final int DEFAULT_SPLIT_SIZE = 10;
-	/** The maximum size of a contain to hold split strings, if the split limit is greater than
+	/** The maximum size of a collection to hold split strings, if the split limit is greater than
 	 * this value, than default to {@link StringUtility#DEFAULT_SPLIT_SIZE DEFAULT_SPLIT_SIZE} */
 	private static final int MAX_SPLIT_SIZE = 100;
 
 
-	private StringSplit() { throw new AssertionError("cannot instantiate cannot instantiate static class StringSplit"); }
+	private StringSplit() { throw new AssertionError("cannot instantiate static class StringSplit"); }
 
 
 	/** A slightly faster version of {@link String#split(String)} that does not
@@ -465,8 +465,25 @@ public class StringSplit {
 		return _postFirstMatch(src, src.indexOf(pattern), pattern.length());
 	}
 
-	public static String _postFirstMatch(String src, int idx, int patternLen) {
+	private static String _postFirstMatch(String src, int idx, int patternLen) {
 		return src.substring(idx > -1 && idx + patternLen >= src.length() ? src.length() : (idx < 0 ? 0 : idx + patternLen));
+	}
+
+
+	/** Returns the portions of a string before and after the first index of a character.
+	 * For example {@code firstMatchParts("abc-mid-123", '-')}, returns {@code Entry("abc", "mid-123")}
+	 * @param src the string to search
+	 * @param pattern the character to search for
+	 * @return an entry where the key is the portion of {@code src} before the first matching character
+	 * and the value is the portion of {@code src} after the first matching character
+	 */
+	public static Map.Entry<String, String> firstMatchParts(String src, char patternChar) {
+		int idxPre = src.indexOf(patternChar);
+		String pre = src.substring(0, idxPre < 0 ? src.length() : idxPre);
+
+		String post = src.substring(idxPre > -1 && idxPre + 1 >= src.length() ? src.length() : (idxPre < 0 ? src.length() : idxPre + 1));
+
+		return new AbstractMap.SimpleImmutableEntry<>(pre, post);
 	}
 
 
@@ -479,10 +496,9 @@ public class StringSplit {
 	 */
 	public static Map.Entry<String, String> firstMatchParts(String src, String pattern) {
 		int idxPre = src.indexOf(pattern);
-		String pre = src.substring(0, (idxPre < 0 ? src.length() : idxPre));
+		String pre = src.substring(0, idxPre < 0 ? src.length() : idxPre);
 
-		int idxPost = idxPre;
-		String post = src.substring(idxPost > -1 && idxPost + pattern.length() >= src.length() ? src.length() : (idxPost < 0 ? src.length() : idxPost + pattern.length()));
+		String post = src.substring(idxPre > -1 && idxPre + pattern.length() >= src.length() ? src.length() : (idxPre < 0 ? src.length() : idxPre + pattern.length()));
 
 		return new AbstractMap.SimpleImmutableEntry<>(pre, post);
 	}
@@ -500,7 +516,7 @@ public class StringSplit {
 		return _lastMatch(src, src.lastIndexOf(pattern), pattern.length());
 	}
 
-	public static String _lastMatch(String src, int idx, int patternLen) {
+	private static String _lastMatch(String src, int idx, int patternLen) {
 		return src.substring(idx > -1 && idx + patternLen >= src.length() ? src.length() : (idx < 0 ? 0 : idx + patternLen));
 	}
 
@@ -517,7 +533,7 @@ public class StringSplit {
 		return _preLastMatch(src, src.lastIndexOf(pattern));
 	}
 
-	public static String _preLastMatch(String src, int idx) {
+	private static String _preLastMatch(String src, int idx) {
 		return src.substring(0, idx >= src.length() ? src.length() : (idx < 0 ? 0 : idx));
 	}
 
@@ -712,6 +728,7 @@ public class StringSplit {
 
 
 	// ==== Split at spaces ====
+
 	/** Split a string into multiple sub-string at boundary characters while keeping each string's length less than or equal to the maxLength
 	 * Example: splitAtBoundary("the quick sly fox", ' ', 5)
 	 * returns: ["the", "quick", "sly", "fox"]
