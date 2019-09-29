@@ -91,7 +91,9 @@ public class StringSplit {
 			nextIndex = (nextIndex == -1) ? inputSize : nextIndex;
 			// If the matching string index is greater than or equal to the end
 			// of the string, then break, there is no more string left to parse
-			if(indexPlusPatternSize > inputSize) { break; }
+			if(indexPlusPatternSize > inputSize) {
+				break;
+			}
 			// Add the new sub string between the end of the previous matching
 			// pattern and the next matching pattern to the list of splits
 			dst.add(input.substring(indexPlusPatternSize, nextIndex));
@@ -147,7 +149,9 @@ public class StringSplit {
 			nextIndex = (nextIndex == -1) ? inputSize : nextIndex;
 			// If the matching string index is greater than or equal to the end
 			// of the string, then break, there is no more string left to parse
-			if(indexPlusPatternSize > inputSize) { break; }
+			if(indexPlusPatternSize > inputSize) {
+				break;
+			}
 			// Add the new sub string between the end of the previous matching
 			// pattern and the next matching pattern to the list of splits
 			dst[matchingCount] = input.substring(indexPlusPatternSize, nextIndex);
@@ -222,7 +226,9 @@ public class StringSplit {
 			nextIndex = (nextIndex == -1) ? inputSize : nextIndex;
 			// If the matching string index is greater than or equal to the end
 			// of the string, then break, there is no more string left to parse
-			if(indexPlusPatternSize > inputSize) { break; }
+			if(indexPlusPatternSize > inputSize) {
+				break;
+			}
 			// Add the new sub string between the end of the previous matching
 			// pattern and the next matching pattern to the list of splits
 			dst.add(input.substring(indexPlusPatternSize, nextIndex));
@@ -277,7 +283,9 @@ public class StringSplit {
 			nextIndex = (nextIndex == -1) ? inputSize : nextIndex;
 			// If the matching string index is greater than or equal to the end
 			// of the string, then break, there is no more string left to parse
-			if(indexPlusPatternSize > inputSize) { break; }
+			if(indexPlusPatternSize > inputSize) {
+				break;
+			}
 			// Add the new sub string between the end of the previous matching
 			// pattern and the next matching pattern to the list of splits
 			dst[matchingCount] = input.substring(indexPlusPatternSize, nextIndex);
@@ -310,13 +318,10 @@ public class StringSplit {
 		if(expectedCount < 0) {
 			throw new IllegalArgumentException("expectedCount (" + expectedCount + ") must be greater than 0");
 		}
-		if(childI >= expectedCount) {
+		if(expectedCount > 0 && childI >= expectedCount) {
 			throw new IllegalStateException("childI (" + childI + ") must be less than expected count (" + expectedCount + ")");
 		}
 
-		// If the limit is zero (meaning an infinite number of splits) make the
-		// limit negative so that it never matches the comparison in the loop
-		expectedCount = (expectedCount == 0) ? -1 : expectedCount;
 		int inputSize = input.length();
 		int patternSize = pattern.length();
 		int index = 0;
@@ -333,15 +338,18 @@ public class StringSplit {
 			indexPlusPatternSize = index + patternSize; // small optimization (me being picky)
 			// Find the next matching string index after the current matching string index
 			nextIndex = input.indexOf(pattern, indexPlusPatternSize);
-			// If the maximum number of strings have been match, set the next index to -1
-			// so that the next statement acts as if the end of the string has been reached
-			if(matchingCount == expectedCount - 1 && nextIndex > -1) { throw new IllegalStateException("found more than " + expectedCount + " split strings"); }
+			// If the maximum number of strings have been matched and another is found, throw an exception
+			if(matchingCount == expectedCount - 1 && nextIndex > -1) {
+				throw new IllegalStateException("found more than " + expectedCount + " split strings");
+			}
 			// If no more matching strings can be found, include the remainder of
 			// the string after the last matching string
 			nextIndex = (nextIndex == -1) ? inputSize : nextIndex;
 			// If the matching string index is greater than or equal to the end
 			// of the string, then break, there is no more string left to parse
-			if(indexPlusPatternSize > inputSize) { break; }
+			if(indexPlusPatternSize > inputSize) {
+				break;
+			}
 			// Add the new sub string between the end of the previous matching
 			// pattern and the next matching pattern to the list of splits
 			//dst.add(input.substring(indexPlusPatternSize, nextIndex));
@@ -359,7 +367,9 @@ public class StringSplit {
 			matchingCount++;
 		} while(index != -1); // While at end because (index = -patternSize) could equal -1 if the pattern size is -1
 
-		if(expectedCount != 0 && matchingCount != expectedCount) { throw new IllegalStateException("found " + matchingCount + ", expected " + expectedCount + " split strings"); }
+		if(expectedCount != 0 && matchingCount != expectedCount) {
+			throw new IllegalStateException("found " + matchingCount + ", expected " + expectedCount + " split strings");
+		}
 		// so initialize everything first and run the first loop before evaluating the while statement
 		// Return the string list
 		return matchStr;
@@ -389,7 +399,9 @@ public class StringSplit {
 			nextIndex = (nextIndex == -1) ? srcSize : nextIndex;
 			// If the matching string index is greater than or equal to the end
 			// of the string, then break, there is no more string left to parse
-			if(indexPlusPatternSize > srcSize) { break; }
+			if(indexPlusPatternSize > srcSize) {
+				break;
+			}
 			// If the next found index is the end of the string, set the index
 			// to -1 so that the outer while loop ends, else keep the current index
 			index = (nextIndex == srcSize) ? -1 : nextIndex;
@@ -424,7 +436,9 @@ public class StringSplit {
 			nextIndex = (nextIndex == -1) ? srcSize : nextIndex;
 			// If the matching string index is greater than or equal to the end
 			// of the string, then break, there is no more string left to parse
-			if(indexPlusPatternSize > srcSize) { break; }
+			if(indexPlusPatternSize > srcSize) {
+				break;
+			}
 			// If the next found index is the end of the string, set the index
 			// to -1 so that the outer while loop ends, else keep the current index
 			index = (nextIndex == srcSize) ? -1 : nextIndex;
@@ -538,6 +552,23 @@ public class StringSplit {
 	}
 
 
+	/** Returns the portions of a string before and after the last index of a character.
+	 * For example {@code firstMatchParts("abc-mid-123", '-')}, returns {@code Entry("abc-mid", "123")}
+	 * @param src the string to search
+	 * @param pattern the character to search for
+	 * @return an entry where the key is the portion of {@code src} before the last matching character
+	 * and the value is the portion of {@code src} after the last matching character
+	 */
+	public static Map.Entry<String, String> lastMatchParts(String src, char patternChar) {
+		int idxPre = src.lastIndexOf(patternChar);
+		String pre = src.substring(0, (idxPre < 0 ? src.length() : idxPre));
+
+		String post = src.substring(idxPre > -1 && idxPre + 1 >= src.length() ? src.length() : (idxPre < 0 ? src.length() : idxPre + 1));
+
+		return new AbstractMap.SimpleImmutableEntry<>(pre, post);
+	}
+
+
 	/** Returns the portions of a string before and after the last index of a sub-string.
 	 * For example {@code firstMatchParts("abc-mid-123", "-")}, returns {@code Entry("abc-mid", "123")}
 	 * @param src the string to search
@@ -549,8 +580,7 @@ public class StringSplit {
 		int idxPre = src.lastIndexOf(pattern);
 		String pre = src.substring(0, (idxPre < 0 ? src.length() : idxPre));
 
-		int idxPost = idxPre;
-		String post = src.substring(idxPost > -1 && idxPost + pattern.length() >= src.length() ? src.length() : (idxPost < 0 ? src.length() : idxPost + pattern.length()));
+		String post = src.substring(idxPre > -1 && idxPre + pattern.length() >= src.length() ? src.length() : (idxPre < 0 ? src.length() : idxPre + pattern.length()));
 
 		return new AbstractMap.SimpleImmutableEntry<>(pre, post);
 	}

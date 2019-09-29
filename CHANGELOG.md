@@ -4,9 +4,19 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.13.0](N/A) - 2019-09-29
+### [0.13.1](N/A) - 2019-09-29
 #### Added
 * `StringSplit.lastMatchParts(String, char)`
+
+#### Fixed
+* `StringSplit.findNthMatch()` incorrectly threw exception when zero was passed for the `expectedCount` argument
+* Fixed previous release documentation from `lastMatchParts()` to `firstMatchParts()`
+
+
+--------
+### [0.13.0](https://github.com/TeamworkGuy2/JTextUtil/commit/57ffe72e636212dc8853f238b57ff2a227541350) - 2019-09-29
+#### Added
+* `StringSplit.firstMatchParts(String, char)`
 * Additional unit tests
 
 #### Changed

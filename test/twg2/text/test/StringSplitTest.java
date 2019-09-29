@@ -154,9 +154,12 @@ public class StringSplitTest {
 	@Test
 	public void stringSplitNthChildTest() {
 		Assert.assertEquals(" def", StringSplit.findNthMatch("abc, def, ghi", ",", 1, 3));
+		Assert.assertEquals(" def", StringSplit.findNthMatch("abc, def, ghi", ",", 1, 0));
 
-		CheckTask.assertException(() -> StringSplit.findNthMatch("abc, def, ghi", ",", 1, 2));
-		CheckTask.assertException(() -> StringSplit.findNthMatch("abc, def, ghi", ",", 1, 4));
+		CheckTask.assertException(() -> StringSplit.findNthMatch("abc, def, ghi", ",", 1, 2)); // expected count too small
+		CheckTask.assertException(() -> StringSplit.findNthMatch("abc, def, ghi", ",", 1, 4)); // expected count too big
+		CheckTask.assertException(() -> StringSplit.findNthMatch("abc, def, ghi", ",", 1, -1)); // negative expected count
+		CheckTask.assertException(() -> StringSplit.findNthMatch("abc, def, ghi", ",", 3, 2)); // childI greater than expected count
 	}
 
 
@@ -274,6 +277,11 @@ public class StringSplitTest {
 		Assert.assertEquals(entry("", ""), StringSplit.lastMatchParts("", "-"));
 		Assert.assertEquals(entry("a", ""), StringSplit.lastMatchParts("a-", "-"));
 		Assert.assertEquals(entry("abc", ""), StringSplit.lastMatchParts("abc", "-"));
+
+		Assert.assertEquals(entry("abc-def", "ghi"), StringSplit.lastMatchParts("abc-def-ghi", '-'));
+		Assert.assertEquals(entry("", ""), StringSplit.lastMatchParts("", '-'));
+		Assert.assertEquals(entry("a", ""), StringSplit.lastMatchParts("a-", '-'));
+		Assert.assertEquals(entry("abc", ""), StringSplit.lastMatchParts("abc", '-'));
 	}
 
 
