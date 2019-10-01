@@ -19,48 +19,70 @@ public class StringCommonalityTest {
 
 	@Test
 	public void findPrefixTest() {
-		new CommonalityData(true, Arrays.asList(of("alp", 0), of("p", 2), of("", 8)), Arrays.asList(
+		List<String> strs = Arrays.asList(
 				"alpha, beta, gamma",
 				"alphabet",
 				"alpine"
-		)).test();
+		);
+		Assert.assertEquals("alp", StringCommonality.findPrefix(0, strs));
+		Assert.assertEquals("p",   StringCommonality.findPrefix(2, strs));
+		Assert.assertEquals("",    StringCommonality.findPrefix(8, strs));
 
-		new CommonalityData(true, Arrays.asList(of("123", 0), of("", 3), of("", 6)), Arrays.asList(
+		strs = Arrays.asList(
 				"12345678",
 				"12345",
 				"123"
-		)).test();
+		);
+		Assert.assertEquals("123", StringCommonality.findPrefix(0, strs));
+		Assert.assertEquals("",    StringCommonality.findPrefix(3, strs));
+		Assert.assertEquals("",    StringCommonality.findPrefix(6, strs));
 	}
 
 
 	@Test
 	public void findSuffixTest() {
-		new CommonalityData(false, Arrays.asList(of("ing", 0), of("i", 2), of("", 4)), Arrays.asList(
+		List<String> strs = Arrays.asList(
 				"sing",
 				"alphabetizing",
 				"-ing"
-		)).test();
+		);
+		Assert.assertEquals("ing", StringCommonality.findSuffix(0, strs));
+		Assert.assertEquals("i",   StringCommonality.findSuffix(2, strs));
+		Assert.assertEquals("",    StringCommonality.findSuffix(4, strs));
 
-		new CommonalityData(false, Arrays.asList(of("abc", 0), of("a", 5), of("", 6)), Arrays.asList(
+		strs = Arrays.asList(
 				"zabcabc",
 				"alphabetan-abc",
 				"a--abc"
-		)).test();
+		);
+		Assert.assertEquals("abc", StringCommonality.findSuffix(0, strs));
+		Assert.assertEquals("a",   StringCommonality.findSuffix(5, strs));
+		Assert.assertEquals("",    StringCommonality.findSuffix(6, strs));
 	}
 
 
 	@Test
 	public void findStringPortionTest() {
-		List<Entry<String, Integer>> suffixesAndOffsets = Arrays.asList(of("wxy", 4), of("w", 2), of("", 5));
 		List<String> strs = Arrays.asList(
 				"-1wxyxy",
 				"-2wxy",
 				"-3wxyz"
 		);
 
-		for(Entry<String, Integer> suffixOffset : suffixesAndOffsets) {
-			Assert.assertEquals(suffixOffset.getKey(), StringCommonality.commonStringPortion(1, 6, suffixOffset.getValue(), strs, false, false));
-		}
+		// forward
+		Assert.assertEquals("y",   StringCommonality.commonStringPortion(1, 6, 4, strs, true, false));
+		Assert.assertEquals("wxy", StringCommonality.commonStringPortion(1, 6, 2, strs, true, false));
+		Assert.assertEquals("",    StringCommonality.commonStringPortion(1, 6, 5, strs, true, false));
+
+		// backward
+		Assert.assertEquals("wxy", StringCommonality.commonStringPortion(1, 6, 4, strs, false, false));
+		Assert.assertEquals("w",   StringCommonality.commonStringPortion(1, 6, 2, strs, false, false));
+		Assert.assertEquals("",    StringCommonality.commonStringPortion(1, 6, 5, strs, false, false));
+		Assert.assertEquals("-",   StringCommonality.commonStringPortion(0, 6, 0, strs, false, false));
+
+		// backward from end of string (won't match anything)
+		Assert.assertEquals("",    StringCommonality.commonStringPortion(1, 6, 1, strs, false, true));
+		Assert.assertEquals("",    StringCommonality.commonStringPortion(1, 6, 4, strs, false, true));
 	}
 
 
@@ -82,9 +104,9 @@ public class StringCommonalityTest {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void findPrefixEntriesTest() {
-		@SuppressWarnings("unchecked")
 		Entry<String, Integer>[] entries = new Entry[] {
 				of("String-Aa", 1),
 				of("String=Ab", 2),
@@ -96,44 +118,27 @@ public class StringCommonalityTest {
 		Assert.assertEquals("String", StringCommonality.findPrefix(0, entries));
 		Assert.assertEquals("tring", StringCommonality.findPrefix(1, entries));
 		Assert.assertEquals("A", StringCommonality.findPrefix(7, entries));
+
+		entries = new Entry[] {
+				of("-aaa", 1),
+				of("-aa", 2),
+				of("-a", 3),
+		};
+
+		Assert.assertEquals("-a", StringCommonality.findPrefix(0, entries));
+
+		entries = new Entry[] {
+				of("-a", 3),
+				of("-aa", 2),
+				of("-aaa", 1),
+		};
+
+		Assert.assertEquals("-a", StringCommonality.findPrefix(0, entries));
 	}
 
 
 	private static <K, V> Entry<K, V> of(K key, V val) {
 		return new AbstractMap.SimpleImmutableEntry<>(key, val);
-	}
-
-}
-
-
-
-
-/**
- * @author TeamworkGuy2
- * @since 2015-5-9
- */
-class CommonalityData {
-	boolean prefix;
-	List<Entry<String, Integer>> suffixesAndOffsets;
-	List<String> strs;
-
-
-	public CommonalityData(boolean prefix, List<Entry<String, Integer>> suffixesAndOffsets, List<String> strs) {
-		this.prefix = prefix;
-		this.suffixesAndOffsets = suffixesAndOffsets;
-		this.strs = strs;
-	}
-
-
-	void test() {
-		for(Entry<String, Integer> suffixOffset : suffixesAndOffsets) {
-			if(prefix) {
-				Assert.assertEquals(suffixOffset.getKey(), StringCommonality.findPrefix(suffixOffset.getValue(), strs));
-			}
-			else {
-				Assert.assertEquals(suffixOffset.getKey(), StringCommonality.findSuffix(suffixOffset.getValue(), strs));
-			}
-		}
 	}
 
 }

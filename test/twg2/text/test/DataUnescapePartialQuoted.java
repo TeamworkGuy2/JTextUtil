@@ -16,7 +16,8 @@ public class DataUnescapePartialQuoted {
 		"2.  abc, xyz",
 		"3.  \"abc, xyz\"], ",
 		"4. \\\"\"",
-		"5. , "
+		"5. \"a, b\", c",
+		"6. , "
 	);
 
 	public static List<String> expected = Arrays.asList(
@@ -25,6 +26,7 @@ public class DataUnescapePartialQuoted {
 		" abc",
 		" \"abc, xyz\"",
 		"\\\"\"",
+		"a, b",
 		""
 	);
 
@@ -35,18 +37,20 @@ public class DataUnescapePartialQuoted {
 		inputs.get(2).lastIndexOf(','),
 		inputs.get(3).lastIndexOf("]"),
 		inputs.get(4).lastIndexOf("\"") + 1,
-		inputs.get(5).lastIndexOf(',')
+		inputs.get(5).lastIndexOf("\"") + 1,
+		inputs.get(6).lastIndexOf(',')
 	);
 
 
 	/** The index of the last ending character (i.e. if the string is a quoted string followed by an ending char, return the index of the ending char, not the closing quote */
-	public static List<Integer> expectedIndexesIncludingTrueEndingChar = Arrays.asList(
+	public static List<Integer> _expectedIndexesIncludingTrueEndingChar = Arrays.asList(
 		inputs.get(0).lastIndexOf("\"") + 1,
 		inputs.get(1).lastIndexOf(','),
 		inputs.get(2).lastIndexOf(','),
 		inputs.get(3).lastIndexOf("]") + 1,
 		inputs.get(4).lastIndexOf("\"") + 1,
-		inputs.get(5).lastIndexOf(',')
+		inputs.get(5).lastIndexOf("\"") + 1,
+		inputs.get(6).lastIndexOf(',')
 	);
 
 

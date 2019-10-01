@@ -65,7 +65,7 @@ public class StringToPropertiesTest {
 		props.setProperty("2", "two");
 		props.setProperty("3", "\u0007\u2460");
 		props.setProperty("4", "four!");
-		props.setProperty("\"stop,star\"", "\\\",=\r\nabc");
+		props.setProperty(" \"stop,star\" ", "\\-\f\t\",=\r\nabc");
 		props.setProperty("key=\"value\"", "pair");
 
 		return props;

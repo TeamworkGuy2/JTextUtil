@@ -4,7 +4,17 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.13.1](N/A) - 2019-09-29
+### [0.13.2](N/A) - 2019-09-30
+#### Added
+* `StringSplit.split(String, char, int)`
+* Additional unit tests
+
+#### Fixed
+* `StringCommonality` several methods were failing for `direction = false` combined with `minIndex = 0`
+
+
+--------
+### [0.13.1](https://github.com/TeamworkGuy2/JTextUtil/commit/6110d1fa16c5187b7102a62fc96086cb907b5b94) - 2019-09-29
 #### Added
 * `StringSplit.lastMatchParts(String, char)`
 

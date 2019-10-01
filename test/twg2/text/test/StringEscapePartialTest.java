@@ -14,7 +14,6 @@ import twg2.text.stringEscape.StringEscapePartial;
  */
 public class StringEscapePartialTest {
 
-
 	@Test
 	public void unescapePartialQuotedTest() {
 		int offset = DataUnescapePartialQuoted.inputsOffset;
@@ -29,8 +28,22 @@ public class StringEscapePartialTest {
 			Assert.assertEquals(i + ". expect (" + expectIdxs.get(i) + "): " + expect.get(i) + ", result (" + index + "): " + dst.toString(), (int)expectIdxs.get(i), index);
 			dst.setLength(0);
 		}
-	}
 
+		int index = StringEscapePartial.unescapePartialQuoted("'none' -", 0, 4, '\\', '\'', ',', ']', false, dst);
+		Assert.assertEquals("non", dst.toString());
+		Assert.assertEquals(4, index);
+		dst.setLength(0);
+
+		index = StringEscapePartial.unescapePartialQuoted("'none' -", 0, '\\', '\'', ',', dst);
+		Assert.assertEquals("none", dst.toString());
+		Assert.assertEquals(6, index);
+		dst.setLength(0);
+
+		index = StringEscapePartial.unescapePartialQuoted("'none' -", 0, '\\', '\'', ',', ']', dst);
+		Assert.assertEquals("none", dst.toString());
+		Assert.assertEquals(6, index);
+		dst.setLength(0);
+	}
 
 
 	@Test

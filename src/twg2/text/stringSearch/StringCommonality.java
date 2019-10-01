@@ -128,7 +128,7 @@ public class StringCommonality {
 				if(str1Len <= str1Off - iiOff || str2Len <= str2Off - iiOff) {
 					return 0;
 				}
-				while((minOff - ii) > minIndex && ii < commonCount && str1.charAt(str1Off - (ii + iiOff)) == str2.charAt(str2Off - (ii + iiOff))) {
+				while((minOff - (ii + iiOff)) >= minIndex && ii < commonCount && str1.charAt(str1Off - (ii + iiOff)) == str2.charAt(str2Off - (ii + iiOff))) {
 					ii++;
 				}
 			}
@@ -143,7 +143,7 @@ public class StringCommonality {
 		}
 
 		if(i != size - 1) {
-			throw new IllegalStateException("collection had " + (i < size - 1 ? "fewer" : "more") + " values than expected based on .size()");
+			throw new IllegalStateException("collection had " + (i < size - 1 ? "fewer" : "more") + " values than expected based on size()");
 		}
 
 		return commonCount;

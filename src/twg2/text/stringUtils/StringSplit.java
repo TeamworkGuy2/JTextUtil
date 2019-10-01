@@ -25,9 +25,9 @@ public class StringSplit {
 
 
 	/** A slightly faster version of {@link String#split(String)} that does not
-	 * used {@link Pattern}, instead the pattern is interpreted literally
-	 * and the input string is split based on the literal split string.
-	 * @param input the input char sequence to split
+	 * use {@link Pattern}, instead the pattern is interpreted literally
+	 * and the input string is split based on the literal {@code pattern} string.
+	 * @param input the input string to split
 	 * @param pattern the exact pattern to find and split around
 	 * @param limit the maximum number of splits to make, zero indicates that
 	 * an infinite number of splits can occur
@@ -51,7 +51,7 @@ public class StringSplit {
 	/** A slightly faster version of {@link String#split(String)} that does not
 	 * used {@link Pattern}, instead the pattern is interpreted literally
 	 * and the input string is split based on the literal split string.
-	 * @param input the input char sequence to split
+	 * @param input the input string to split
 	 * @param pattern the exact pattern to find and split around
 	 * @param limit the maximum number of splits to make, zero indicates that
 	 * an infinite number of splits can occur
@@ -115,7 +115,7 @@ public class StringSplit {
 	 * This method is more space efficient than the {@link StringSplit#split(String, String, int)} version
 	 * since no internal structure is created to store the split strings, instead the array provided
 	 * is filled with the split strings.
-	 * @param input the input char sequence to split
+	 * @param input the input string to split
 	 * @param pattern the exact pattern to find and split around
 	 * @param dst an array of strings equal in length to the number of strings to split the {@code input} string into
 	 * @return the {@code results} array of strings passed into the method
@@ -176,6 +176,22 @@ public class StringSplit {
 	}
 
 
+	/** A slightly faster version of {@link String#split(String)} that does not
+	 * use {@link Pattern}, instead the pattern is interpreted literally
+	 * and the input string is split based on the literal {@code pattern} character.
+	 * @param input the input string to split
+	 * @param pattern the exact pattern to find and split around
+	 * @param limit the maximum number of splits to make, zero indicates that
+	 * an infinite number of splits can occur
+	 * @return an array of strings containing the resulting stings after
+	 * splitting the input string
+	 */
+	public static String[] split(String input, char pattern, int limit) {
+		List<String> strs = split(input, pattern, limit, null);
+		return strs.toArray(new String[strs.size()]);
+	}
+
+
 	/**
 	 * @see #split(String, char, int, List)
 	 */
@@ -186,8 +202,8 @@ public class StringSplit {
 
 	/** A slightly faster version of {@link String#split(String)} that does not
 	 * used {@link Pattern}, instead the string is split based on a specific char.<br>
-	 * @param input the input char sequence to split
-	 * @param splitAt the exact string to find and split around
+	 * @param input the input string to split
+	 * @param splitAt the exact character to find and split around
 	 * @param limit the maximum number of splits to make, zero indicates that
 	 * an infinite number of splits can occur
 	 * @param dst the destination list to add the split strings to
@@ -249,8 +265,8 @@ public class StringSplit {
 	 * This method is more space efficient than the {@link StringSplit#split(String, String, int)} version
 	 * since no internal structure is created to store the split strings, instead the array provided
 	 * is filled with the split strings.
-	 * @param input the input char sequence to split
-	 * @param splitAt the exact string to find and split around
+	 * @param input the input string to split
+	 * @param splitAt the exact character to find and split around
 	 * @param dst an array of strings equal in length to the number of strings to split the {@code input} string into
 	 * @return the {@code results} array of strings passed into the method
 	 */
@@ -305,7 +321,7 @@ public class StringSplit {
 	/** A slightly faster version of {@link String#split(String)} that does not
 	 * used {@link Pattern}, instead the pattern is interpreted literally
 	 * and the input string is split based on the literal split string.
-	 * @param input the input char sequence to split
+	 * @param input the input string to split
 	 * @param pattern the exact pattern to find and split around
 	 * @param childI the index of the matching substring to retrieve
 	 * @param expectedCount the expected number of string when the string is split using the pattern, 0 if the expected count is not know

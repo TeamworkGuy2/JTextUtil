@@ -305,8 +305,7 @@ public class StringReplace {
 	/**
 	 * @see #replaceStrings(char[], int, Collection, Collection, StringBuilder)
 	 */
-	public static int replaceStrings(String content, Collection<String> searchStrs, Collection<String> replaceStrs,
-			StringBuilder dst) {
+	public static int replaceStrings(String content, Collection<String> searchStrs, Collection<String> replaceStrs, StringBuilder dst) {
 		dst.append(content);
 		return replaceStrings(searchStrs, replaceStrs, dst, dst.length());
 	}
@@ -315,8 +314,7 @@ public class StringReplace {
 	/**
 	 * @see #replaceStrings(char[], int, Collection, Collection, StringBuilder)
 	 */
-	public static int replaceStrings(String content, int contentOff, Collection<String> searchStrs, Collection<String> replaceStrs,
-			StringBuilder dst) {
+	public static int replaceStrings(String content, int contentOff, Collection<String> searchStrs, Collection<String> replaceStrs, StringBuilder dst) {
 		dst.append(content, contentOff, content.length() - contentOff);
 		return replaceStrings(searchStrs, replaceStrs, dst, dst.length());
 	}
@@ -337,8 +335,7 @@ public class StringReplace {
 	 * replaced with corresponding {@code replaceStrs}
 	 * @return the length change of {@code dst} after replacing the matching strings in {@code content}
 	 */
-	public static int replaceStrings(char[] content, int contentOffset, Collection<String> searchStrs, Collection<String> replaceStrs,
-			StringBuilder dst) {
+	public static int replaceStrings(char[] content, int contentOffset, Collection<String> searchStrs, Collection<String> replaceStrs, StringBuilder dst) {
 		dst.append(content, contentOffset, content.length - contentOffset);
 		return replaceStrings(searchStrs, replaceStrs, dst, dst.length());
 	}

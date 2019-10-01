@@ -1,7 +1,10 @@
 package twg2.text.test;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +80,12 @@ public class StringReplaceTest {
 		CheckTask.assertTests(strs, expect, (s) -> {
 			StringBuilder dst = new StringBuilder(s);
 			StringReplace.replaceStrings(new LinkedList<>(searchStrs), replaceStrs, dst, strOffset);
+			return dst.toString();
+		});
+
+		CheckTask.assertTests(strs, expect, (s) -> {
+			StringBuilder dst = new StringBuilder(s);
+			StringReplace.replaceStrings(combine(searchStrs, replaceStrs).iterator(), dst, strOffset);
 			return dst.toString();
 		});
 	}
@@ -191,6 +200,20 @@ public class StringReplaceTest {
 		expect = "a String with infinite tokens and others";
 
 		Assert.assertEquals(expect, sb.toString());
+	}
+
+
+	private static <K, V> List<Map.Entry<K, V>> combine(Collection<K> keys, Collection<V> values) {
+		List<Map.Entry<K, V>> res = new ArrayList<Map.Entry<K, V>>();
+
+		Iterator<K> keyIt = keys.iterator();
+		Iterator<V> valueIt = values.iterator();
+
+		while(keyIt.hasNext() && valueIt.hasNext()) {
+			res.add(entry(keyIt.next(), valueIt.next()));
+		}
+
+		return res;
 	}
 
 

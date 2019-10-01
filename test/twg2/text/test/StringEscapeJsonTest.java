@@ -26,12 +26,24 @@ public class StringEscapeJsonTest {
 			"arc \u2460",
 		};
 
+		StringBuilder sb = new StringBuilder();
+
 		for(int i = 0, size = raw.length; i < size; i++) {
+			// toJson
 			String jsonFromRaw = StringEscapeJson.toJsonString(raw[i]);
 			Assert.assertEquals(json[i], jsonFromRaw);
 
+			StringEscapeJson.toJsonString(raw[i], sb);
+			Assert.assertEquals(json[i], sb.toString());
+			sb.setLength(0);
+
+			// fromJson
 			String rawFromJson = StringEscapeJson.fromJsonString(jsonFromRaw);
 			Assert.assertEquals(raw[i], rawFromJson);
+
+			StringEscapeJson.fromJsonString(jsonFromRaw, sb);
+			Assert.assertEquals(raw[i], sb.toString());
+			sb.setLength(0);
 		}
 	}
 

@@ -93,6 +93,7 @@ public class StringSplitTest {
 	@Test
 	public void stringStringSplitDst() {
 		String str = "something//split into pieces//3rd part//so";
+		String[] strSplit3Ary = new String[] { "something", "split into pieces", "3rd part//so" };
 		List<String> strSplit3 = Arrays.asList("something", "split into pieces", "3rd part//so");
 
 		// test String pattern, dst List<String>
@@ -100,13 +101,17 @@ public class StringSplitTest {
 		StringSplit.split(str, "//", dstList);
 		Assert.assertEquals(Arrays.asList(str.split("//")), dstList);
 
+		// test String pattern, limit
+		String[] dstAry = StringSplit.split(str, "//", 3);
+		Assert.assertArrayEquals(strSplit3Ary, dstAry);
+
 		// test String pattern, dst List<String>, limit
 		dstList.clear();
 		StringSplit.split(str, "//", 3, dstList);
 		Assert.assertEquals(strSplit3, dstList);
 
 		// test String pattern, dst String[], large enough
-		String[] dstAry = new String[4];
+		dstAry = new String[4];
 		StringSplit.split(str, "//", dstAry);
 		Assert.assertArrayEquals(str.split("//"), dstAry);
 
@@ -129,6 +134,10 @@ public class StringSplitTest {
 		dstList = StringSplit.split(str, '#');
 		Assert.assertEquals(Arrays.asList(str.split("#")), dstList);
 
+		// test char pattern, limit
+		String[] dstAry = StringSplit.split(str, '#', 3);
+		Assert.assertArrayEquals(str.split("#", 3), dstAry);
+
 		// test char pattern, dst List<String>
 		dstList = new ArrayList<>();
 		StringSplit.split(str, '#', dstList);
@@ -140,7 +149,7 @@ public class StringSplitTest {
 		Assert.assertEquals(strSplit3, dstList);
 
 		// test char pattern, dst String[], large enough
-		String[] dstAry = new String[4];
+		dstAry = new String[4];
 		StringSplit.split(str, '#', dstAry);
 		Assert.assertArrayEquals(str.split("#"), dstAry);
 

@@ -160,18 +160,22 @@ public class StringIndexTest {
 
 	@Test
 	public void indexOf_StringOrCharAryOrCharSeq_Char() {
+		Assert.assertEquals(-1, StringIndex.indexOf(        "Aa Bb Ccc 1",  3,    (int)'Z'));
 		Assert.assertEquals(-1, StringIndex.indexOf(        "Aa Bb Ccc 1",  3, 8, (int)'Z'));
 		Assert.assertEquals(-1, StringIndex.indexOf(  chars("Aa Bb Ccc 1"), 3, 8, (int)'Z'));
 		Assert.assertEquals(-1, StringIndex.indexOf(charSeq("Aa Bb Ccc 1"), 3, 8, (int)'Z'));
 
+		Assert.assertEquals(10, StringIndex.indexOf(        "Aa Bb Ccc 1",  3,    (int)'1'));
 		Assert.assertEquals(10, StringIndex.indexOf(        "Aa Bb Ccc 1",  3, 8, (int)'1'));
 		Assert.assertEquals(10, StringIndex.indexOf(  chars("Aa Bb Ccc 1"), 3, 8, (int)'1'));
 		Assert.assertEquals(10, StringIndex.indexOf(charSeq("Aa Bb Ccc 1"), 3, 8, (int)'1'));
 
+		Assert.assertEquals(10, StringIndex.indexOf(        "Aa Bb Ccc \u2460",  3,    (int)'\u2460'));
 		Assert.assertEquals(10, StringIndex.indexOf(        "Aa Bb Ccc \u2460",  3, 8, (int)'\u2460'));
 		Assert.assertEquals(10, StringIndex.indexOf(  chars("Aa Bb Ccc \u2460"), 3, 8, (int)'\u2460'));
 		Assert.assertEquals(10, StringIndex.indexOf(charSeq("Aa Bb Ccc \u2460"), 3, 8, (int)'\u2460'));
 
+		Assert.assertEquals(10, StringIndex.indexOf(        fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8),  3,    (int)0x1F3B8));
 		Assert.assertEquals(10, StringIndex.indexOf(        fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8),  3, 9, (int)0x1F3B8));
 		Assert.assertEquals(10, StringIndex.indexOf(  chars(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8)), 3, 9, (int)0x1F3B8));
 		Assert.assertEquals(10, StringIndex.indexOf(charSeq(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8)), 3, 9, (int)0x1F3B8));
@@ -197,10 +201,10 @@ public class StringIndexTest {
 
 	@Test
 	public void indexOf_CharSeq_CharSeq() {
-		Assert.assertEquals(-1, StringIndex.indexOf(charSeq("Aa Bb Ccc 1"), 0, charSeq("Bb Ccc 2"), 0, 8));
-		Assert.assertEquals(10, StringIndex.indexOf(charSeq("Aa Bb Ccc 1"), 10, charSeq(""), 0, 0));
-		Assert.assertEquals(3, StringIndex.indexOf(charSeq("Aa Bb Ccc 1"), 0, charSeq("Bb Ccc 2"), 0, 7));
-		Assert.assertEquals(3, StringIndex.indexOf(charSeq("Aa Bb Ccc 1"), 3, charSeq("Bb Ccc 2"), 0, 7));
+		Assert.assertEquals(-1, StringIndex.indexOf(charSeq("Aa Bb Ccc 1"), 0,  charSeq("Bb Ccc 2"), 0, 8));
+		Assert.assertEquals(10, StringIndex.indexOf(charSeq("Aa Bb Ccc 1"), 10, charSeq(""),         0, 0));
+		Assert.assertEquals(3,  StringIndex.indexOf(charSeq("Aa Bb Ccc 1"), 0,  charSeq("Bb Ccc 2"), 0, 7));
+		Assert.assertEquals(3,  StringIndex.indexOf(charSeq("Aa Bb Ccc 1"), 3,  charSeq("Bb Ccc 2"), 0, 7));
 	}
 
 
@@ -211,14 +215,52 @@ public class StringIndexTest {
 		Assert.assertEquals(3, StringIndex.indexOf(      "Aa Bb Ccc 1",  3, 7, chars("Z"), 0, 0));
 		Assert.assertEquals(3, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3, 7, chars("Z"), 0, 0));
 
+		Assert.assertEquals(-1, StringIndex.indexOf(      "Aa Bb Ccc 1",  3,          "AZ"));
+		Assert.assertEquals(-1, StringIndex.indexOf(      "Aa Bb Ccc 1",  3,          "AZ",  1));
+		Assert.assertEquals(-1, StringIndex.indexOf(      "Aa Bb Ccc 1",  3,          "AZ",  1, 1));
+		Assert.assertEquals(-1, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3,          "AZ"));
+		Assert.assertEquals(-1, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3,          "AZ",  1));
+		//Assert.assertEquals(-1, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3,          "AZ",  1, 1));
+		Assert.assertEquals(-1, StringIndex.indexOf(      "Aa Bb Ccc 1",  3,    chars("AZ")));
+		Assert.assertEquals(-1, StringIndex.indexOf(      "Aa Bb Ccc 1",  3,    chars("AZ"), 1));
+		//Assert.assertEquals(-1, StringIndex.indexOf(      "Aa Bb Ccc 1",  3,    chars("AZ"), 1, 1));
+		Assert.assertEquals(-1, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3,    chars("AZ")));
+		Assert.assertEquals(-1, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3,    chars("AZ"), 1));
+		//Assert.assertEquals(-1, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3,    chars("AZ"), 1, 1));
+
+		Assert.assertEquals(-1, StringIndex.indexOf(      "Aa Bb Ccc 1",  3, 7,       "AZ",  1));
 		Assert.assertEquals(-1, StringIndex.indexOf(      "Aa Bb Ccc 1",  3, 7,       "AZ",  1, 1));
+		Assert.assertEquals(-1, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3, 7,       "AZ"));
+		Assert.assertEquals(-1, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3, 7,       "AZ",  1));
 		Assert.assertEquals(-1, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3, 7,       "AZ",  1, 1));
+		Assert.assertEquals(-1, StringIndex.indexOf(      "Aa Bb Ccc 1",  3, 7, chars("AZ")));
+		Assert.assertEquals(-1, StringIndex.indexOf(      "Aa Bb Ccc 1",  3, 7, chars("AZ"), 1));
 		Assert.assertEquals(-1, StringIndex.indexOf(      "Aa Bb Ccc 1",  3, 7, chars("AZ"), 1, 1));
+		Assert.assertEquals(-1, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3, 7, chars("AZ")));
+		Assert.assertEquals(-1, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3, 7, chars("AZ"), 1));
 		Assert.assertEquals(-1, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3, 7, chars("AZ"), 1, 1));
 
+		Assert.assertEquals(3, StringIndex.indexOf(      "Aa Bb Ccc 1",  3,          "Bb Ccc "));
+		Assert.assertEquals(3, StringIndex.indexOf(      "Aa Bb Ccc 1",  3,          "Bb Ccc ", 0));
+		Assert.assertEquals(3, StringIndex.indexOf(      "Aa Bb Ccc 1",  3,          "Bb Ccc 2",  0, 7));
+		Assert.assertEquals(3, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3,          "Bb Ccc "));
+		Assert.assertEquals(3, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3,          "Bb Ccc ", 0));
+		//Assert.assertEquals(3, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3,          "Bb Ccc 2",  0, 7));
+		Assert.assertEquals(3, StringIndex.indexOf(      "Aa Bb Ccc 1",  3,    chars("Bb Ccc ")));
+		Assert.assertEquals(3, StringIndex.indexOf(      "Aa Bb Ccc 1",  3,    chars("Bb Ccc "), 0));
+		//Assert.assertEquals(3, StringIndex.indexOf(      "Aa Bb Ccc 1",  3,    chars("Bb Ccc 2"), 0, 7));
+		Assert.assertEquals(3, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3,    chars("Bb Ccc ")));
+		Assert.assertEquals(3, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3,    chars("Bb Ccc "), 0));
+		//Assert.assertEquals(3, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3,    chars("Bb Ccc 2"), 0, 7));
+
+		Assert.assertEquals(3, StringIndex.indexOf(      "Aa Bb Ccc 1",  3, 7,       "Bb Ccc "));
+		Assert.assertEquals(3, StringIndex.indexOf(      "Aa Bb Ccc 1",  3, 7,       "Bb Ccc ", 0));
 		Assert.assertEquals(3, StringIndex.indexOf(      "Aa Bb Ccc 1",  3, 7,       "Bb Ccc 2",  0, 7));
+		Assert.assertEquals(3, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3, 7,       "Bb Ccc ", 0));
 		Assert.assertEquals(3, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3, 7,       "Bb Ccc 2",  0, 7));
+		Assert.assertEquals(3, StringIndex.indexOf(      "Aa Bb Ccc 1",  3, 7, chars("Bb Ccc "), 0));
 		Assert.assertEquals(3, StringIndex.indexOf(      "Aa Bb Ccc 1",  3, 7, chars("Bb Ccc 2"), 0, 7));
+		Assert.assertEquals(3, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3, 7, chars("Bb Ccc "), 0));
 		Assert.assertEquals(3, StringIndex.indexOf(chars("Aa Bb Ccc 1"), 3, 7, chars("Bb Ccc 2"), 0, 7));
 	}
 
