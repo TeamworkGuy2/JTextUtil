@@ -43,7 +43,7 @@ public class DataUnescapePartialQuoted {
 
 
 	/** The index of the last ending character (i.e. if the string is a quoted string followed by an ending char, return the index of the ending char, not the closing quote */
-	public static List<Integer> _expectedIndexesIncludingTrueEndingChar = Arrays.asList(
+	public static List<Integer> expectedIndexesIncludingTrueEndingChar = Arrays.asList(
 		inputs.get(0).lastIndexOf("\"") + 1,
 		inputs.get(1).lastIndexOf(','),
 		inputs.get(2).lastIndexOf(','),

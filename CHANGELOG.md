@@ -4,7 +4,14 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.13.2](N/A) - 2019-09-30
+### [0.13.3](N/A) - 2019-10-03
+#### Changed
+* Fix accidental test class property name change in previous commit
+* First `twg2.text.benchmark` tests added
+
+
+--------
+### [0.13.2](https://github.com/TeamworkGuy2/JTextUtil/commit/fecc69175e8b8bab7319ee659457ff6d50c27e17) - 2019-09-30
 #### Added
 * `StringSplit.split(String, char, int)`
 * Additional unit tests
