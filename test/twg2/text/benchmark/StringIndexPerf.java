@@ -33,7 +33,7 @@ public class StringIndexPerf {
 			}
 		}
 
-		System.out.println(res);
+		System.out.println(this.getClass().getSimpleName() + "-" + res);
 	}
 
 
@@ -51,7 +51,7 @@ public class StringIndexPerf {
 			}
 		}
 
-		System.out.println(res);
+		System.out.println(this.getClass().getSimpleName() + "-" + res);
 	}
 
 }

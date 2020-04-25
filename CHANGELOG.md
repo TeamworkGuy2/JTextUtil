@@ -4,7 +4,14 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.13.3](N/A) - 2019-10-03
+### [0.13.4](N/A) - 2020-04-25
+#### Changed
+* Improve unit tests
+* Remove `DataUnescapePartialQuoted.inputsNoClosingQuote` and `expectedNoClosingQuote` test data in favor of embedding it directly in test methods for readability.
+
+
+--------
+### [0.13.3](https://github.com/TeamworkGuy2/JTextUtil/commit/ad33795962590e43f7e8ce0fc52dbf459abf95f8) - 2019-10-03
 #### Changed
 * Fix accidental test class property name change in previous commit
 * First `twg2.text.benchmark` tests added

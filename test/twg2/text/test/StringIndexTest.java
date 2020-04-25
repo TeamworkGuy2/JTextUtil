@@ -179,6 +179,9 @@ public class StringIndexTest {
 		Assert.assertEquals(10, StringIndex.indexOf(        fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8),  3, 9, (int)0x1F3B8));
 		Assert.assertEquals(10, StringIndex.indexOf(  chars(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8)), 3, 9, (int)0x1F3B8));
 		Assert.assertEquals(10, StringIndex.indexOf(charSeq(fromStringsAndCodePoints("Aa Bb Ccc ", 0x1F3B8)), 3, 9, (int)0x1F3B8));
+
+		CheckTask.assertException(() -> fromStringsAndCodePoints("A", 50, String.class));
+		CheckTask.assertException(() -> fromStringsAndCodePoints("A", 50, null));
 	}
 
 

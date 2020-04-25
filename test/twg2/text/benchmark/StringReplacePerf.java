@@ -26,14 +26,14 @@ public class StringReplacePerf {
 		for(int i = 0; i < loops; i++) {
 			int sub = 0;
 			for(int j = 0, size = strs.size(); j < size; j++) {
-				sub += StringReplace.replace(StringReplace.replace(strs.get(j), "-a", "-A"), "A", "B").hashCode() - (j < size - 1 ? StringReplace.replace(strs.get(j + 1), "A", "B").hashCode() : 0);
+				sub += StringReplace.replace(StringReplace.replace(strs.get(j), "-a", "-A"), "A", "B").length() - (j < size - 1 ? StringReplace.replace(strs.get(j + 1), "A", "B").length() : 0);
 			}
 			if(i % 3 == 0 || i % 5 == 0) {
 				res += sub;
 			}
 		}
 
-		System.out.println(res);
+		System.out.println(this.getClass().getSimpleName() + "-" + res);
 	}
 
 
@@ -44,14 +44,14 @@ public class StringReplacePerf {
 		for(int i = 0; i < loops; i++) {
 			int sub = 0;
 			for(int j = 0, size = strs.size(); j < size; j++) {
-				sub += strs.get(j).replace("-a", "-A").replace("A", "B").hashCode() - (j < size - 1 ? strs.get(j + 1).replace("A", "B").hashCode() : 0);
+				sub += strs.get(j).replace("-a", "-A").replace("A", "B").length() - (j < size - 1 ? strs.get(j + 1).replace("A", "B").length() : 0);
 			}
 			if(i % 3 == 0 || i % 5 == 0) {
 				res += sub;
 			}
 		}
 
-		System.out.println(res);
+		System.out.println(this.getClass().getSimpleName() + "-" + res);
 	}
 
 }

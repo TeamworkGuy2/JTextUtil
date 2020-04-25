@@ -29,11 +29,11 @@ public class StringCaseTest {
 
 	@Test
 	public void stringCaseCheck() {
-		StringCases camelCase = new StringCases(list("abc"), list("a_c", "Abc"));
-		StringCases titleCase = new StringCases(list("AlphaChar"), list("alphaChar", "Alpha_Char", "Alpha-Char"));
-		StringCases dashCase = new StringCases(list("alpha-char", "-b"), list("alphaChar", "Alpha-char", "Alpha-Char"));
-		StringCases underscoreLowerCase = new StringCases(list("moon_base", "_b"), list("moon_Base", "Moon_base", "Moon_Base"));
-		StringCases underscoreTitleCase = new StringCases(list("Nanite_Cloud", "_B"), list("nanite_cloud", "Nanite_clound", "nanite_Cloud"));
+		StringCases camelCase = new StringCases(list("abc"), list("", "a_c", "Abc"));
+		StringCases titleCase = new StringCases(list("AlphaChar"), list("", "alphaChar", "Alpha_Char", "Alpha-Char"));
+		StringCases dashCase = new StringCases(list("alpha-char", "-b"), list("", "alphaChar", "Alpha-char", "Alpha-Char"));
+		StringCases underscoreLowerCase = new StringCases(list("moon_base", "_b"), list("", "moon_Base", "Moon_base", "Moon_Base"));
+		StringCases underscoreTitleCase = new StringCases(list("Nanite_Cloud", "_B"), list("", "nanite_cloud", "Nanite_clound", "nanite_Cloud"));
 
 		toStringCases(camelCase, "camelCase", StringCase::isCamelCase);
 		toStringCases(titleCase, "TitleCase", StringCase::isTitleCase);
@@ -59,12 +59,13 @@ public class StringCaseTest {
 
 	@Test
 	public void stringToCase() {
-		String[] strs = new String[]                { "abc", "Alpha", "Subpar", "SupPar",  "Al_Cid", "a-b", "at-b-", "-c", "var_val_byte", "A_", "_A", "a", "_" };
-		String[] camelCase = new String[]           { "abc", "alpha", "subpar", "supPar",  "alCid",  "aB",  "atB",   "C",  "varValByte",   "a",  "a",  "a", "_" };
-		String[] titleCase = new String[]           { "Abc", "Alpha", "Subpar", "SupPar",  "AlCid",  "AB",  "AtB",   "C",  "VarValByte",   "A",  "A",  "A", "_" };
-		String[] dashCase = new String[]            { "abc", "alpha", "subpar", "sup-par", "al-cid", "a-b", "at-b-", "-c", "var-val-byte", "a-", "-a", "a", "-" };
-		String[] underscoreLowerCase = new String[] { "abc", "alpha", "subpar", "sup_par", "al_cid", "a_b", "at_b_", "_c", "var_val_byte", "a_", "_a", "a", "_" };
-		String[] underscoreTitleCase = new String[] { "Abc", "Alpha", "Subpar", "Sup_Par", "Al_Cid", "A_B", "At_B_", "_C", "Var_Val_Byte", "A_", "_A", "A", "_" };
+		String[] strs =                { "abc", "Alpha", "subPar",  "Subpar", "SupPar",  "Al_Cid", "a-b", "at-b-", "-c", "var_val_byte", "A_", "_A", "a", "_" };
+
+		String[] camelCase =           { "abc", "alpha", "subPar",  "subpar", "supPar",  "alCid",  "aB",  "atB",   "C",  "varValByte",   "a",  "a",  "a", "_" };
+		String[] titleCase =           { "Abc", "Alpha", "SubPar",  "Subpar", "SupPar",  "AlCid",  "AB",  "AtB",   "C",  "VarValByte",   "A",  "A",  "A", "_" };
+		String[] dashCase =            { "abc", "alpha", "sub-par", "subpar", "sup-par", "al-cid", "a-b", "at-b-", "-c", "var-val-byte", "a-", "-a", "a", "-" };
+		String[] underscoreLowerCase = { "abc", "alpha", "sub_par", "subpar", "sup_par", "al_cid", "a_b", "at_b_", "_c", "var_val_byte", "a_", "_a", "a", "_" };
+		String[] underscoreTitleCase = { "Abc", "Alpha", "Sub_Par", "Subpar", "Sup_Par", "Al_Cid", "A_B", "At_B_", "_C", "Var_Val_Byte", "A_", "_A", "A", "_" };
 
 		for(int i = 0, size = strs.length; i < size; i++) {
 			Assert.assertEquals("camelCase " + i, camelCase[i], StringCase.toCamelCase(strs[i]));

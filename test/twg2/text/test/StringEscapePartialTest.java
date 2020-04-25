@@ -1,5 +1,6 @@
 package twg2.text.test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -24,7 +25,7 @@ public class StringEscapePartialTest {
 
 		for(int i = 0, size = inputs.size(); i < size; i++) {
 			int index = StringEscapePartial.unescapePartialQuoted(inputs.get(i), offset, inputs.get(i).length() - offset, '\\', '"', ',', ']', false, dst);
-			Assert.assertEquals(expect.get(i), dst.toString());
+			Assert.assertEquals("#" + i + ".", expect.get(i), dst.toString());
 			Assert.assertEquals(i + ". expect (" + expectIdxs.get(i) + "): " + expect.get(i) + ", result (" + index + "): " + dst.toString(), (int)expectIdxs.get(i), index);
 			dst.setLength(0);
 		}
@@ -48,10 +49,15 @@ public class StringEscapePartialTest {
 
 	@Test
 	public void unescapePartialQuotedFailureTest() {
+		List<String> inputs = Arrays.asList(
+			"un\"closed",
+			"\"abc,",
+			"\""
+		);
 		StringBuilder dst = new StringBuilder();
 
 		int i = 0;
-		for(String errInput : DataUnescapePartialQuoted.inputsNoClosingQuote) {
+		for(String errInput : inputs) {
 			CheckTask.assertException("(" + i + ") " + errInput, () -> {
 				StringEscapePartial.unescapePartialQuoted(errInput, 0, errInput.length(), '\\', '"', ',', ']', true, dst);
 			});

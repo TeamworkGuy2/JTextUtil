@@ -29,7 +29,7 @@ public class StringChunkReader extends StringReader {
 				String remaining = chunk.substring(len);
 				chunks.set(0, remaining);
 			}
-			else if(chunk.length() <= len) {
+			else /*if(chunk.length() <= len)*/ {
 				len = chunk.length();
 				chunks.remove(0);
 			}

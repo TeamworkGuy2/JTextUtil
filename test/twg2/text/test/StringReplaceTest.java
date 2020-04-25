@@ -174,6 +174,9 @@ public class StringReplaceTest {
 
 		str = StringReplace.replaceEscapeLiterals("\\t\\n\\\\\'");
 		Assert.assertEquals("\t\n\\\'", str);
+
+		str = StringReplace.replaceEscapeLiterals("[\\]");
+		Assert.assertEquals("[\\]", str);
 	}
 
 

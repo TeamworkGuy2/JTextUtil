@@ -26,15 +26,15 @@ public class StringHexTest {
 		byte[] hexBytes = bytes(154, 240, 224);
 		byte[] hexBytesOff1Len2 = bytes(175);
 
-		List<String> hexChunks = Arrays.asList("5B06", "3", "4412", "E8");
-		byte[] hexByteChunks = bytes(91, 6, 52/*3", "4*/, 65, 46, 128);
+		List<String> hexChunks = Arrays.asList("5B06", "4D5A", "3", "09", "4412", "0504B0304504B0304", "E8");
+		byte[] hexByteChunks = bytes(91, 6, 77, 90, 48/*3", "0*/, (byte)148, 65, 32, 80, 75, 3, 4, 80, 75, 3, 4, (byte)232);
 
 		StringReader hexStrReader = new StringReader(hexStr);
 		byte[] bytes = StringHex.decodeHexStream(hexStrReader);
 		Assert.assertArrayEquals(hexBytes, bytes);
 
 		StringChunkReader hexChunkReader = new StringChunkReader(hexChunks);
-		bytes = StringHex.decodeHexStream(hexChunkReader, 1024);
+		bytes = StringHex.decodeHexStream(hexChunkReader, 16);
 		Assert.assertArrayEquals(hexByteChunks, bytes);
 
 		bytes = StringHex.decodeHexString(hexStr);

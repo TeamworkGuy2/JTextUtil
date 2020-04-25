@@ -7,7 +7,6 @@ import java.util.List;
  * @author TeamworkGuy2
  */
 public class DataUnescapePartialQuoted {
-
 	public static int inputsOffset = 3;
 
 	public static List<String> inputs = Arrays.asList(
@@ -51,21 +50,6 @@ public class DataUnescapePartialQuoted {
 		inputs.get(4).lastIndexOf("\"") + 1,
 		inputs.get(5).lastIndexOf("\"") + 1,
 		inputs.get(6).lastIndexOf(',')
-	);
-
-
-	/** inputs which contain one quote char (i.e. are missing an end quote) */
-	public static List<String> inputsNoClosingQuote = Arrays.asList(
-		"un\"closed",
-		"\"abc,",
-		"\""
-	);
-
-	/** expected parse results for {@link #inputsNoClosingQuote} */
-	public static List<String> expectedNoClosingQuote = Arrays.asList(
-		"un\"closed",
-		"\"abc,",
-		"\""
 	);
 
 }
